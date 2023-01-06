@@ -1,0 +1,118 @@
+<template>
+    <div class="inputs">
+        <h4>Add Image</h4>
+        <label for="inputEmail" class="p-1">User</label>
+        <add-input
+            v-model="this.email"
+            :name="'email_image'"
+            :type="'email'"
+            :placeholder="'Enter user e-mail'"
+        />
+
+        <label for="inputProduct" class="p-1">Product ID</label>
+        <add-input
+            v-model="this.id"
+            :name="'productId'"
+            :type="'text'"
+            :placeholder="'Enter product id'"
+        />
+
+
+        <label for="file" >Select image to upload:</label>
+        <div class="file__div">
+        <input class="file" type="file" name="file" @change="onFileUpload">
+        </div>
+        <action-btn
+            class="btn"
+            :method="addProductImage"
+        >
+            Upload Image
+        </action-btn>
+    </div>
+</template>
+
+<script>
+    import ActionBtn from "../UserList/ActionBtn.vue";
+    import AddInput from "../MyInput.vue";
+    export default {
+        components: {
+            ActionBtn,
+            AddInput
+        },
+        data() {
+            return {
+                email: '',
+                id: '',
+                file: null
+            }
+        },
+
+        methods: {
+            onFileUpload(event) {
+                this.file = event.target.files[0]
+            },
+
+           async addProductImage() {
+               try{
+                   const fd = new FormData();
+                   fd.append('email_image', this.email)
+                   fd.append('productId', this.id)
+                   fd.append('file', this.file, this.file.name)
+                   const response = await axios.post('/add_image/', fd,{
+                       headers: {
+                           'Content-Type': 'multipart/form-data'
+                       }
+                   })
+                       .then(function (response) {
+                        console.log(response)
+                       })
+                       .catch(function (error) {
+                           console.log(error);
+                       })
+               }catch (e){
+
+               }finally {
+                   alert('Your product image added !')
+                   this.name = ''
+                   this.id = ''
+                   this.file = ''
+               }
+            }
+        }
+}
+</script>
+
+<style scoped>
+
+label {
+    margin-top: 10px;
+}
+
+.inputs {
+    position: relative;
+    width: 30%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 20px;
+    padding: 50px;
+    border-radius: 10px;
+    border: 2px solid silver;
+    box-shadow: 3px 3px 3px lightgray;
+}
+
+.file {
+    margin-top: 5px;
+
+    padding: 10px;
+}
+
+.file__div {
+    padding-bottom: 70px;
+}
+
+.btn {
+    padding: 6px;
+    width: 50%;
+}
+</style>

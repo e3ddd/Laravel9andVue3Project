@@ -1,0 +1,92 @@
+<template>
+    <div class="list">
+        <h1 style="text-align: center; padding: 10px">{{this.user}}'s product list</h1>
+        <div class="list-item" v-for="item in list">
+            <user-products-item
+                :id="item.id"
+                :name="item.name"
+                :price="item.price"
+                :description="item.description"
+                :del="this.delete"
+            />
+        </div>
+        <paginator
+            v-model:total="total"
+            :get="getProducts"
+            @update="onUpdate"
+        />
+    </div>
+</template>
+
+<script>
+import Paginator from "./UserList/Paginator.vue";
+import UserProductsItem from "./ProductList/UserProductsItem.vue";
+import Math from "lodash";
+export default {
+    components: {
+        Paginator,
+        UserProductsItem
+    },
+
+    data() {
+        return {
+            user: '',
+            list: [],
+            total: 1,
+            limit: 5,
+        }
+    },
+
+    mounted() {
+        this.getProducts(this.page)
+    },
+
+    methods: {
+        onUpdate() {
+            this.users = []
+        },
+
+        async getProducts(page) {
+            const id = window.location.search.split("=")[1]
+            try {
+                const response = await axios.get("/users/products/?page=" + page, {
+                    params: {
+                        id: id
+                    }
+                })
+                    .then((response) => {
+                        this.total = Math.ceil(response.data.total / this.limit)
+                        this.list = response.data.data
+                        this.user = response.data.data[0]['email']
+                })
+
+            }catch (e){
+                console.log(e)
+            }
+        },
+        async delete(id) {
+            this.list = this.list.filter((item) => item.id !== id)
+            console.log(id)
+            try {
+                const response = await axios.get('/users/products/' + id + '/delete', {
+                    params: {
+                        id: id
+                    }
+                });
+                console.log(response)
+            } catch (error) {
+                console.error(error);
+            }
+        },
+    }
+}
+</script>
+
+<style scoped>
+.list {
+    border: 2px solid silver;
+    box-shadow: 3px 3px 3px lightgray;
+    border-radius: 10px;
+    margin: 50px;
+}
+</style>
