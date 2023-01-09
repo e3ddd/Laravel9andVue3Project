@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Products extends Model
+class Product extends Model
 {
     use HasFactory;
     protected $table = "user_product";
@@ -16,4 +16,9 @@ class Products extends Model
             'price',
             'description',
         ];
+
+    public function image()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 }

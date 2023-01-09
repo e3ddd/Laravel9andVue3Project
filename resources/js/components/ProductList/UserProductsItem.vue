@@ -10,7 +10,7 @@
                :name="name"
                :price="price"
                :description="description"
-               :images="this.images"
+               :images="images"
            />
             <action-btn
                 :id="id"
@@ -35,7 +35,6 @@ export default {
     data() {
         return {
             show: false,
-            images: []
         }
     },
     props: {
@@ -43,29 +42,16 @@ export default {
         name: String,
         price: Number,
         description: String,
-        del: Function
+        del: Function,
+        images: Array
     },
 
     mounted() {
-      this.getImages()
+
     },
 
     methods: {
-        async getImages() {
-            const response = await axios.get('/users/products/all_images', {
-                params: {
-                    id: this.id
-                }
-            })
-                .then((response) => {
-                        console.log(response);
-                        this.images = response.data
 
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        }
     }
 }
 </script>

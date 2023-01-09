@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Views;
+use App\Models\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ViewsStatisticTableController extends Controller
 {
-    public function index(Views $views, Request $request)
+    public function index(View $views, Request $request)
     {
         if(isset($request->get)){
             $viewsAmount = $views::where('product_id', $request->user)->select(DB::raw('SUM(views) as sum'), 'hour', 'date')->groupByRaw('hour')->groupByRaw('date')->get('sum')->toArray();

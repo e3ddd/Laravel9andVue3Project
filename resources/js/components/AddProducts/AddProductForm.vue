@@ -5,7 +5,7 @@
             <div class="input">
                 <label>User</label>
             <add-input
-                v-model="this.email"
+                v-model="this.product.email"
                 :name="'name'"
                 :type="'email'"
                 :placeholder="'Enter user e-mail'"
@@ -15,7 +15,7 @@
             <div class="input">
                 <label>Product</label>
             <add-input
-                v-model="this.name"
+                v-model="this.product.name"
                 :name="'product'"
                 :type="'text'"
                 :placeholder="'Enter product name'"
@@ -25,7 +25,7 @@
          <div class="input">
            <label>Price</label>
             <add-input
-                v-model="this.price"
+                v-model="this.product.price"
                 :name="'price'"
                 :type="'text'"
                 :placeholder="'Enter product price'"
@@ -35,12 +35,15 @@
          <div class="input">
            <label>Description</label>
             <add-input
-                v-model="this.description"
+                v-model="this.product.description"
                 :name="'description'"
                 :type="'text'"
                 :placeholder="'Enter about product'"
             />
            </div>
+            <error-message
+                :err="this.err"
+            />
             <action-btn
                 class="btn"
                 :method="addProduct"
@@ -54,45 +57,53 @@
 <script>
 import ActionBtn from "../UserList/ActionBtn.vue";
 import AddInput from "../MyInput.vue";
+import ErrorMessage from "../ErrorMessage.vue";
 export default {
     components: {
         ActionBtn,
-        AddInput
+        AddInput,
+        ErrorMessage
     },
 
     data() {
         return {
+            err: '',
+            product: {
                 email: '',
                 name: '',
                 price: '',
                 description: '',
+            }
         }
     },
 
     methods: {
         async addProduct() {
-            try{
                 const response = await axios.post('/add_product/', {
-                    email: this.email,
-                    name: this.name,
-                    price: this.price,
-                    description: this.description,
+                    email: this.product.email,
+                    name: this.product.name,
+                    price: this.product.price,
+                    description: this.product.description,
                 })
                     .then(function (response) {
 
                     })
-                    .catch(function (error) {
-                        console.log(error);
+                    .catch((error) => {
+                        this.err = error.response.data.message
+                        setTimeout(() => {
+                            this.err = ''
+                        }, 3000)
                     })
-            }catch (e){
+                    .finally(() => {
+                        if(this.err.length === 0){
+                            alert('Your product added !')
+                            this.email = ''
+                            this.name = ''
+                            this.price = ''
+                            this.description = ''
+                        }
+                    })
 
-            }finally {
-                alert('Your product added !')
-                this.email = ''
-                this.name = ''
-                this.price = ''
-                this.description = ''
-            }
         }
     }
 }
@@ -121,4 +132,5 @@ label {
     margin-top: 40px;
     padding: 6px;
 }
+
 </style>

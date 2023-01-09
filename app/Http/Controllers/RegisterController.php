@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegUserRequest;
-use App\Models\Users;
+use App\Models\User;
 
 class RegisterController extends Controller
 {
-    public function store(RegUserRequest $request)
+    public function store(RegUserRequest $request, User $user)
     {
-        Users::create([
+        $user::create([
             'email' => $request->email,
             'password' => $request->password,
          ]);

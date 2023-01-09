@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProductImages;
-use App\Models\Products;
-use App\Models\Views;
+use App\Models\View;
 use Illuminate\Http\Request;
 
 class   UserProductsListController extends Controller
@@ -19,26 +17,6 @@ class   UserProductsListController extends Controller
         return view('UsersProducts.layout');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -46,7 +24,7 @@ class   UserProductsListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function show(Request $request, Products $products, ProductImages $images, Views $views)
+    public function show(Request $request, View $views)
     {
         if(!isset($request->get)){
             $currentMin = date('i');
@@ -82,39 +60,5 @@ class   UserProductsListController extends Controller
         }
 
         return $views->where('product_id', $request->prodId)->where('minute', date('i'))->get('views');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

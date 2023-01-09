@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Users;
+
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AddImageRequest extends FormRequest
 {
@@ -25,8 +27,9 @@ class AddImageRequest extends FormRequest
     public function rules()
     {
         return [
-            'email_image' => 'required|exists:users,email|email:rfc,dns',
-            'productId' => 'required|exists:user_product,id'
+            'email_image' => 'required|exists:user_product,email|email:rfc,dns',
+            'productId' => ['required','exists:user_product,id'],
+            'file' => 'required|file'
         ];
     }
 }

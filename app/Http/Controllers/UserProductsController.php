@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProductImages;
-use App\Models\Products;
-use App\Models\Users;
+use App\Http\Requests\EditProductRequest;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserProductsController extends Controller
@@ -14,42 +14,22 @@ class UserProductsController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index(Products $products, Request $request)
+    public function index()
     {
         return view('ProductList/layout');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function show(Request $request, Products $products, Users $users)
+    public function show(Request $request, Product $product, User $user)
     {
-        $user = $users::where('id', $request->id)->get()[0]['email'];
-        return $products::where('email' , $user)->paginate(5);
+        $user = $user::where('id', $request->id)->get()[0]['email'];
+        return $product::with('image')->where('email' , $user)->paginate(5);
     }
 
     /**
@@ -58,9 +38,9 @@ class UserProductsController extends Controller
      * @param  int  $id
      * @return array
      */
-    public function edit(Request $request, Products $products)
+    public function edit(EditProductRequest $request, Product $product)
     {
-        $products->where('id', $request->id)
+        $product->where('id', $request->id)
             ->update([
                 "name" => $request->name,
                 "price" => $request->price,
@@ -69,25 +49,13 @@ class UserProductsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return int
      */
-    public function destroy(Request $request, Products $products)
+    public function destroy(Request $request, Product $product)
     {
-        $products->where('id', $request->id)->delete();
+        $product->where('id', $request->id)->delete();
     }
 }

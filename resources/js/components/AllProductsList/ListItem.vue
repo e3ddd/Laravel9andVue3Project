@@ -1,8 +1,8 @@
 <template>
     <div class="item">
-        <div class="imgs">
+        <div class="imgs" v-if="images.length > 0">
                 <div class="big_img">
-                    <img src="" alt="IMG">
+                    <img src="" alt="MAIN_IMG">
                 </div>
                 <div class="small_imgs" v-for="img in images">
                     <img src="" alt="SMALL_IMG">
@@ -28,7 +28,7 @@
                     :name="name"
                     :price="price"
                     :description="description"
-                    :images="this.images"
+                    :images="images"
                 />
                 <action-btn
                     :method="viewProduct"
@@ -52,7 +52,6 @@ export default {
     data() {
         return {
             show: false,
-            images: [],
             views: 0
         }
     },
@@ -63,28 +62,14 @@ export default {
        name: String,
        price: Number,
        description: String,
+       images: Array
    },
 
     mounted() {
-        this.getImages()
         this.getView()
     },
 
     methods: {
-        async getImages() {
-            const response = await axios.get('/users/products/all_images', {
-                params: {
-                    id: this.id
-                }
-            })
-                .then((response) => {
-                    this.images = response.data
-                })
-                .catch((err) => {
-
-                })
-        },
-
         async getView() {
             const response = await axios.get('users_products/' + this.id, {
                 params: {
@@ -118,6 +103,7 @@ export default {
 
 <style scoped>
  .item {
+     height: 90%;
      border: 2px solid silver;
      box-shadow: 3px 3px 3px lightgray;
      padding: 20px;

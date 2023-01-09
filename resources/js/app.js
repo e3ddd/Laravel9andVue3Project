@@ -21,3 +21,4 @@ createApp(AddProducts).mount("#add-products")
 createApp(ProductList).mount("#product-list")
 createApp(AllProducts).mount("#all-products")
 createApp(ProductsViewStatistic).mount("#product-view-statistic")
+

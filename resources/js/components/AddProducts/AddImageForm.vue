@@ -21,6 +21,9 @@
         <label for="file" >Select image to upload:</label>
         <div class="file__div">
         <input class="file" type="file" name="file" @change="onFileUpload">
+            <error-message
+                :err="this.err"
+            />
         </div>
         <action-btn
             class="btn"
@@ -34,16 +37,19 @@
 <script>
     import ActionBtn from "../UserList/ActionBtn.vue";
     import AddInput from "../MyInput.vue";
+    import ErrorMessage from "../ErrorMessage.vue";
     export default {
         components: {
             ActionBtn,
-            AddInput
+            AddInput,
+            ErrorMessage
         },
         data() {
             return {
                 email: '',
                 id: '',
-                file: null
+                file: null,
+                err: ''
             }
         },
 
@@ -53,30 +59,34 @@
             },
 
            async addProductImage() {
-               try{
-                   const fd = new FormData();
+
+               const fd = new FormData();
                    fd.append('email_image', this.email)
                    fd.append('productId', this.id)
-                   fd.append('file', this.file, this.file.name)
-                   const response = await axios.post('/add_image/', fd,{
+                   try
+                       {
+                        fd.append('file', this.file, this.file.name)
+                       }
+                       catch(e)
+                   {
+                       this.err = 'File required !'
+                   }
+               const response = await axios.post('/add_image/', fd,{
                        headers: {
                            'Content-Type': 'multipart/form-data'
                        }
                    })
-                       .then(function (response) {
-                        console.log(response)
+                       .catch((error) => {
+                           this.err = error.response.data.message
+                           setTimeout(() => {
+                               this.err = ''
+                           }, 3000)
                        })
-                       .catch(function (error) {
-                           console.log(error);
+                       .finally(() => {
+                           if(this.err.length === 0){
+                               alert('Your product image added !')
+                           }
                        })
-               }catch (e){
-
-               }finally {
-                   alert('Your product image added !')
-                   this.name = ''
-                   this.id = ''
-                   this.file = ''
-               }
             }
         }
 }

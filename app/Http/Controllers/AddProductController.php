@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddProductRequest;
-use App\Models\Products;
-use App\Models\Users;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class AddProductController extends Controller
 {
@@ -22,9 +19,9 @@ class AddProductController extends Controller
     }
 
 
-    public function store(AddProductRequest $request, Products $products)
+    public function store(AddProductRequest $request, Product $product)
     {
-            $products::create([
+            $product::create([
                 'email' => $request->email,
                 'name' => $request->name,
                 'price' => $request->price,

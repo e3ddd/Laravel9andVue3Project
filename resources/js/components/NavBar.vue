@@ -19,7 +19,7 @@ export default {
                 {action: '/reg_form', value: 'Registration Form'},
                 {action: '/users', value: 'Admin Panel'},
                 {action: '/add_product', value: 'Add Product'},
-                {action: '/users_products', value: 'Users Products'},
+                {action: '/users_products', value: 'User Product'},
             ],
 
         }

@@ -16,7 +16,7 @@
             <redirect-btn
                 :action="'/users/products_list' "
                 :id="id"
-                :value="'Products'"
+                :value="'Product'"
             />
 
         </div>

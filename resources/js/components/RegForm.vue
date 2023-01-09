@@ -25,9 +25,9 @@
                 id="regInputPassword"
                 placeholder="Enter password"
             >
-            <div class="error" v-if="this.err.length > 0">
-                {{this.err}}
-            </div>
+            <error-message
+                :err="this.err"
+            />
         </div>
         <div class="row-justify-content-center p-3" id="submitButton">
            <button class="btn" @click="registration">Register</button>
@@ -37,7 +37,11 @@
 </template>
 
 <script>
+import ErrorMessage from "./ErrorMessage.vue";
 export default {
+    components: {
+        ErrorMessage
+    },
     data() {
         return {
             err: '',
@@ -49,7 +53,6 @@ export default {
 
     methods: {
         registration() {
-            try {
                 axios.post(this.regUrl, {
                     email: this.email,
                     password: this.password,
@@ -58,16 +61,16 @@ export default {
                         alert('Registration successful !')
                     })
                     .catch((error) => {
-                        this.err = 'Email or password is incorrect !'
-                    });
+                        this.err = error.response.data.message
+                    })
+                    .finally(() => {
+                        this.email = ''
+                        this.password = ''
+                        setTimeout(() => {
+                            this.err = ''
+                        }, 3000)
+                    })
 
-            }finally {
-                this.email = ''
-                this.password = ''
-                setTimeout(() => {
-                    this.err = ''
-                }, 3000)
-            }
         }
     }
 }

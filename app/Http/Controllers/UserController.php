@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Users;
+use App\Http\Requests\EditUserRequest;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -17,38 +19,6 @@ class UserController extends Controller
         return view('AdminPanel/layout');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function show()
-    {
-        return view('AdminPanel/editlayout');
-    }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -56,22 +26,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return true
      */
-    public function edit(Request $request, Users $users)
+    public function edit(EditUserRequest $request, User $user)
     {
-        $users::where('id', $request->id)
+        $user::where('id', $request->id)
             ->update(['email' => $request->email]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
@@ -80,8 +38,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Users $users, Request $request)
+    public function destroy(User $user, Request $request, Product $product)
     {
-        return $users->where('id', $request->id)->delete();
+        $user_email = $user->where('id', $request->id)->get('email')[0]->email;
+
+        $user->where('id', $request->id)->delete();
+        $product->where('email', $user_email)->delete();
     }
 }

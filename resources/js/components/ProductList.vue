@@ -8,6 +8,7 @@
                 :price="item.price"
                 :description="item.description"
                 :del="this.delete"
+                :images="item.image"
             />
         </div>
         <paginator
@@ -48,7 +49,6 @@ export default {
 
         async getProducts(page) {
             const id = window.location.search.split("=")[1]
-            try {
                 const response = await axios.get("/users/products/?page=" + page, {
                     params: {
                         id: id
@@ -58,11 +58,8 @@ export default {
                         this.total = Math.ceil(response.data.total / this.limit)
                         this.list = response.data.data
                         this.user = response.data.data[0]['email']
+                        console.log(response)
                 })
-
-            }catch (e){
-                console.log(e)
-            }
         },
         async delete(id) {
             this.list = this.list.filter((item) => item.id !== id)
@@ -73,9 +70,7 @@ export default {
                         id: id
                     }
                 });
-                console.log(response)
             } catch (error) {
-                console.error(error);
             }
         },
     }
