@@ -1,6 +1,6 @@
 <template>
-    <div class="list">
-        <h1 style="text-align: center; padding: 10px">{{this.user}}'s product list</h1>
+    <div class="col-sm-auto list">
+        <h2 style="text-align: center; padding: 10px">{{this.user}}'s product list</h2>
         <div class="list-item" v-for="item in list">
             <user-products-item
                 :id="item.id"
@@ -57,21 +57,20 @@ export default {
                     .then((response) => {
                         this.total = Math.ceil(response.data.total / this.limit)
                         this.list = response.data.data
-                        this.user = response.data.data[0]['email']
+                        this.user = response.data.data[0].user.email
                         console.log(response)
                 })
+                    .catch((err) => {
+                        console.log(err)
+                    })
         },
         async delete(id) {
             this.list = this.list.filter((item) => item.id !== id)
-            console.log(id)
-            try {
                 const response = await axios.get('/users/products/' + id + '/delete', {
                     params: {
                         id: id
                     }
                 });
-            } catch (error) {
-            }
         },
     }
 }

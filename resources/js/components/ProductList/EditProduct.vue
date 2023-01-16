@@ -3,9 +3,9 @@
         <div @click.stop class="edit_form_item">
             <div class="delete_img" v-if="images.length > 0">
                 <div class="img" v-for="img in images">
-                    <img :src="img.path" alt="img">
+                    <img :src="'/storage/app/public/images/' + img.user_id + '_' + img.product_id + '_' + img.hash_id" alt="img">
                     <action-btn
-                        :id="img.hash"
+                        :id="img.id"
                         :method="this.del"
                     >
                         Delete
@@ -27,7 +27,7 @@
             <div class="description">
             <p style="margin-top: 10px; margin-bottom: -1px;">Edit description:</p>
             <textarea
-            :value="this.requestDescription"
+            v-model="this.requestDescription"
             />
             </div>
 
@@ -82,8 +82,6 @@ export default {
         },
 
         async editProduct() {
-            try {
-                console.log(this.name)
                 const response = await axios.get('/users/products/edit', {
                     params: {
                         id: this.id,
@@ -92,24 +90,21 @@ export default {
                         description: this.requestDescription,
                     }
                 })
-                    .then(function (response) {
-                        console.log(response)
+                    .then((response) => {
                         alert('Your product edited !')
 
                     })
-                    .catch(function (error) {
+                    .catch((error) => {
                         console.log(error);
-                    });
-            }catch (e){
-                console.log(e)
-            }finally {
-                this.show = false
-            }
+                    })
+                    .finally(() => {
+                        this.show = false
+                    })
         },
 
         async del(id) {
             const response = await axios.post('/users/products/delete_img', {
-                    img_hash: id,
+                    id: id,
             })
                 .then((response) => {
                     console.log(response)

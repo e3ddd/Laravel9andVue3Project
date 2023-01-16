@@ -1,36 +1,30 @@
 <template>
-    <div class="inputs">
-        <h4>Add Image</h4>
-        <label for="inputEmail" class="p-1">User</label>
-        <add-input
-            v-model="this.email"
-            :name="'email_image'"
-            :type="'email'"
-            :placeholder="'Enter user e-mail'"
-        />
-
-        <label for="inputProduct" class="p-1">Product ID</label>
-        <add-input
-            v-model="this.id"
-            :name="'productId'"
-            :type="'text'"
-            :placeholder="'Enter product id'"
-        />
-
-
-        <label for="file" >Select image to upload:</label>
-        <div class="file__div">
-        <input class="file" type="file" name="file" @change="onFileUpload">
-            <error-message
-                :err="this.err"
+    <div class="col-md-auto add_images">
+        <div class="inputs">
+            <h4>Add Image</h4>
+            <label for="inputProduct" class="p-1">Product ID</label>
+            <add-input
+                v-model="this.id"
+                :name="'productId'"
+                :type="'text'"
+                :placeholder="'Enter product id'"
             />
+
+
+            <label for="file" >Select image to upload:</label>
+           <div class="file__div">
+            <input class="file" type="file" name="file" @change="onFileUpload">
+               <error-message
+                   :err="this.err"
+               />
+            </div>
+            <action-btn
+                class="btn"
+                :method="addProductImage"
+            >
+                Upload Image
+            </action-btn>
         </div>
-        <action-btn
-            class="btn"
-            :method="addProductImage"
-        >
-            Upload Image
-        </action-btn>
     </div>
 </template>
 
@@ -46,7 +40,6 @@
         },
         data() {
             return {
-                email: '',
                 id: '',
                 file: null,
                 err: ''
@@ -61,7 +54,6 @@
            async addProductImage() {
 
                const fd = new FormData();
-                   fd.append('email_image', this.email)
                    fd.append('productId', this.id)
                    try
                        {
@@ -76,7 +68,11 @@
                            'Content-Type': 'multipart/form-data'
                        }
                    })
-                       .catch((error) => {
+                   .then((response) => {
+
+                   })
+
+                   .catch((error) => {
                            this.err = error.response.data.message
                            setTimeout(() => {
                                this.err = ''
@@ -99,8 +95,6 @@ label {
 }
 
 .inputs {
-    position: relative;
-    width: 30%;
     justify-content: center;
     align-items: center;
     text-align: center;

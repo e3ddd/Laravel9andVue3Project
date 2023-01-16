@@ -9,9 +9,7 @@ class GetUsersController extends Controller
 {
     public function get(Request $request, User $user)
     {
-        if(isset($request->toEdit)){
-            return $user::where('id', $request->toEdit);
-        }
+
         if(!isset($request->search)){
             return $user::paginate(10);
         }else{

@@ -3,14 +3,14 @@ import './bootstrap';
 
 import {createApp} from 'vue'
 
-import Index from './Index.vue'
-import NavBar from "./components/NavBar.vue";
-import RegForm from "./components/RegForm.vue";
-import UserList from "./components/UserList.vue";
-import AddProducts from "./components/AddProducts.vue";
-import ProductList from "./components/ProductList.vue";
-import AllProducts from "./components/AllProducts.vue";
-import ProductsViewStatistic from "./components/ProductsViewStatistic.vue";
+import Index from '@/Index.vue'
+import NavBar from "@/components/NavBar.vue";
+import RegForm from "@/components/RegForm.vue";
+import UserList from "@/components/UserList.vue";
+import AddProducts from "@/components/AddProducts.vue";
+import ProductList from "@/components/ProductList.vue";
+import AllProducts from "@/components/AllProducts.vue";
+import ProductsViewStatistic from "@/components/ProductsViewStatistic.vue";
 
 
 createApp(Index).mount("#index")

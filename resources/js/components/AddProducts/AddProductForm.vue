@@ -1,5 +1,5 @@
 <template>
-    <div class="add_product">
+    <div class="col-md-auto add_product">
         <div class="inputs">
             <h4>Add Product</h4>
             <div class="input">
@@ -86,9 +86,10 @@ export default {
                     description: this.product.description,
                 })
                     .then(function (response) {
-
+                        console.log(response)
                     })
                     .catch((error) => {
+                        console.log(error)
                         this.err = error.response.data.message
                         setTimeout(() => {
                             this.err = ''
@@ -97,10 +98,6 @@ export default {
                     .finally(() => {
                         if(this.err.length === 0){
                             alert('Your product added !')
-                            this.email = ''
-                            this.name = ''
-                            this.price = ''
-                            this.description = ''
                         }
                     })
 
@@ -116,7 +113,6 @@ label {
 }
 
 .inputs {
-    position: relative;
     justify-content: center;
     align-items: center;
     text-align: center;

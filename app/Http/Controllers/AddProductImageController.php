@@ -14,44 +14,25 @@ use Imagick;
 class AddProductImageController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return false|string
-     */
-    public function create(Request $request)
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
      * @return false
      * @throws \ImagickException
      */
-    public function store(AddImageRequest $request, User $user, ProductImage $image, Product $product)
+    public function store(AddImageRequest $request, ProductImage $image, Product $product)
     {
-        if($product::where('id', $request->productId)->get('email')[0]->email == $request->email_image){
-            $userId = $user->where('email',$request->validated()['email_image'])->get('id')->toArray();
+            $prod = $product::find($request->productId);
+            $prodId = $request->productId;
+            $userId = $prod->user->id;
             $file = $request->file;
             $imgHash =  $file->hashName();
-            $storeName = $userId[0]['id'] . "_" . $request->validated()['productId'] . "_" . $imgHash;
+            $storeName = $userId . "_" . $prodId . "_" . $imgHash;
             if($image->where('hash_id', $imgHash)->doesntExist()){
                 $image::create([
                     "hash_id" => $imgHash,
-                    "product_id" => $request->validated()['productId'],
-                    "user_id" => $userId[0]['id'],
+                    "product_id" => $prodId,
+                    "user_id" => $userId,
                 ]);
 
                 if($request->hasFile('file')){
@@ -86,44 +67,8 @@ class AddProductImageController extends Controller
                     }
                 }
             }
-        }else{
-            return throw new ErrorException('The user with this e-mail does not have a product with the entered id');
-        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -133,11 +78,11 @@ class AddProductImageController extends Controller
      */
     public function destroy(Request $request, ProductImage $image)
     {
-        $img = $image::where('hash_id', $request->img_hash)->get()->toArray();
+        $img = $image::find($request->id)->get();
         $path = $img[0]['user_id'] . '_'
             . $img[0]['product_id'] . '_'
             . $img[0]['hash_id'];
-        $delete = $image->where('hash_id', $request->img_hash)->delete();;
+        $delete = $image::find($request->id)->delete();;
         if($delete){
             Storage::delete('public/images/' . "SMALL_" . $path);
             Storage::delete('public/images/' . $path);

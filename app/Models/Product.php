@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    protected $table = "user_product";
+    protected $table = "users_products";
     protected $fillable =
         [
-            'email',
+            'user_id',
             'name',
             'price',
             'description',
@@ -21,4 +21,10 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

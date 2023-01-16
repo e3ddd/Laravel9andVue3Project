@@ -2,12 +2,9 @@
 
 namespace App\Http\Requests;
 
-
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
-class AddImageRequest extends FormRequest
+class EditProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,8 +24,9 @@ class AddImageRequest extends FormRequest
     public function rules()
     {
         return [
-            'productId' => 'required|exists:users_products,id',
-            'file' => 'required|file'
+            'name' => '',
+            'price' => '',
+            'description' => ''
         ];
     }
 }

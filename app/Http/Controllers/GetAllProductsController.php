@@ -9,6 +9,6 @@ class GetAllProductsController extends Controller
 {
     public function get(Product $product)
     {
-        return $product::with('image')->paginate(9);
+        return $product::with('image')->with('user')->paginate(9);
     }
 }

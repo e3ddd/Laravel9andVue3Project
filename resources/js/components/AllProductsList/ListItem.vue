@@ -14,6 +14,7 @@
                 <p>Price: {{price}}</p>
                 <p>Description: {{description}}</p>
             </div>
+        <div class="row">
             <div class="button">
                 <div
                     class="views"
@@ -36,6 +37,7 @@
                     View
                 </action-btn>
             </div>
+        </div>
         </div>
 </template>
 
@@ -103,7 +105,7 @@ export default {
 
 <style scoped>
  .item {
-     height: 90%;
+     height: 95%;
      border: 2px solid silver;
      box-shadow: 3px 3px 3px lightgray;
      padding: 20px;

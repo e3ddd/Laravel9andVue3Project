@@ -28,7 +28,7 @@ class UserController extends Controller
      */
     public function edit(EditUserRequest $request, User $user)
     {
-        $user::where('id', $request->id)
+        $user::find($request->id)
             ->update(['email' => $request->email]);
     }
 
@@ -36,13 +36,10 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function destroy(User $user, Request $request, Product $product)
+    public function destroy(User $user, Request $request)
     {
-        $user_email = $user->where('id', $request->id)->get('email')[0]->email;
-
-        $user->where('id', $request->id)->delete();
-        $product->where('email', $user_email)->delete();
+        $user::find($request->id)->delete();
     }
 }

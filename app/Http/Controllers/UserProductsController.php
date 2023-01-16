@@ -28,19 +28,22 @@ class UserProductsController extends Controller
      */
     public function show(Request $request, Product $product, User $user)
     {
-        $user = $user::where('id', $request->id)->get()[0]['email'];
-        return $product::with('image')->where('email' , $user)->paginate(5);
+
+        return $product::with('image')
+            ->with('user')
+            ->where('user_id' , $request->id)
+            ->paginate(5);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return array
+     * @return EditProductRequest
      */
     public function edit(EditProductRequest $request, Product $product)
     {
-        $product->where('id', $request->id)
+        $product::find($request->id)
             ->update([
                 "name" => $request->name,
                 "price" => $request->price,
@@ -56,6 +59,6 @@ class UserProductsController extends Controller
      */
     public function destroy(Request $request, Product $product)
     {
-        $product->where('id', $request->id)->delete();
+        $product::find($request->id)->delete();
     }
 }

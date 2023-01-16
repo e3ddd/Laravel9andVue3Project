@@ -1,7 +1,9 @@
 <template>
-    <div class="page">
+    <div class="container page">
+        <div class="row">
     <add-product-form/>
     <add-image-form/>
+        </div>
     </div>
 </template>
 

@@ -1,10 +1,10 @@
 <template>
     <div class="row product">
-        <div class="col-1 item">ID: <b>{{id}}</b></div>
-        <div class="col-2 item">Name:  <b>{{name}}</b></div>
-        <div class="col-2 item">Price:  <b>{{price}}</b></div>
-        <div class="col-3 description">Description:  <b>{{description}}</b></div>
-        <div class="col-2 buttons btn-group">
+        <div class="col-sm-auto item">ID: <b>{{id}}</b></div>
+        <div class="col-sm-auto item">Name:  <b>{{name}}</b></div>
+        <div class="col-sm-auto item">Price:  <b>{{price}}</b></div>
+        <div class="col-md-auto description">Description:  <b>{{description}}</b></div>
+        <div class="buttons btn-group">
            <edit-product
                :id="id"
                :name="name"
@@ -45,14 +45,6 @@ export default {
         del: Function,
         images: Array
     },
-
-    mounted() {
-
-    },
-
-    methods: {
-
-    }
 }
 </script>
 
@@ -64,8 +56,7 @@ export default {
 }
 
 .description {
-
-    margin-left: 100px;
+    margin-top: 17px;
 }
 
 .item {
@@ -73,7 +64,8 @@ export default {
 }
 
 .buttons {
-    margin-left: 50px;
+    justify-content: flex-end;
+
     height: 50px;
 }
 </style>

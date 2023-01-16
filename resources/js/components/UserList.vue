@@ -89,15 +89,17 @@ export default {
 
         async delete(id) {
             this.users = this.users.filter((user) => user.id !== id)
-            try {
                 const response = await axios.get('/users/' + id + '/delete', {
                     params: {
                         id: id
                     }
-                });
-            } catch (error) {
-                console.error(error);
-            }
+                })
+                    .then((response) => {
+                        console.log(response);
+                     })
+                    .catch((error) => {
+                        console.error(error);
+                    })
         },
     }
 }

@@ -52,7 +52,6 @@ export default {
         },
 
         async editUser() {
-            try {
                 const response = await axios.get('/users/' + this.id + '/edit', {
                     params: {
                         id: this.id,
@@ -60,18 +59,16 @@ export default {
                     }
                 })
                     .then(function (response) {
-                        console.log(response)
                     alert('Your e-mail edited !')
 
                 })
                     .catch(function (error) {
                         console.log(error);
-                    });
-            }catch (e){
-                console.log(e)
-            }finally {
-                this.show = false
-            }
+                    })
+                    .finally(() => {
+                        this.show = false
+                    })
+
         }
     }
 }

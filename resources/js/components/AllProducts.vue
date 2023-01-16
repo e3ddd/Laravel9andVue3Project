@@ -1,10 +1,10 @@
 <template>
     <div class="container page">
         <div class="row">
-        <div class="col-4 page_item" v-for="item in products">
+        <div class="page_item" :class="{'col-lg': adaptive, 'col-4': non_adaptive}" v-for="item in products">
             <list-item
                 :id="item.id"
-                :email="item.email"
+                :email="item.user.email"
                 :name="item.name"
                 :price="item.price"
                 :description="item.description"
@@ -36,7 +36,14 @@ export default {
             total: 0,
             page: 1,
             products: [],
+            adaptive: false,
+            non_adaptive: true
         }
+    },
+
+    created() {
+        this.onAdaptive()
+        window.addEventListener("resize", this.onAdaptive);
     },
 
     mounted() {
@@ -44,6 +51,16 @@ export default {
         },
 
     methods: {
+        onAdaptive() {
+            if(window.innerWidth < 1200){
+                this.adaptive = true
+                this.non_adaptive = false
+            }else{
+                this.adaptive = false
+                this.non_adaptive = true
+            }
+        },
+
         onUpdate() {
             this.products = []
         },
@@ -53,6 +70,7 @@ export default {
                 .then((response) => {
                     this.total = Math.ceil(response.data.total / this.limit)
                     this.products = response.data.data
+                    console.log(response)
             })
         },
     }
@@ -60,7 +78,5 @@ export default {
 </script>
 
 <style scoped>
-.page_item {
 
-}
 </style>
