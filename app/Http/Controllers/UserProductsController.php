@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EditProductRequest;
-use App\Models\Product;
-use App\Models\User;
 use App\Repositories\ProductRepository;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
@@ -33,7 +31,7 @@ class UserProductsController extends Controller
     {
         $productService = new ProductService(app(ProductRepository::class));
 
-        return $productService->all($request->id)->toArray();
+        return $productService->allUsrProd($request->id)->toArray();
     }
 
     /**

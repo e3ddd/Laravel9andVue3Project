@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EditUserRequest;
 use App\Models\Product;
 use App\Models\User;
-use App\Service\UserService;
+use App\Repositories\UserRepository;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -29,7 +30,7 @@ class UserController extends Controller
      */
     public function edit(EditUserRequest $request)
     {
-        $userService = new UserService();
+        $userService = new UserService(app(UserRepository::class));
 
         $userService->update($request->id, $request->email);
     }
@@ -42,7 +43,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
-        $userService = new UserService();
+        $userService = new UserService(app(UserRepository::class));
 
         $userService->destroy($request->id);
     }

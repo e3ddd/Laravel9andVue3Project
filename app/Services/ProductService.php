@@ -13,9 +13,14 @@ class ProductService
         $this->productRepository = $productRepository;
     }
 
-    public function all($id)
+    public function allUsrProd($id)
     {
-        return $this->productRepository->getAllProducts($id);
+        return $this->productRepository->getAllUserProducts($id);
+    }
+
+    public function all()
+    {
+        return $this->productRepository->getAllProducts();
     }
 
     public function find(int $id)
@@ -23,14 +28,14 @@ class ProductService
         return $this->productRepository->getProduct($id);
     }
 
-    public function create(string $name, int $price, string $description)
+    public function create($userId, string $name, $price, string $description)
     {
-        return $this->productRepository->createProduct($name, $price, $description);
+        return $this->productRepository->createProduct($userId, $name, $price, $description);
     }
 
-    public function update(int $id, string $name, int $price, string $description)
+    public function update(int $productId, string $name, $price, string $description)
     {
-        return $this->productRepository->updateProduct($id, $name, $price, $description);
+        return $this->productRepository->updateProduct($productId, $name, $price, $description);
     }
 
     public function destroy(int $id)

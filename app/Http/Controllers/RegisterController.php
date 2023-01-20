@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegUserRequest;
-use App\Service\UserService;
+use App\Repositories\UserRepository;
+use App\Services\UserService;
 
 
 class RegisterController extends Controller
@@ -11,7 +12,7 @@ class RegisterController extends Controller
 
     public function store(RegUserRequest $request)
     {
-        $userService = new UserService();
+        $userService = new UserService(app(UserRepository::class));
 
         $userService->create($request->email, $request->password);
     }

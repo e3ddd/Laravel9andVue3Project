@@ -6,12 +6,19 @@ use App\Models\Product;
 
 class ProductRepository
 {
-    public function getAllProducts($userId)
+    public function getAllUserProducts($userId)
     {
         return Product::with('image')
             ->with('user')
             ->where('user_id', $userId)
-            ->paginate(5);
+            ->paginate(10);
+    }
+
+    public function getAllProducts()
+    {
+        return Product::with('image')
+            ->with('user')
+            ->paginate(9);
     }
 
     public function getProduct(int $productId): Product
@@ -19,10 +26,13 @@ class ProductRepository
         return Product::find($productId);
     }
 
-    public function createProduct(string $name, int $price, string $description): Product
+    public function createProduct($userId, $name, $price, $description): Product
     {
-       $product = collect(['name', 'price', 'description']);
-       return Product::create($product->combine([$name, $price, $description])->toArray());
+       return Product::create([
+           "user_id" => $userId,
+           "name" => $name,
+           "price" => $price,
+           "description" => $description]);
     }
 
     public function destroyProduct(int $productId): bool
@@ -30,10 +40,9 @@ class ProductRepository
         return Product::destroy($productId);
     }
 
-    public function updateProduct(int $productId, string $name, int $price, string $description)
+    public function updateProduct(int $productId, $name, $price, $description)
     {
-        $newData = collect(['name', 'price', 'description']);
 
-        return Product::find($productId)->update($newData->combine([$name, $price, $description])->toArray());
+        return Product::find($productId)->update([$name, $price, $description]);
     }
 }

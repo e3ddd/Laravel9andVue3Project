@@ -82,7 +82,7 @@ export default {
                 const response = await axios.post('/add_product/', {
                     email: this.product.email,
                     name: this.product.name,
-                    price: this.product.price,
+                    price: +this.product.price,
                     description: this.product.description,
                 })
                     .then((response) => {
