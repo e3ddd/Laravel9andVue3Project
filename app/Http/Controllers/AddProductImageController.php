@@ -20,18 +20,17 @@ class AddProductImageController extends Controller
      * @return false
      * @throws \ImagickException
      */
-    public function store(AddImageRequest $request, ProductImage $image, Product $product)
+    public function store(AddImageRequest $request)
     {
-            $prod = $product::find($request->productId);
-            $prodId = $request->productId;
+            $prod = Product::find($request->productId);
             $userId = $prod->user->id;
             $file = $request->file;
             $imgHash =  $file->hashName();
-            $storeName = $userId . "_" . $prodId . "_" . $imgHash;
-            if($image->where('hash_id', $imgHash)->doesntExist()){
-                $image::create([
+            $storeName = $userId . "_" . $prod->id . "_" . $imgHash;
+            if(ProductImage::where('hash_id', $imgHash)->doesntExist()){
+                ProductImage::create([
                     "hash_id" => $imgHash,
-                    "product_id" => $prodId,
+                    "product_id" => $prod->id,
                     "user_id" => $userId,
                 ]);
 
@@ -76,13 +75,13 @@ class AddProductImageController extends Controller
      * @param  int  $id
      * @return string
      */
-    public function destroy(Request $request, ProductImage $image)
+    public function destroy(Request $request)
     {
-        $img = $image::find($request->id)->get();
+        $img = ProductImage::find($request->id)->get();
         $path = $img[0]['user_id'] . '_'
             . $img[0]['product_id'] . '_'
             . $img[0]['hash_id'];
-        $delete = $image::find($request->id)->delete();;
+        $delete = ProductImage::find($request->id)->delete();;
         if($delete){
             Storage::delete('public/images/' . "SMALL_" . $path);
             Storage::delete('public/images/' . $path);

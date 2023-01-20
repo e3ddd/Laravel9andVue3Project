@@ -3,7 +3,7 @@
         <div @click.stop class="edit_form_item">
             <div class="delete_img" v-if="images.length > 0">
                 <div class="img" v-for="img in images">
-                    <img :src="'/storage/app/public/images/' + img.user_id + '_' + img.product_id + '_' + img.hash_id" alt="img">
+                    <img :src="'/storage/images/' + 'SMALL_' + img.user_id + '_' + img.product_id + '_' + img.hash_id" alt="img">
                     <action-btn
                         :id="img.id"
                         :method="this.del"

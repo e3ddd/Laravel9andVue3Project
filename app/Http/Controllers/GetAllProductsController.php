@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 class GetAllProductsController extends Controller
 {
-    public function get(Product $product)
+    public function get()
     {
-        return $product::with('image')->with('user')->paginate(9);
+        return Product::with('image')->with('user')->paginate(9);
     }
 }

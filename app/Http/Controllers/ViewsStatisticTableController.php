@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class ViewsStatisticTableController extends Controller
 {
-    public function index(View $views, Request $request)
+    public function index(Request $request)
     {
         if(isset($request->get)){
-            $viewsAmount = $views::where('product_id', $request->user)->select(DB::raw('SUM(views) as sum'), 'hour', 'date')->groupByRaw('hour')->groupByRaw('date')->get('sum')->toArray();
+            $viewsAmount = View::where('product_id', $request->user)->select(DB::raw('SUM(views) as sum'), 'hour', 'date')->groupByRaw('hour')->groupByRaw('date')->get('sum')->toArray();
             $data = [];
             foreach ($viewsAmount as $item) {
                 if (!isset($data[$item['date']])) {

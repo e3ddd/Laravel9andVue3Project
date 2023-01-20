@@ -85,7 +85,7 @@ export default {
                     price: this.product.price,
                     description: this.product.description,
                 })
-                    .then(function (response) {
+                    .then((response) => {
                         console.log(response)
                     })
                     .catch((error) => {
@@ -113,6 +113,7 @@ label {
 }
 
 .inputs {
+    height: 100%;
     justify-content: center;
     align-items: center;
     text-align: center;

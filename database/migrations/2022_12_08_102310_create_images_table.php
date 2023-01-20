@@ -18,13 +18,13 @@ return new class extends Migration
             $table->string('hash_id')->unique();
             $table->string('user_id');
             $table->timestamps();
-        });
 
-        Schema::table('images', function (Blueprint $table) {
             $table->foreignId('product_id')
                 ->constrained('users_products')
-                ->onDelete('cascade');
+                ->onDelete('restrict')
+                ->onUpdate('cascade');
         });
+
     }
 
     /**

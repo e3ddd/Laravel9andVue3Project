@@ -2,10 +2,10 @@
     <div class="item">
         <div class="imgs" v-if="images.length > 0">
                 <div class="big_img">
-                    <img src="" alt="MAIN_IMG">
+                    <img :src="'storage/images/' + images[0].user_id + '_' + images[0].product_id + '_' + images[0].hash_id" alt="MAIN_IMG">
                 </div>
                 <div class="small_imgs" v-for="img in images">
-                    <img src="" alt="SMALL_IMG">
+                    <img :src="'storage/images/' + 'SMALL_' + img.user_id + '_' + img.product_id + '_' + img.hash_id" alt="SMALL_IMG">
                 </div>
             </div>
             <div class="about">
@@ -110,11 +110,6 @@ export default {
      box-shadow: 3px 3px 3px lightgray;
      padding: 20px;
      margin: 30px;
- }
-
- .imgs {
-     display: flex;
-     justify-content: center;
  }
 
  .button {

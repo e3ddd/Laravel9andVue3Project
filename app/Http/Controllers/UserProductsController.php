@@ -26,10 +26,10 @@ class UserProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function show(Request $request, Product $product, User $user)
+    public function show(Request $request)
     {
 
-        return $product::with('image')
+        return Product::with('image')
             ->with('user')
             ->where('user_id' , $request->id)
             ->paginate(5);
@@ -41,9 +41,9 @@ class UserProductsController extends Controller
      * @param  int  $id
      * @return EditProductRequest
      */
-    public function edit(EditProductRequest $request, Product $product)
+    public function edit(EditProductRequest $request)
     {
-        $product::find($request->id)
+        Product::find($request->id)
             ->update([
                 "name" => $request->name,
                 "price" => $request->price,
@@ -57,8 +57,8 @@ class UserProductsController extends Controller
      * @param  int  $id
      * @return int
      */
-    public function destroy(Request $request, Product $product)
+    public function destroy(Request $request)
     {
-        $product::find($request->id)->delete();
+        Product::find($request->id)->delete();
     }
 }

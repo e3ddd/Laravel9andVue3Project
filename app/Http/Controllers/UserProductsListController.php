@@ -24,12 +24,12 @@ class   UserProductsListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function show(Request $request, View $views)
+    public function show(Request $request,)
     {
         if(!isset($request->get)){
             $currentMin = date('i');
-            if($views->where('product_id', $request->prodId)->doesntExist()) {
-                $views::create([
+            if(View::where('product_id', $request->prodId)->doesntExist()) {
+                View::create([
                     'product_id' => $request->prodId,
                     'views' => 1,
                     'date' => date('Y-m-d'),
@@ -37,18 +37,18 @@ class   UserProductsListController extends Controller
                     'minute' => date('i'),
                 ]);
             }else{
-                $viewProductDate = $views::where('product_id', $request->prodId)->where('minute', $currentMin)->get('minute');
+                $viewProductDate = View::where('product_id', $request->prodId)->where('minute', $currentMin)->get('minute');
                 if(!empty($viewProductDate->toArray())){
                     if($currentMin == $viewProductDate->toArray()[0]['minute']){
-                        $viewCount = $views::where('product_id', $request->prodId)->where('minute', $currentMin)->get('views');
+                        $viewCount = View::where('product_id', $request->prodId)->where('minute', $currentMin)->get('views');
                         $count = $viewCount->toArray()[0]['views'];
                         $count++;
-                        $views::where('product_id', $request->prodId)->where('minute', $currentMin)->update([
+                        View::where('product_id', $request->prodId)->where('minute', $currentMin)->update([
                             'views' => $count
                         ]);
                     }
                 }else{
-                    $views::create([
+                    View::create([
                         'product_id' => $request->prodId,
                         'views' => 1,
                         'date' => date('Y-m-d'),
@@ -59,6 +59,6 @@ class   UserProductsListController extends Controller
             }
         }
 
-        return $views->where('product_id', $request->prodId)->where('minute', date('i'))->get('views');
+        return View::where('product_id', $request->prodId)->where('minute', date('i'))->get('views');
     }
 }

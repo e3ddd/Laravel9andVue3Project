@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 
 class GetUsersController extends Controller
 {
-    public function get(Request $request, User $user)
+    public function get(Request $request)
     {
 
         if(!isset($request->search)){
-            return $user::paginate(10);
+            return User::paginate(10);
         }else{
-            return $user::where('email', 'like', $request->search . '%')->paginate(10);
+            return User::where('email', 'like', $request->search . '%')->paginate(10);
         }
     }
 

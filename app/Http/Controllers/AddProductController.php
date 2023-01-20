@@ -15,11 +15,11 @@ class AddProductController extends Controller
     }
 
 
-    public function store(AddProductRequest $request, Product $product, User $user)
+    public function store(AddProductRequest $request)
     {
-        $user_id = $user::where('email', $request->email)->get()[0]->id;
-            $product::create([
-                'user_id' => $user_id,
+        $user_id = User::where('email', $request->email)->first('id');
+        Product::create([
+                'user_id' => $user_id->id,
                 'name' => $request->name,
                 'price' => $request->price,
                 'description' => $request->description,

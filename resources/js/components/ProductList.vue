@@ -65,12 +65,17 @@ export default {
                     })
         },
         async delete(id) {
-            this.list = this.list.filter((item) => item.id !== id)
                 const response = await axios.get('/users/products/' + id + '/delete', {
                     params: {
                         id: id
                     }
-                });
+                })
+                    .then(() => {
+                        this.list = this.list.filter((item) => item.id !== id)
+                    })
+                    .catch(() => {
+                        alert("You cannot delete a product witch has images !");
+                    });
         },
     }
 }

@@ -88,7 +88,6 @@ export default {
 
 
         async delete(id) {
-            this.users = this.users.filter((user) => user.id !== id)
                 const response = await axios.get('/users/' + id + '/delete', {
                     params: {
                         id: id
@@ -96,10 +95,12 @@ export default {
                 })
                     .then((response) => {
                         console.log(response);
+                        this.users = this.users.filter((user) => user.id !== id)
                      })
                     .catch((error) => {
-                        console.error(error);
+                        alert("You cannot delete a user who has products !");
                     })
+
         },
     }
 }

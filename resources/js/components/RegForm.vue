@@ -59,6 +59,7 @@ export default {
                 })
                     .then(function (response) {
                         alert('Registration successful !')
+                        console.log(response)
                     })
                     .catch((error) => {
                         this.err = error.response.data.message

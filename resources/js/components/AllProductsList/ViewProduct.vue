@@ -3,10 +3,10 @@
         <div @click.stop class="view_item">
             <div class="imgs">
                 <div class="big_img">
-                    <img src="" alt="IMG">
+                    <img :src="'storage/images/' + images[0].user_id + '_' + images[0].product_id + '_' + images[0].hash_id" alt="MAIN_IMG">
                 </div>
                 <div class="small_imgs" v-for="img in images">
-                    <img src="" alt="SMALL_IMG">
+                    <img :src="'storage/images/' + 'SMALL_' + img.user_id + '_' + img.product_id + '_' + img.hash_id" alt="SMALL_IMG">
                 </div>
             </div>
             <div class="about">
@@ -68,4 +68,5 @@ export default {
     background: white;
     border-radius: 12px;
 }
+
 </style>

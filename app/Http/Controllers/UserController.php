@@ -26,9 +26,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return true
      */
-    public function edit(EditUserRequest $request, User $user)
+    public function edit(EditUserRequest $request)
     {
-        $user::find($request->id)
+        User::find($request->id)
             ->update(['email' => $request->email]);
     }
 
@@ -38,8 +38,8 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function destroy(User $user, Request $request)
+    public function destroy(Request $request)
     {
-        $user::find($request->id)->delete();
+        User::destroy($request->id);
     }
 }

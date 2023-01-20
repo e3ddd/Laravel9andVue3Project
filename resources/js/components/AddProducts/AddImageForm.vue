@@ -2,7 +2,7 @@
     <div class="col-md-auto add_images">
         <div class="inputs">
             <h4>Add Image</h4>
-            <label for="inputProduct" class="p-1">Product ID</label>
+            <label>Product ID</label>
             <add-input
                 v-model="this.id"
                 :name="'productId'"
@@ -94,7 +94,12 @@ label {
     margin-top: 10px;
 }
 
+.add_images {
+    margin-top: 50px;
+}
+
 .inputs {
+    height: 100%;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -107,7 +112,6 @@ label {
 
 .file {
     margin-top: 5px;
-
     padding: 10px;
 }
 
@@ -116,6 +120,7 @@ label {
 }
 
 .btn {
+    margin-top: 28%;
     padding: 6px;
     width: 50%;
 }
