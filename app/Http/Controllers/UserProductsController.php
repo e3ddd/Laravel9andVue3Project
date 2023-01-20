@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EditProductRequest;
 use App\Models\Product;
 use App\Models\User;
+use App\Repositories\ProductRepository;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class UserProductsController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -24,15 +27,13 @@ class UserProductsController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return array
      */
     public function show(Request $request)
     {
+        $productService = new ProductService(app(ProductRepository::class));
 
-        return Product::with('image')
-            ->with('user')
-            ->where('user_id' , $request->id)
-            ->paginate(5);
+        return $productService->all($request->id)->toArray();
     }
 
     /**
@@ -43,12 +44,14 @@ class UserProductsController extends Controller
      */
     public function edit(EditProductRequest $request)
     {
-        Product::find($request->id)
-            ->update([
-                "name" => $request->name,
-                "price" => $request->price,
-                "description" => $request->description,
-            ]);
+        $productService = new ProductService(app(ProductRepository::class));
+
+        return $productService->update(
+            $request->id,
+            $request->name,
+            $request->price,
+            $request->des
+        );
     }
 
     /**
@@ -59,6 +62,8 @@ class UserProductsController extends Controller
      */
     public function destroy(Request $request)
     {
-        Product::find($request->id)->delete();
+        $productService = new ProductService(app(ProductRepository::class));
+
+        return $productService->destroy($request->id);
     }
 }

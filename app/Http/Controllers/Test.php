@@ -3,11 +3,7 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Product;
-use App\Models\User;
-use App\Models\View;
-use App\Repositories\Service\UserService;
-
+use App\Service\UserService;
 
 
 class Test extends Controller

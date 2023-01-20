@@ -63,6 +63,7 @@ export default {
                     })
                     .catch((error) => {
                         this.err = error.response.data.message
+                        console.log(error)
                     })
                     .finally(() => {
                         this.email = ''
