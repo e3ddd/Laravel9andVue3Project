@@ -13,9 +13,9 @@ class ProductService
         $this->productRepository = $productRepository;
     }
 
-    public function allUsrProd($id)
+    public function allUsrProd($userId)
     {
-        return $this->productRepository->getAllUserProducts($id);
+        return $this->productRepository->getAllUserProducts($userId);
     }
 
     public function all()
@@ -23,24 +23,29 @@ class ProductService
         return $this->productRepository->getAllProducts();
     }
 
-    public function find(int $id)
+    public function find($productId)
     {
-        return $this->productRepository->getProduct($id);
+        return $this->productRepository->getProduct($productId);
     }
 
-    public function create($userId, string $name, $price, string $description)
+    public function create($userId, $name, $price, $description)
     {
         return $this->productRepository->createProduct($userId, $name, $price, $description);
     }
 
-    public function update(int $productId, string $name, $price, string $description)
+    public function update($productId, $name, $price, $description)
     {
         return $this->productRepository->updateProduct($productId, $name, $price, $description);
     }
 
-    public function destroy(int $id)
+    public function destroy($productId)
     {
-        return $this->productRepository->destroyProduct($id);
+        return $this->productRepository->destroyProduct($productId);
+    }
+
+    public function getUserId($userEmail)
+    {
+        return $this->productRepository->getUserIdByEmail($userEmail);
     }
 }
 

@@ -16,25 +16,25 @@ class UserRepository
         return User::find($userId);
     }
 
-    public function createUser(string $email, string $password)
+    public function createUser($userEmail, $userPassword)
     {
         return User::create([
-            'email' => $email,
-            'password' => $password
+            'email' => $userEmail,
+            'password' => $userPassword
         ]);
     }
 
-    public function updateUser(int $userId, string $email)
+    public function updateUser($userId, $userEmail)
     {
-        return User::find($userId)->update('email', $email);
+        return User::find($userId)->update('email', $userEmail);
     }
 
-    public function destroyUser(int $userId)
+    public function destroyUser($userId)
     {
         return User::destroy($userId);
     }
 
-    public function searchUser(string $search)
+    public function searchUser($search)
     {
         return User::where('email', 'like', $search . '%')->paginate(10);
     }

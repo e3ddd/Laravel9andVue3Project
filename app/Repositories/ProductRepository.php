@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Product;
+use App\Models\User;
 
 class ProductRepository
 {
@@ -21,11 +22,15 @@ class ProductRepository
             ->paginate(9);
     }
 
-    public function getProduct(int $productId): Product
+    public function getProduct($productId): Product
     {
         return Product::find($productId);
     }
 
+    public function getUserIdByEmail($userEmail)
+    {
+        return User::where('email', $userEmail)->first('id');
+    }
     public function createProduct($userId, $name, $price, $description): Product
     {
        return Product::create([
@@ -35,12 +40,12 @@ class ProductRepository
            "description" => $description]);
     }
 
-    public function destroyProduct(int $productId): bool
+    public function destroyProduct($productId): bool
     {
         return Product::destroy($productId);
     }
 
-    public function updateProduct(int $productId, $name, $price, $description)
+    public function updateProduct($productId, $name, $price, $description)
     {
 
         return Product::find($productId)->update([$name, $price, $description]);

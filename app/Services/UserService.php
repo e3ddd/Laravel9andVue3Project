@@ -18,24 +18,24 @@ class UserService
         return $this->userRepository->getAllUsers();
     }
 
-    public function find(int $id)
+    public function find($userId)
     {
-        return $this->userRepository->getUser($id);
+        return $this->userRepository->getUser($userId);
     }
 
-    public function create(string $email, string $password)
+    public function create($userEmail, $userPassword)
     {
-        return $this->userRepository->createUSer($email, $password);
+        return $this->userRepository->createUSer($userEmail, $userPassword);
     }
 
-    public function update(int $id, string $email)
+    public function update($userId, $userEmail)
     {
-        return $this->userRepository->updateUser($id, $email);
+        return $this->userRepository->updateUser($userId, $userEmail);
     }
 
-    public function destroy(int $id)
+    public function destroy($userId)
     {
-        return $this->userRepository->destroyUser($id);
+        return $this->userRepository->destroyUser($userId);
     }
 
     public function search(string $search)

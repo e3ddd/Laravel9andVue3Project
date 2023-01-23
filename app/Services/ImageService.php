@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Product;
 use App\Repositories\ImageRepository;
 
 class ImageService
@@ -23,9 +24,15 @@ class ImageService
         return $this->imageRepository->getProductImage($productId);
     }
 
-    public function store($imgHash, $productId, $userId)
+    public function store($productId, $file)
     {
-        return $this->imageRepository->createProductImage($imgHash, $productId, $userId);
+        $prod = Product::find($productId);
+        $userId = $prod->user->id;
+        $imgHash =  $file->hashName();
+        $storeName = $userId . "_" . $prod->id . "_" . $imgHash;
+        $this->imageRepository->createProductImage($imgHash, $productId, $userId);
+
+        return $storeName;
     }
 
     public function saveImg($file, $storeName)
@@ -38,8 +45,8 @@ class ImageService
         return $this->imageRepository->destroyImage($imageId);
     }
 
-    public function deleteFromStorage($id)
+    public function deleteFromStorage($imageId)
     {
-        $this->imageRepository->deleteImageFromStorage($id);
+        $this->imageRepository->deleteImageFromStorage($imageId);
     }
 }

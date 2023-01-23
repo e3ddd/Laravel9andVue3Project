@@ -7,24 +7,12 @@ use Illuminate\Http\Request;
 
 class   UserProductsListController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
     public function index()
     {
         return view('UsersProducts.layout');
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function show(Request $request,)
+    public function show(Request $request)
     {
         if(!isset($request->get)){
             $currentMin = date('i');
