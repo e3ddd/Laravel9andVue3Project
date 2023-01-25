@@ -3,23 +3,17 @@
 namespace App\Http\Controllers;
 
 
-use App\Service\UserService;
-
+use App\Services\ProductService;
+use Illuminate\Support\Facades\Auth;
 
 class Test extends Controller
 {
-    private UserService $user;
 
-    public function __construct(UserService $user)
-    {
-        $this->user = $user;
-    }
     public function index()
     {
-        $this->user->createUser([
-            'email' => 'example@gmail.com',
-            'password' => '213sdadsa'
-        ]);
+        $productService = app(ProductService::class);
+
+        return $productService->allUsrProd(2)->toArray();
     }
 
 }

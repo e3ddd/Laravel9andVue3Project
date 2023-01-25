@@ -3,6 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository
 {
@@ -18,10 +21,19 @@ class UserRepository
 
     public function createUser($userEmail, $userPassword)
     {
-        return User::create([
+        if(Auth::check()){
+            return redirect(route('home'));
+        }
+
+       $user = User::create([
             'email' => $userEmail,
-            'password' => $userPassword
+            'password' => Hash::make($userPassword)
         ]);
+
+       if($user) {
+           Auth::login($user);
+           return redirect(route('home'));
+       }
     }
 
     public function updateUser($userId, $userEmail)

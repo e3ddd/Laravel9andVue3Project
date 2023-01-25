@@ -34,7 +34,7 @@ export default {
             user: '',
             list: [],
             total: 1,
-            limit: 5,
+            limit: 10,
         }
     },
 
@@ -58,7 +58,6 @@ export default {
                         this.total = Math.ceil(response.data.total / this.limit)
                         this.list = response.data.data
                         this.user = response.data.data[0].user.email
-                        console.log(response)
                 })
                     .catch((err) => {
                         console.log(err)

@@ -10,7 +10,6 @@ class AddProductImageController extends Controller
 {
     public function store(AddImageRequest $request)
     {
-
          $imageService = app(ImageService::class);
          $storeName = $imageService->store($request->productId, $request->file);
 

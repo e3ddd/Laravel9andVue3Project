@@ -11,10 +11,13 @@ class IndexRoutesController extends Controller
     }
 
     public function registration() {
-        return view('Registration/item');
+        return view('Registration.item');
     }
 
     public function userProducts() {
         return view('usersProducts');
+    }
+    public function login() {
+        return view('Login.item');
     }
 }

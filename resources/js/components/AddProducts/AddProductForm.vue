@@ -3,16 +3,6 @@
         <div class="inputs">
             <h4>Add Product</h4>
             <div class="input">
-                <label>User</label>
-            <add-input
-                v-model="this.product.email"
-                :name="'name'"
-                :type="'email'"
-                :placeholder="'Enter user e-mail'"
-            />
-            </div>
-
-            <div class="input">
                 <label>Product</label>
             <add-input
                 v-model="this.product.name"
@@ -77,7 +67,18 @@ export default {
         }
     },
 
+    created() {
+      this.getUser()
+    },
+
     methods: {
+        async getUser(){
+            const response = axios.post('/get_user')
+                .then((response) => {
+                    this.product.email = response.data.email
+                })
+        },
+
         async addProduct() {
                 const response = await axios.post('/add_product/', {
                     email: this.product.email,

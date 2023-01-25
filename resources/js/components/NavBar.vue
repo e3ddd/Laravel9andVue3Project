@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid p-0 index__btns">
         <div class="col">
-            <a href="/"><img src="../logo.png" alt="Logo"></a>
+            <a href="/home"><img src="../logo.png" alt="Logo"></a>
         </div>
         <div class="burgerMenu" v-if="showMenu">
             <div class="burger__link" v-for="link in buttons">
@@ -15,11 +15,20 @@
                 <span class="row burger__item"></span>
             </div>
         </div>
-        <div class="col-sm-auto p-2 index__btn" v-for="button in buttons" v-if="show == false">
-            <form :action="button.action" method="GET">
-                <input class="btn" type="submit" name="action" :value="button.value">
-            </form>
+        <div class="col-2 userEmail">
+            <div>
+                {{this.userEmail}}
+                   <span @click="this.showSelectMenuFunc">&#9660;</span>
+                <ul class="selectMenu" v-if="this.showSelectMenu == true">
+                    <li><a href="/personal_account">Personal Account</a></li>
+                    <li><a href="/users_products">All Products List</a></li>
+                    <li><a href="/add_product">Add Product</a></li>
+                    <li><a href="/logout">Log Out</a></li>
+                </ul>
+
+            </div>
         </div>
+
     </div>
 </template>
 
@@ -27,22 +36,30 @@
 export default {
     data() {
         return {
-            buttons: [
-                {action: '/reg_form', value: 'Registration Form'},
-                {action: '/users', value: 'Admin Panel'},
-                {action: '/add_product', value: 'Add Product'},
-                {action: '/users_products', value: 'User Product'},
-            ],
             show: false,
             showMenu: false,
+            showSelectMenu: false,
+            userEmail: '',
         }
     },
     created() {
+        this.getUser()
         this.showBurger()
         window.addEventListener("resize", this.showBurger);
     },
 
     methods: {
+        async getUser(){
+            const response = axios.post('/get_user')
+                .then((response) => {
+                    this.userEmail = response.data.email
+                })
+        },
+
+        showSelectMenuFunc() {
+            this.showSelectMenu = !this.showSelectMenu;
+        },
+
         showBurger() {
             this.show = window.innerWidth < 920
             this.showMenu = false
@@ -56,6 +73,37 @@ export default {
 </script>
 
 <style scoped>
+
+.selectMenu {
+    text-align: right;
+    list-style: none;
+    background: #f8f7f7;
+    border-radius: 10px;
+    margin-top: 35px;
+    position: relative;
+}
+
+.selectMenu a{
+    color: #df4949;
+}
+
+.selectMenu a:hover {
+    color: #661515;
+    transition: 0.5s;
+}
+
+.userEmail span:hover {
+    cursor: pointer;
+}
+
+.userEmail {
+    margin-right: 20px;
+    text-align: right;
+    margin-top: 30px;
+    font-size: 20px;
+    color: #df4949;
+
+}
 
 a {
     text-decoration: none;

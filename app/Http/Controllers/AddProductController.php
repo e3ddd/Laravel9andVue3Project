@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddProductRequest;
-use App\Models\User;
 use App\Services\ProductService;
 
 

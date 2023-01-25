@@ -1,6 +1,6 @@
 <template>
     <div class="form">
-    <form action="/reg_form/registration" id="reg_form" method="POST" @submit.prevent>
+    <form id="reg_form">
         <div class="col">
             <h4>Registration Form</h4>
         </div>
@@ -11,7 +11,7 @@
                 type="email"
                 name="email"
                 class="form-control input-sm"
-                id="regInputEmail"
+                id="logInputEmail"
                 placeholder="Enter email"
             >
         </div>
@@ -22,12 +22,15 @@
                 type="password"
                 name="password"
                 class="form-control input-sm"
-                id="regInputPassword"
+                id="logInputPassword"
                 placeholder="Enter password"
             >
             <error-message
                 :err="this.err"
             />
+        </div>
+        <div class="logLink">
+        <a href="/login">Do you have account ?</a>
         </div>
         <div class="row-justify-content-center p-3" id="submitButton">
            <button class="btn" @click="registration">Register</button>
@@ -79,6 +82,15 @@ export default {
 </script>
 
 <style scoped>
+
+.logLink {
+    margin-top: 10px;
+}
+
+.logLink a{
+    color: #ff3838;
+}
+
 .form {
     border: 1px solid lightgray;
     box-shadow: 2px 2px 2px gray;
@@ -97,12 +109,4 @@ export default {
     background: #661515;
     transition: 0.4s;
 }
-
-.error {
-    box-shadow: 2px 2px 2px grey;
-    border: 2px solid red;
-    background: #df4949;
-    color: white;
-}
-
 </style>

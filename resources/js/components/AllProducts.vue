@@ -33,7 +33,7 @@ export default {
     data() {
         return {
             limit: 9,
-            total: 0,
+            total: 1,
             page: 1,
             products: [],
             adaptive: false,
@@ -47,7 +47,7 @@ export default {
     },
 
     mounted() {
-        this.getProducts()
+        this.getProducts(this.page)
         },
 
     methods: {
@@ -65,12 +65,11 @@ export default {
             this.products = []
         },
 
-        async getProducts() {
-            const response = await axios.get('/products_list?page=' + this.page)
+        async getProducts(page) {
+            const response = await axios.get('/products_list?page=' + page)
                 .then((response) => {
                     this.total = Math.ceil(response.data.total / this.limit)
                     this.products = response.data.data
-                    console.log(response)
             })
         },
     }
