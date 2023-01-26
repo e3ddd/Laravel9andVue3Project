@@ -1,7 +1,6 @@
 <template>
-    <div class="col-sm-auto list">
-        <h2 style="text-align: center; padding: 10px">{{this.user}}'s product list</h2>
-        <div class="list-item" v-for="item in list">
+    <div class="row list">
+        <div class="col-sm list-item" v-for="item in list">
             <user-products-item
                 :id="item.id"
                 :name="item.name"
@@ -28,41 +27,22 @@ export default {
         UserProductsItem
     },
 
+
     data() {
         return {
-            user: '',
             list: [],
             total: 1,
             limit: 10,
-            userId: '',
         }
     },
-
-
     mounted() {
-        this.getUser()
         this.getProducts(this.page)
     },
 
     methods: {
-        async getUser(){
-            const response = axios.post('/get_user')
-                .then((response) => {
-                    console.log(response)
-                    this.userId = response.data.id
-                    this.user = response.data.email
-                })
-        },
-
-
 
         async getProducts(page) {
-            console.log(this.userId)
-            const response = await axios.get("/users/products?page=" + page, {
-                params: {
-                    id: this.userId
-                }
-            })
+            const response = await axios.get("/users/products?page=" + page)
                 .then((response) => {
                     this.total = Math.ceil(response.data.total / this.limit)
                     this.list = response.data.data

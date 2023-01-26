@@ -4,14 +4,15 @@ namespace App\Repositories;
 
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ProductRepository
 {
-    public function getAllUserProducts($userId)
+    public function getAllUserProducts()
     {
         return Product::with('image')
             ->with('user')
-            ->where('user_id', $userId)
+            ->where('user_id', Auth::user()->id)
             ->paginate(10);
     }
 

@@ -1,10 +1,10 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm">
+            <div class="col-4">
                 <personal-data/>
             </div>
-            <div class="col-lg">
+            <div class="col-8">
                 <personal-products/>
             </div>
         </div>

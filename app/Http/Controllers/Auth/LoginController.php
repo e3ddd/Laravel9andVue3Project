@@ -14,6 +14,8 @@ class LoginController extends Controller
 
         if($loginService->auth($request->email, $request->password)){
             $request->session()->regenerate();
+
+
             return redirect()->intended('home');
         }
 

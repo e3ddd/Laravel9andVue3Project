@@ -31,7 +31,7 @@ Route::get('/test', [\App\Http\Controllers\Test::class, 'index']);
 Route::get('/home', [IndexRoutesController::class, 'index'])->middleware('auth')->name('home');
 Route::get('/', [IndexRoutesController::class, 'registration']);
 Route::get('/login', [IndexRoutesController::class, 'login'])->name('login');
-Route::get('/users_products', [IndexRoutesController::class, 'userProducts']);
+Route::get('/users_products', [IndexRoutesController::class, 'userProducts'])->middleware('auth');
 
 Route::post('/reg_form/registration', [RegisterController::class, "store"]);
 

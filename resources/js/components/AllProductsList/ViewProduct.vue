@@ -1,7 +1,7 @@
 <template>
     <div class="view">
         <div @click.stop class="view_item">
-            <div class="imgs">
+            <div class="imgs" v-if="images.length !== 0">
                 <div class="big_img">
                     <img :src="'storage/images/' + images[0].user_id + '_' + images[0].product_id + '_' + images[0].hash_id" alt="MAIN_IMG">
                 </div>
