@@ -1,8 +1,12 @@
 <template>
     <div class="container page">
         <div class="row">
-    <add-product-form/>
-    <add-image-form/>
+            <div class="col">
+                <add-product-form/>
+            </div>
+            <div class="col">
+                <add-image-form/>
+            </div>
         </div>
     </div>
 </template>

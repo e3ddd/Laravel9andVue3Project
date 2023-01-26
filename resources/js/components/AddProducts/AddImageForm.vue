@@ -69,14 +69,14 @@
                        }
                    })
                    .then((response) => {
-
+                        console.log(response)
                    })
 
                    .catch((error) => {
-                           this.err = error.response.data.message
-                           setTimeout(() => {
-                               this.err = ''
-                           }, 3000)
+                       this.err = error.response.data.message
+                       setTimeout(() => {
+                           this.err = ''
+                       }, 3000)
                        })
                        .finally(() => {
                            if(this.err.length === 0){
@@ -94,10 +94,6 @@ label {
     margin-top: 10px;
 }
 
-.add_images {
-    margin-top: 50px;
-}
-
 .inputs {
     height: 100%;
     justify-content: center;
@@ -110,18 +106,9 @@ label {
     box-shadow: 3px 3px 3px lightgray;
 }
 
-.file {
-    margin-top: 5px;
-    padding: 10px;
-}
-
-.file__div {
-    padding-bottom: 70px;
-}
-
 .btn {
-    margin-top: 28%;
-    padding: 6px;
     width: 50%;
+    margin-top: 40px;
+    padding: 6px;
 }
 </style>

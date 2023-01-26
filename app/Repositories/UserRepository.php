@@ -3,9 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
+use App\Notifications\RegisterNotification;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 
 class UserRepository
 {
@@ -21,19 +23,14 @@ class UserRepository
 
     public function createUser($userEmail, $userPassword)
     {
-        if(Auth::check()){
-            return redirect(route('home'));
-        }
-
        $user = User::create([
             'email' => $userEmail,
             'password' => Hash::make($userPassword)
         ]);
 
-       if($user) {
-           Auth::login($user);
-           return redirect(route('home'));
-       }
+       Auth::login($user);
+
+        event(new Registered($user));
     }
 
     public function updateUser($userId, $userEmail)

@@ -1,6 +1,6 @@
 <template>
     <div class="form">
-    <form id="reg_form">
+    <form id="reg_form" @submit.prevent>
         <div class="col">
             <h4>Registration Form</h4>
         </div>
@@ -43,7 +43,7 @@
 import ErrorMessage from "./ErrorMessage.vue";
 export default {
     components: {
-        ErrorMessage
+        ErrorMessage,
     },
     data() {
         return {

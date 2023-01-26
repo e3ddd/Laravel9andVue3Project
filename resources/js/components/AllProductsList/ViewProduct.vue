@@ -5,8 +5,10 @@
                 <div class="big_img">
                     <img :src="'storage/images/' + images[0].user_id + '_' + images[0].product_id + '_' + images[0].hash_id" alt="MAIN_IMG">
                 </div>
-                <div class="small_imgs" v-for="img in images">
-                    <img :src="'storage/images/' + 'SMALL_' + img.user_id + '_' + img.product_id + '_' + img.hash_id" alt="SMALL_IMG">
+                <div class="row small_imgs">
+                    <div class="col-3" v-for="img in images">
+                        <img :src="'storage/images/' + 'SMALL_' + img.user_id + '_' + img.product_id + '_' + img.hash_id" alt="SMALL_IMG">
+                    </div>
                 </div>
             </div>
             <div class="about">
@@ -69,4 +71,7 @@ export default {
     border-radius: 12px;
 }
 
+.small_imgs {
+    width: 50%;
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
-    <div class="row list">
-        <div class="col-sm list-item" v-for="item in list">
+    <div class="row list" v-if="list.length !== 0">
+        <div class="col-sm list-item" v-for="item in list" >
             <user-products-item
                 :id="item.id"
                 :name="item.name"
@@ -9,11 +9,16 @@
                 :del="this.delete"
                 :images="item.image"
             />
+
         </div>
+
         <paginator
             v-model:total="total"
             :get="getProducts"
         />
+    </div>
+    <div class="row no__products" v-else>
+        <h1>You don't have any product</h1>
     </div>
 </template>
 
@@ -70,6 +75,14 @@ export default {
 </script>
 
 <style scoped>
+
+.no__products {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 100px;
+}
+
 .list {
     border: 2px solid silver;
     box-shadow: 3px 3px 3px lightgray;

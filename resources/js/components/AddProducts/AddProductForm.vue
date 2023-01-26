@@ -2,6 +2,14 @@
     <div class="col-md-auto add_product">
         <div class="inputs">
             <h4>Add Product</h4>
+            <div class="category__input">
+                <label>Category</label>
+                <select v-model="this.product.category">
+                    <option selected disabled>{{this.product.category}}</option>
+                    <option v-for="category in this.categories">{{category.name}}</option>
+                </select>
+            </div>
+
             <div class="input">
                 <label>Product</label>
             <add-input
@@ -58,7 +66,9 @@ export default {
     data() {
         return {
             err: '',
+            categories: [],
             product: {
+                category: 'Choose category',
                 email: '',
                 name: '',
                 price: '',
@@ -69,6 +79,7 @@ export default {
 
     created() {
       this.getUser()
+        this.getCategories()
     },
 
     methods: {
@@ -79,8 +90,17 @@ export default {
                 })
         },
 
+        async getCategories()
+        {
+          const response = axios.post('get_categories')
+              .then((response) => {
+                  this.categories = response.data
+              })
+        },
+
         async addProduct() {
                 const response = await axios.post('/add_product/', {
+                    category: this.product.category,
                     email: this.product.email,
                     name: this.product.name,
                     price: +this.product.price,
@@ -108,6 +128,16 @@ export default {
 </script>
 
 <style scoped>
+.category__input label{
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.category__input {
+    padding: 5px;
+    display: flex;
+    justify-content: left;
+}
 
 label {
     margin-top: 10px;

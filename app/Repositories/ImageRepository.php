@@ -56,9 +56,9 @@
                      0
                  );
                  $imagickDst->setImageFormat("jpg");
-                 $imagickSrc->resizeImage(270,270,0,1);
+                 $imagickSrc->resizeImage(200,200,0,1);
                  $imagickSrc->writeImage($imgPath);
-                 $imagickSrc->resizeImage(90,90,0,1);
+                 $imagickSrc->resizeImage(50,50,0,1);
                  $imagickSrc->writeImage($smallImgPath);
              }
      }

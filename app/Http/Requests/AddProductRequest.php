@@ -25,7 +25,7 @@ class AddProductRequest extends FormRequest
     {
         return [
             'email' => 'required|exists:users,email|email:rfc,dns',
-            'name' => 'required|min:2|max:20',
+            'name' => 'required|min:2|max:100',
             'price' => 'required|numeric|min_digits:2|max_digits:20',
             'description' => 'min:30|max:1000'
         ];

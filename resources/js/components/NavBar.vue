@@ -3,27 +3,29 @@
         <div class="col">
             <a href="/home"><img src="../logo.png" alt="Logo"></a>
         </div>
-        <div class="burgerMenu" v-if="showMenu">
-            <div class="burger__link" v-for="link in buttons">
-                <a :href="link.action">{{link.value}}</a>
-            </div>
-        </div>
-        <div class="burger" v-if="show" @click="showBurgerMenu">
-            <div class="burger__btn">
-                <span class="row burger__item"></span>
-                <span class="row burger__item"></span>
-                <span class="row burger__item"></span>
-            </div>
-        </div>
+<!--        <div class="burgerMenu" v-if="showMenu">-->
+<!--            <div class="burger__link" v-for="link in buttons">-->
+<!--                <a :href="link.action">{{link.value}}</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="burger" v-if="show" @click="showBurgerMenu">-->
+<!--            <div class="burger__btn">-->
+<!--                <span class="row burger__item"></span>-->
+<!--                <span class="row burger__item"></span>-->
+<!--                <span class="row burger__item"></span>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="col-2 userEmail">
             <div>
-                {{this.userEmail}}
+                <span v-if="this.userEmail !== undefined">{{this.userEmail}}</span>
+                <span v-else>Guest</span>
                    <span @click="this.showSelectMenuFunc">&#9660;</span>
                 <ul class="selectMenu" v-if="this.showSelectMenu == true">
-                    <li><a href="/personal_account">Personal Account</a></li>
+                    <li v-if="this.userEmail !== undefined"><a href="/personal_account">Personal Account</a></li>
                     <li><a href="/users_products">All Products List</a></li>
-                    <li><a href="/add_product">Add Product</a></li>
-                    <li><a href="/logout">Log Out</a></li>
+                    <li v-if="this.userEmail !== undefined"><a href="/add_product">Add Product</a></li>
+                    <li v-if="this.userEmail !== undefined"><a href="/logout">Log Out</a></li>
+                    <li v-else><a href="/registration">Register or Login</a></li>
                 </ul>
 
             </div>
@@ -75,6 +77,7 @@ export default {
 <style scoped>
 
 .selectMenu {
+    width: 107%;
     text-align: right;
     list-style: none;
     background: #f8f7f7;
@@ -85,6 +88,9 @@ export default {
 
 .selectMenu a{
     color: #df4949;
+    display: flex;
+    justify-content: center;
+    text-align: center;
 }
 
 .selectMenu a:hover {

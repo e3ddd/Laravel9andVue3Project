@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -16,10 +17,22 @@ class ProductRepository
             ->paginate(10);
     }
 
+    public function getProductsByCategory($name)
+    {
+        $category_id = Category::where('name', $name)->first()->toArray()['id'];
+
+        return Product::where('category_id', $category_id)
+            ->with('image')
+            ->with('user')
+            ->with('category')
+            ->paginate(9);
+    }
+
     public function getAllProducts()
     {
         return Product::with('image')
             ->with('user')
+            ->with('category')
             ->paginate(9);
     }
 
@@ -32,9 +45,12 @@ class ProductRepository
     {
         return User::where('email', $userEmail)->first('id');
     }
-    public function createProduct($userId, $name, $price, $description): Product
+    public function createProduct($category, $userId, $name, $price, $description): Product
     {
-       return Product::create([
+        $categoryId = Category::where('name', $category)->first('id')->toArray()['id'];
+
+        return Product::create([
+           "category_id" => $categoryId,
            "user_id" => $userId,
            "name" => $name,
            "price" => $price,

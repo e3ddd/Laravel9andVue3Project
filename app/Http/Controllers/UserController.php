@@ -17,7 +17,7 @@ class UserController extends Controller
 
     public function get()
     {
-        return Auth::user();
+            return Auth::user();
     }
 
     public function edit(EditUserRequest $request)

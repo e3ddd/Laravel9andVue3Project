@@ -1,6 +1,6 @@
 <template>
     <div class="form">
-        <form action="/home" id="log_form" @submit.prevent>
+        <form  id="log_form" @submit.prevent>
             <div class="col">
                 <h4>Login Form</h4>
             </div>
@@ -29,8 +29,12 @@
                     :err="this.err"
                 />
             </div>
+            <div class="remember">
+                <input type="checkbox" id="remember__checkbox" @change="this.remember = true" :value="this.remember">
+                <label for="remember__checkbox" class="p-1">Remember Me</label>
+            </div>
             <div class="regLink">
-                <a href="/">Don't have an account ?</a>
+                <a href="/registration">Don't have an account ?</a>
             </div>
             <div class="row-justify-content-center p-3" id="submitButton">
                 <button class="btn" @click="login">Login</button>
@@ -50,17 +54,20 @@ export default {
             err: '',
             email: '',
             password: '',
+            remember: false
         }
     },
 
     methods: {
-        login() {
-            axios.post('/login/log', {
+        async login() {
+            const response = await axios.post('/login/log', {
 
                     email: this.email,
-                    password: this.password
+                    password: this.password,
+                    remember: this.remember
             })
                 .then((response) => {
+                    console.log(response)
                     if(response.data  !== ''){
                         window.location.href = '/home'
                     }else{
@@ -74,6 +81,10 @@ export default {
                     console.log(response)
                 })
                 .catch((err) => {
+                    this.err = err.response.data.message
+                    setTimeout(() => {
+                        this.err = ""
+                    }, 3000)
                     console.log(err)
                 })
 

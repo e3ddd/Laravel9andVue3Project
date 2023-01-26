@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId('product_id')
                 ->constrained('users_products')
                 ->onDelete('restrict')
-                ->onUpdate('cascade');
+                ->onUpdate('restrict');
         });
 
     }

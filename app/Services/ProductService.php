@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Category;
 use App\Repositories\ProductRepository;
 
 class ProductService
@@ -18,6 +19,11 @@ class ProductService
         return $this->productRepository->getAllUserProducts($userId);
     }
 
+    public function getPrdByCtr($name)
+    {
+        return $this->productRepository->getProductsByCategory($name);
+    }
+
     public function all()
     {
         return $this->productRepository->getAllProducts();
@@ -28,9 +34,9 @@ class ProductService
         return $this->productRepository->getProduct($productId);
     }
 
-    public function create($userId, $name, $price, $description)
+    public function create($category, $userId, $name, $price, $description)
     {
-        return $this->productRepository->createProduct($userId, $name, $price, $description);
+        return $this->productRepository->createProduct($category, $userId, $name, $price, $description);
     }
 
     public function update($productId, $name, $price, $description)

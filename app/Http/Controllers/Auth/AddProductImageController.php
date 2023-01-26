@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AddImageRequest;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class AddProductImageController extends Controller
         if($request->hasFile('file')){
             $imageService->saveImg($request->file, $storeName);
         }
+
     }
 
     public function destroy(Request $request)
