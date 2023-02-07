@@ -9,8 +9,6 @@ class VerificationController extends Controller
 {
     public function verify(EmailVerificationRequest $request)
     {
-
-
         $request->fulfill();
 
         return redirect('/home');

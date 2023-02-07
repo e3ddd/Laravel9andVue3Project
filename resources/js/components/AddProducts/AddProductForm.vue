@@ -2,11 +2,19 @@
     <div class="col-md-auto add_product">
         <div class="inputs">
             <h4>Add Product</h4>
-            <div class="category__input">
+            <div class="row category__input">
                 <label>Category</label>
-                <select v-model="this.product.category">
+                <select @change="category" v-model="this.product.category">
                     <option selected disabled>{{this.product.category}}</option>
                     <option v-for="category in this.categories">{{category.name}}</option>
+                </select>
+            </div>
+
+            <div class="row subcategory__input">
+                <label>Subcategory</label>
+                <select v-model="this.product.subcategory">
+                    <option selected disabled>{{this.product.subcategory}}</option>
+                    <option v-for="subcategory in this.subcategories">{{subcategory.name}}</option>
                 </select>
             </div>
 
@@ -67,8 +75,10 @@ export default {
         return {
             err: '',
             categories: [],
+            subcategories: [],
             product: {
                 category: 'Choose category',
+                subcategory: 'Choose subcategory',
                 email: '',
                 name: '',
                 price: '',
@@ -78,7 +88,7 @@ export default {
     },
 
     created() {
-      this.getUser()
+        this.getUser()
         this.getCategories()
     },
 
@@ -95,12 +105,14 @@ export default {
           const response = axios.post('get_categories')
               .then((response) => {
                   this.categories = response.data
+                  console.log(response)
               })
         },
 
         async addProduct() {
                 const response = await axios.post('/add_product/', {
                     category: this.product.category,
+                    subcategory: this.product.subcategory,
                     email: this.product.email,
                     name: this.product.name,
                     price: +this.product.price,
@@ -121,19 +133,27 @@ export default {
                             alert('Your product added !')
                         }
                     })
+        },
 
-        }
+        category(event) {
+            const categories = JSON.parse(JSON.stringify(this.categories))
+            const subcategories = categories.filter((item) => item.name === event.target.value)
+            subcategories.map(item => this.subcategories = item.subcategory)
+        },
     }
 }
 </script>
 
 <style scoped>
-.category__input label{
-    margin-right: 10px;
-    margin-bottom: 10px;
+
+.category__input select{
+    padding: 5px;
+    display: flex;
+    justify-content: left;
 }
 
-.category__input {
+
+.subcategory__input select{
     padding: 5px;
     display: flex;
     justify-content: left;

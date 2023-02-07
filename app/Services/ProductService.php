@@ -19,6 +19,11 @@ class ProductService
         return $this->productRepository->getAllUserProducts($userId);
     }
 
+
+    public function getPrdBySubCtr($name)
+    {
+        return $this->productRepository->getProductsBySubcategory($name);
+    }
     public function getPrdByCtr($name)
     {
         return $this->productRepository->getProductsByCategory($name);
@@ -34,9 +39,9 @@ class ProductService
         return $this->productRepository->getProduct($productId);
     }
 
-    public function create($category, $userId, $name, $price, $description)
+    public function create($category, $subcategoryId, $userId, $name, $price, $description)
     {
-        return $this->productRepository->createProduct($category, $userId, $name, $price, $description);
+        return $this->productRepository->createProduct($category, $subcategoryId, $userId, $name, $price, $description);
     }
 
     public function update($productId, $name, $price, $description)

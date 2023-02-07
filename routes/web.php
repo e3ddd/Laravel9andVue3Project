@@ -15,11 +15,7 @@ use App\Http\Controllers\IndexRoutesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProductsController;
 use App\Http\Controllers\UserProductsListController;
-use App\Http\Controllers\VerifyController;
 use App\Http\Controllers\ViewsStatisticTableController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,16 +30,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', [\App\Http\Controllers\Test::class, 'index']);
+Route::get('/test/show', [\App\Http\Controllers\Test::class, 'show']);
+Route::get('/fill_all_categories', [CategoriesNavController::class, 'fill']);
+
 
 Route::get('/home', [IndexRoutesController::class, 'index'])->name('home');
 Route::get('/registration', [IndexRoutesController::class, 'registration']);
 Route::get('/login', [IndexRoutesController::class, 'login'])->name('login');
 Route::get('/users_products', [IndexRoutesController::class, 'userProducts'])->middleware('auth');
 
-Route::post('/get_categories', [GetCategoriesController::class, 'get']);
 Route::post('/reg_form/registration', [RegisterController::class, "store"]);
 
-Route::post('/login/log', [LoginController::class, 'auth'])->middleware('verified');
+Route::post('/login/log', [LoginController::class, 'auth']);
 Route::get('/logout', [LogoutController::class, 'logout'])->middleware(['auth', 'verified']);
 
 Route::post('/get_user', [UserController::class, 'get']);
@@ -68,8 +66,11 @@ Route::resource('add_image', AddProductImageController::class)->middleware(['aut
 Route::resource('users', UserController::class);
 Route::resource('users_products', UserProductsListController::class);
 
-Route::get('/{category}', [CategoriesNavController::class, 'show']);
+Route::get('/{category}', [CategoriesNavController::class, 'showByCategory']);
+Route::get('/{category}/{subcategory}', [CategoriesNavController::class, 'showBySubcategory']);
 Route::post('/get_by_category', [CategoriesNavController::class, 'get']);
+Route::post('/get_categories', [GetCategoriesController::class, 'get']);
+Route::post('/get_subcategories', [GetCategoriesController::class, 'getSub']);
 
 
 Route::get('/email/verify', [VerificationController::class, 'notice'])->middleware('auth')->name('verification.notice');

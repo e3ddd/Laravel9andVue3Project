@@ -2,11 +2,11 @@
     <div class="item">
         <div class="imgs" v-if="images.length > 0">
                 <div class="big_img">
-                    <img :src="'storage/images/' + images[0].user_id + '_' + images[0].product_id + '_' + images[0].hash_id" alt="MAIN_IMG">
+                    <img :src="'/storage/images/' + images[0].user_id + '_' + images[0].product_id + '_' + images[0].hash_id" alt="MAIN_IMG">
                 </div>
             <div class="row">
                 <div class="col-3 small_imgs" v-for="img in images">
-                    <a :href="'storage/images/' + img.user_id + '_' + img.product_id + '_' + img.hash_id"><img :src="'storage/images/' + 'SMALL_' + img.user_id + '_' + img.product_id + '_' + img.hash_id" alt="SMALL_IMG"></a>
+                    <a :href="'/storage/images/' + img.user_id + '_' + img.product_id + '_' + img.hash_id"><img :src="'/storage/images/' + 'SMALL_' + img.user_id + '_' + img.product_id + '_' + img.hash_id" alt="SMALL_IMG"></a>
                 </div>
             </div>
         </div>

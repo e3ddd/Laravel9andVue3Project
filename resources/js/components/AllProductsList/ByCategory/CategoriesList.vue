@@ -1,13 +1,21 @@
 <template>
         <div class="col-1 links">
-            <div :class="category.name" class="link" v-for="category in categories"><a :href="category.name">{{category.name}} &#187;</a></div>
+            <div :class="category.name" class="link" v-for="category in categories">
+                <a :href="mainCategory + '/' + category.name" v-if="mainCategory !== ''">{{category.name}} &#187;</a>
+                <a :href="category.name" v-if="mainCategory === ''">{{category.name}} &#187;</a>
+            </div>
         </div>
 </template>
 
 <script>
 export default {
     props: {
+        mainCategory:  String,
         categories: Array
+    },
+
+    methods: {
+
     }
 }
 </script>

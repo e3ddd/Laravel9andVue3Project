@@ -21,6 +21,6 @@ class AddProductController extends Controller
 
         $user_id = $productService->getUserId($request->email);
 
-        return $productService->create($request->category, $user_id->id, $request->name, $request->price, $request->description);
+        return $productService->create($request->category, $request->subcategory, $user_id->id, $request->name, $request->price, $request->description);
     }
 }

@@ -2,7 +2,8 @@
     <div class="container page">
         <div class="row">
           <categories-list
-          :categories="this.categories"
+              :mainCategory="''"
+              :categories="this.categories"
           />
             <div class="col-10 products">
                 <div class="row">

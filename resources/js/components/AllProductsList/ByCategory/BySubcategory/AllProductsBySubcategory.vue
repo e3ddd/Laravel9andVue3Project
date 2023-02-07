@@ -1,13 +1,11 @@
 <template>
     <div class="container page">
         <div class="row">
-            <categories-list
-                :mainCategory="this.category_name"
-                :categories="this.subcategories"
-            />
             <div class="col-10 products">
                 <div class="all__link">
-                    <a href="/users_products">products</a>&#187;<a :href="'/' + this.category_name">{{this.category_name}}</a>
+                    <a href="/users_products">products</a>&#187;
+                    <a :href="'/' + this.categories.split('/', 2)[0]">{{this.categories.split('/', 2)[0]}}</a>&#187;
+                    <a :href="'/' + this.categories.split('/', 2)[1]">{{this.categories.split('/', 2)[1]}}</a>
                 </div>
                 <div class="row">
                     <div class="page_item" :class="{'col-lg': adaptive, 'col-4': non_adaptive}" v-for="item in products">
@@ -33,9 +31,9 @@
 </template>
 
 <script>
-import CategoriesList from "./CategoriesList.vue";
-import Paginator from "../../UserList/Paginator.vue";
-import ListItem from "../ListItem.vue";
+import CategoriesList from "../CategoriesList.vue";
+import ListItem from "../../ListItem.vue";
+import Paginator from "../../../UserList/Paginator.vue";
 import Math from "lodash";
 export default {
     components: {
@@ -52,37 +50,28 @@ export default {
             products: [],
             adaptive: false,
             non_adaptive: true,
-            category_name: window.location.href.substring(22).replace('%20', ' '),
-            subcategories: []
+            categories: window.location.href
+                .replace(/^http:\/\/127.0.0.1:8000\//, '')
+                .replace('%20', ' '),
         }
     },
 
 
     mounted() {
         this.getProducts(this.page)
-        this.getSubcategories()
     },
 
     methods: {
-
-        async getSubcategories()
-        {
-            const response = await axios.post('/get_subcategories', {
-                category: this.category_name
-            })
-                .then((response) => {
-                    this.subcategories = response.data
-                })
-        },
 
         onUpdate() {
             this.products = []
         },
 
         async getProducts(page) {
+            let sub = this.categories.split('/', 2)[1]
             const response = await axios.post('/get_by_category?page=' + page,
-                 {
-                    category: this.category_name
+                {
+                    subcategory: sub
                 }
             )
                 .then((response) => {

@@ -3,6 +3,7 @@ import './bootstrap';
 
 import {createApp} from 'vue'
 
+import TestForm from "./components/TestForm.vue";
 import Index from './Index.vue'
 import NavBar from "./components/NavBar.vue";
 import RegForm from "./components/RegForm.vue";
@@ -14,9 +15,11 @@ import ProductList from "./components/ProductList.vue";
 import AllProducts from "./components/AllProducts.vue";
 import ProductsViewStatistic from "./components/ProductsViewStatistic.vue";
 import AllProductsByCategory from "./components/AllProductsList/ByCategory/AllProductsByCategory.vue";
+import AllProductsBySubcategory
+    from "./components/AllProductsList/ByCategory/BySubcategory/AllProductsBySubcategory.vue";
 
 
-
+createApp(TestForm).mount('#test-form')
 createApp(Index).mount("#index")
 createApp(NavBar).mount("#nav-bar")
 createApp(RegForm).mount("#reg-form")
@@ -27,4 +30,5 @@ createApp(AddProducts).mount("#add-products")
 createApp(ProductList).mount("#product-list")
 createApp(AllProducts).mount("#all-products")
 createApp(ProductsViewStatistic).mount("#product-view-statistic")
-createApp(AllProductsByCategory).mount('#all-products-by-category');
+createApp(AllProductsByCategory).mount('#all-products-by-category')
+createApp(AllProductsBySubcategory).mount('#all-products-by-subcategory')
