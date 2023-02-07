@@ -8,30 +8,41 @@ class ProductDimensionFactory
 {
 
     private DimensionsEnum $unit;
-    private array $values;
+    private float $value;
 
-    public function __construct(DimensionsEnum $unit ,array $values)
+    public function __construct(DimensionsEnum $unit ,float $value)
     {
         $this->unit = $unit;
-        $this->values = $values;
+        $this->value = $value;
     }
 
-
-    public function convert(): array
+    public function convertToMillimeter(): DimensionsEnum|float|int
     {
-        $newValues = [];
-        foreach ($this->values as $key => $value){
-            if($this->unit->name == 'millimeter'){
-                $newValues[] = [$key => $value / 10];
-            }
-            else if($this->unit->name == 'meter'){
-                $newValues[] = [$key => $value * 100];
-            }
-            else {
-                return $this->values;
-            }
-        }
-        return $newValues;
+        return match ($this->unit) {
+            DimensionsEnum::centimeter => $this->value * 10,
+            DimensionsEnum::meter => $this->value * 1000,
+            default => $this->value
+        };
     }
+
+    public function convertToCentimeter(): DimensionsEnum|float|int
+    {
+        return match ($this->unit) {
+            DimensionsEnum::millimeter => $this->value / 10,
+            DimensionsEnum::meter => $this->value / 100,
+            default => $this->value
+        };
+    }
+
+    public function convertToMeter(): DimensionsEnum|float|int
+    {
+        return match ($this->unit) {
+            DimensionsEnum::centimeter => $this->value / 100,
+            DimensionsEnum::millimeter => $this->value / 1000,
+            default => $this->value
+        };
+    }
+
+
 
 }

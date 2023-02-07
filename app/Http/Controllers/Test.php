@@ -28,21 +28,30 @@ class Test extends Controller
     }
     public function index(Request $request)
     {
-         $res = [];
-        if($request->dimensionType == "meters"){
-            $dimension = new ProductDimensionFactory(DimensionsEnum::meter,
-                                                         $request->dimensionValues);
-            $res = $dimension->convert();
+        $product = [];
+        $return_value = '';
+        foreach ($request->dimensionValues as $key => $value){
+            $type = match ($key){
+                'width', 'height', 'long' => $value,
+            };
+            switch ($request->dimensionType) {
+                case 'millimeters':
+                    $convert = new ProductDimensionFactory(DimensionsEnum::millimeter, $type);
+                    $return_value = $convert->convertToMillimeter();
+                    break;
+                case 'centimeters':
+                    $convert = new ProductDimensionFactory(DimensionsEnum::centimeter, $type);
+                    $return_value = $convert->convertToMillimeter();
+                    break;
+                case 'meters':
+                    $convert = new ProductDimensionFactory(DimensionsEnum::meter, $type);
+                    $return_value = $convert->convertToMillimeter();
+                    break;
+            }
+
+            $product[] = $return_value;
         }
-        if($request->dimensionType == "millimeters"){
-            $dimension = new ProductDimensionFactory(DimensionsEnum::millimeter,
-                                                         $request->dimensionValues);
-            $res = $dimension->convert();
-        }
-        if($request->dimensionType == "centimeters"){
-            $res = $request->dimensionValues;
-        }
-        return $res;
+        return $product;
     }
 
 }
