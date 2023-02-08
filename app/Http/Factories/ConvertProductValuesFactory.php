@@ -9,8 +9,8 @@ abstract class ConvertProductValuesFactory
 
     public function getResult()
     {
-        $result = $this->convertValue();
+        $res = $this->convertValue();
 
-        return $result->convert();
+        return $res->convertType();
     }
 }

@@ -4,5 +4,5 @@ namespace App\Http\Interfaces;
 
 interface ConvertInterface
 {
-    public function convert();
+  public function convertType();
 }
