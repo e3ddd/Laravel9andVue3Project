@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Factories;
+namespace App\Http\Factories\Convert;
 
 
 abstract class ConvertProductValuesFactory
@@ -11,6 +11,6 @@ abstract class ConvertProductValuesFactory
     {
         $res = $this->convertValue();
 
-        return $res->convertType();
+        return $res->convertTo();
     }
 }
