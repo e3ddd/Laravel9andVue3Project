@@ -1,8 +1,10 @@
 <template>
-        <div class="col-1 links">
+        <div class="col-md-auto links">
             <div :class="category.name" class="link" v-for="category in categories">
-                <a :href="mainCategory + '/' + category.name" v-if="mainCategory !== ''">{{category.name}} &#187;</a>
-                <a :href="category.name" v-if="mainCategory === ''">{{category.name}} &#187;</a>
+                <div class="col-sm-auto">
+                    <a :href="'/' + mainCategory + '/' + category.name">{{category.name}}</a>
+
+                </div>
             </div>
         </div>
 </template>
@@ -10,26 +12,21 @@
 <script>
 export default {
     props: {
-        mainCategory:  String,
-        categories: Array
+        categories: Array,
+        mainCategory: String,
     },
 
-    methods: {
-
-    }
 }
 </script>
 
 <style scoped>
 .links {
-    text-align: center;
-    width: 180px;
-    height: 300px;
-    border: 2px solid lightgray;
-    margin-right: 20px;
+    border: 2px solid silver;
+    box-shadow: 3px 3px 3px lightgray;
 }
 
 .link a{
+    margin: 20px;
     text-decoration: none;
     text-transform: uppercase;
     color: black;
@@ -39,7 +36,7 @@ export default {
 .link a:hover {
     text-decoration: underline;
     color: #df4949;
-    font-size: 16px;
+    font-size: 14px;
     transition: 0.5s;
 }
 

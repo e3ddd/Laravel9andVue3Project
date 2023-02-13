@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col-10 products">
                 <div class="all__link">
-                    <a href="/users_products">products</a>&#187;
-                    <a :href="'/' + this.categories.split('/', 2)[0]">{{this.categories.split('/', 2)[0]}}</a>&#187;
-                    <a :href="'/' + this.categories.split('/', 2)[1]">{{this.categories.split('/', 2)[1]}}</a>
+                    <a href="/home">products</a>&#187;
+                    <a :href="'/' + this.categories.split('/', 2)[0]">{{this.categories.split('/', 2)[0].replace('%20', ' ')}}</a>&#187;
+                    <a :href="'/' + this.categories.split('/', 2)[1]">{{this.categories.split('/', 2)[1].replace('%20', ' ')}}</a>
                 </div>
                 <div class="row">
                     <div class="page_item" :class="{'col-lg': adaptive, 'col-4': non_adaptive}" v-for="item in products">
@@ -75,9 +75,11 @@ export default {
                 }
             )
                 .then((response) => {
-                    console.log(response)
                     this.total = Math.ceil(response.data.total / this.limit)
                     this.products = response.data.data
+                })
+                .catch((err) => {
+                    console.log(err)
                 })
         },
     }

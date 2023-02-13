@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EditUserRequest;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
-use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

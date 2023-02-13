@@ -1,31 +1,28 @@
 <template>
-    <div class="container-fluid p-0 index__btns">
-        <div class="col">
+    <div class="container-fluid d-flex p-0 index__btns">
+        <div class="col-2">
             <a href="/home"><img src="../logo.png" alt="Logo"></a>
         </div>
-<!--        <div class="burgerMenu" v-if="showMenu">-->
-<!--            <div class="burger__link" v-for="link in buttons">-->
-<!--                <a :href="link.action">{{link.value}}</a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="burger" v-if="show" @click="showBurgerMenu">-->
-<!--            <div class="burger__btn">-->
-<!--                <span class="row burger__item"></span>-->
-<!--                <span class="row burger__item"></span>-->
-<!--                <span class="row burger__item"></span>-->
-<!--            </div>-->
-<!--        </div>-->
-        <div class="col-2 userEmail">
+        <div class="col-8 d-flex justify-content-center search">
+            <div class="reg_log" v-if="this.userEmail === undefined">
+                <img src="../profile.png" alt="pic" width="20" height="20">
+                <a href="/registration">Register</a>
+                |
+                <a href="/login">Login</a>
+            </div>
+            <form>
+                <input type="text" name="search" v-model="this.search" placeholder="Search product...">
+                <button class="searchBtn" @click="this.searchProduct">Search</button>
+            </form>
+        </div>
+        <div class="col-2 authUser" v-if="this.userEmail !== undefined">
             <div>
-                <span v-if="this.userEmail !== undefined">{{this.userEmail}}</span>
-                <span v-else>Guest</span>
+                <span>{{this.userEmail}}</span>
                    <span @click="this.showSelectMenuFunc">&#9660;</span>
-                <ul class="selectMenu" v-if="this.showSelectMenu == true">
-                    <li v-if="this.userEmail !== undefined"><a href="/personal_account">Personal Account</a></li>
-                    <li><a href="/users_products">All Products List</a></li>
-                    <li v-if="this.userEmail !== undefined"><a href="/add_product">Add Product</a></li>
-                    <li v-if="this.userEmail !== undefined"><a href="/logout">Log Out</a></li>
-                    <li v-else><a href="/registration">Register or Login</a></li>
+                <ul class="selectMenu" v-if="this.showSelectMenu === true">
+                    <li><a href="/personal_account">Personal Account</a></li>
+                    <li><a href="/add_product">Add Product</a></li>
+                    <li><a href="/logout">Log Out</a></li>
                 </ul>
 
             </div>
@@ -38,16 +35,13 @@
 export default {
     data() {
         return {
-            show: false,
-            showMenu: false,
             showSelectMenu: false,
             userEmail: '',
+            search: ''
         }
     },
     created() {
         this.getUser()
-        this.showBurger()
-        window.addEventListener("resize", this.showBurger);
     },
 
     methods: {
@@ -62,13 +56,8 @@ export default {
             this.showSelectMenu = !this.showSelectMenu;
         },
 
-        showBurger() {
-            this.show = window.innerWidth < 920
-            this.showMenu = false
-        },
+        searchProduct() {
 
-        showBurgerMenu() {
-            this.showMenu = !this.showMenu;
         }
     }
 }
@@ -98,11 +87,11 @@ export default {
     transition: 0.5s;
 }
 
-.userEmail span:hover {
+.authUser span:hover {
     cursor: pointer;
 }
 
-.userEmail {
+.authUser {
     margin-right: 20px;
     text-align: right;
     margin-top: 30px;
@@ -116,57 +105,41 @@ a {
 }
 
 .index__btns {
-    display: flex;
-    justify-content: flex-end;
     height: 100px;
     background: #f8f7f7;
 }
 
-.btn {
-    margin-top: 20px;
+.searchBtn {
+    margin-left: 10px;
+    border-radius: 5px;
+    border: none;
     background: #ff3838;
     color: white;
     box-shadow: 2px 2px 5px grey;
 }
 
-.btn:hover {
-    background: #661515;
-    transition: 0.4s;
+.search {
+    margin-top: 30px;
 }
 
-.burger {
-    margin-right: 20px;
-    margin-top: 20px;
+.search input {
+    height: 30px;
 }
 
-.burger__btn {
-    padding: 10px 25px 15px 25px;
-    border: 1px solid #ff3838;
-    box-shadow: 4px 4px 4px lightgray;
-    border-radius: 5px;
+.reg_log {
+    margin-right: 10px;
 }
 
-.burger__item {
-    width: 25px;
-    height: 2px;
-    margin-top: 5px;
-    border: 1px solid #ff3838;
-    background: black;
+
+.reg_log a {
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
 }
 
-.burgerMenu {
-    overflow: hidden;
-    margin-top: 98px;
-    margin-right: -75px;
-    height: 140px;
-    z-index: 2;
-    float: right;
-    background: #f8f7f7;
-    padding: 20px;
-    border-radius: 0 0 0 20%
-}
-
-.burger__link a{
-    color: #ff3838;
+.reg_log a:hover {
+    color: #df4949;
+    font-size: 16px;
+    transition: 0.5s;
 }
 </style>

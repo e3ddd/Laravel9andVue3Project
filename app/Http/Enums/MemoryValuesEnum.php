@@ -2,7 +2,7 @@
 
 namespace App\Http\Enums;
 
-use App\Http\Interfaces\EnumCoefficients;
+use App\Http\Interfaces\Enums\EnumCoefficients;
 
 enum MemoryValuesEnum: string implements EnumCoefficients
 {
@@ -19,5 +19,10 @@ enum MemoryValuesEnum: string implements EnumCoefficients
             MemoryValuesEnum::gigabyte => 1000000,
             MemoryValuesEnum::terabyte => 1000000000,
         };
+    }
+
+    public function convertTo($value, MemoryValuesEnum $from, MemoryValuesEnum $to)
+    {
+        return $value * ($from->coefficient() / $to->coefficient());
     }
 }

@@ -64,7 +64,7 @@ Route::get('/view_statistic', [ViewsStatisticTableController::class, 'index']);
 Route::resource('add_product', AddProductController::class)->middleware(['auth', 'verified']);
 Route::resource('add_image', AddProductImageController::class)->middleware(['auth', 'verified']);
 Route::resource('users', UserController::class);
-Route::resource('users_products', UserProductsListController::class);
+//Route::resource('users_products', UserProductsListController::class);
 
 Route::get('/{category}', [CategoriesNavController::class, 'showByCategory']);
 Route::get('/{category}/{subcategory}', [CategoriesNavController::class, 'showBySubcategory']);

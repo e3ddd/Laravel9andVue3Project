@@ -2,7 +2,7 @@
 
 namespace App\Http\Enums;
 
-use App\Http\Interfaces\EnumCoefficients;
+use App\Http\Interfaces\Enums\EnumCoefficients;
 
 enum WeightEnum: string implements EnumCoefficients
 {
@@ -19,5 +19,10 @@ enum WeightEnum: string implements EnumCoefficients
             WeightEnum::kilogram => 1000000,
             WeightEnum::ton => 1000000000,
         };
+    }
+
+    public function convertTo($value, WeightEnum $from, WeightEnum $to)
+    {
+        return $value * ($from->coefficient() / $to->coefficient());
     }
 }

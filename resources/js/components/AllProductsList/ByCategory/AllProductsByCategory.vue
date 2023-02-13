@@ -1,13 +1,15 @@
 <template>
     <div class="container page">
         <div class="row">
-            <categories-list
-                :mainCategory="this.category_name"
-                :categories="this.subcategories"
-            />
-            <div class="col-10 products">
+            <div class="col-3">
+                <categories-list
+                    :mainCategory="this.category_name"
+                    :categories="this.subcategories"
+                />
+            </div>
+            <div class="col-9 products">
                 <div class="all__link">
-                    <a href="/users_products">products</a>&#187;<a :href="'/' + this.category_name">{{this.category_name}}</a>
+                    <a href="/home">products</a>&#187;<a :href="'/' + this.category_name">{{this.category_name.replace('%20', ' ')}}</a>
                 </div>
                 <div class="row">
                     <div class="page_item" :class="{'col-lg': adaptive, 'col-4': non_adaptive}" v-for="item in products">

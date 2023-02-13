@@ -2,7 +2,7 @@
 
 namespace App\Http\Enums;
 
-use App\Http\Interfaces\EnumCoefficients;
+use App\Http\Interfaces\Enums\EnumCoefficients;
 
 enum DimensionsEnum: string implements EnumCoefficients
 {
@@ -17,5 +17,10 @@ enum DimensionsEnum: string implements EnumCoefficients
          DimensionsEnum::centimeter => 10,
          DimensionsEnum::meter => 1000,
        };
+    }
+
+    public function convertTo($value, DimensionsEnum $from, DimensionsEnum $to)
+    {
+        return $value * ($from->coefficient() / $to->coefficient());
     }
 }

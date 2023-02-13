@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('category_id');
             $table->integer('subcategory_id');
             $table->string('name');
-            $table->double('price');
-            $table->text('description')->nullable();
+            $table->float('price');
+            $table->string('producer');
             $table->timestamps();
 
             $table->foreignId('user_id')
@@ -28,7 +28,6 @@ return new class extends Migration
                 ->onUpdate('cascade')
             ;
         });
-
 
     }
 

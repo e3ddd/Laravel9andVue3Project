@@ -2,18 +2,13 @@
 
     <form action="" @submit.prevent>
         <div class="row">
-        <input type="text" v-model="this.values.width">
-        </div>
-        <div class="row">
-        <input type="text" v-model="this.values.height">
-        </div>
-        <div class="row">
-        <input type="text" v-model="this.values.long">
+        <input type="text" v-model="this.value">
         </div>
         <select v-model="this.dimensionType">
-            <option>ml</option>
-            <option>cm</option>
-            <option>m</option>
+            <option>mg</option>
+            <option>g</option>
+            <option>kg</option>
+            <option>t</option>
         </select>
 
         <button @click="this.sendRequest">Submit</button>
@@ -26,11 +21,7 @@ export default {
     data() {
         return {
                 dimensionType: '',
-                values: {
-                    width: '',
-                    height: '',
-                    long: '',
-                }
+                value: ''
         }
     },
 
@@ -39,7 +30,7 @@ export default {
             const response = axios.get('/test', {
                 params: {
                     dimensionType: this.dimensionType,
-                    dimensionValues: this.values
+                    dimensionValue: this.value
                 }
             })
                 .then(response => console.log(response))
