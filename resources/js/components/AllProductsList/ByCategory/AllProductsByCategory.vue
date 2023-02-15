@@ -9,10 +9,10 @@
             </div>
             <div class="col-9 products">
                 <div class="all__link">
-                    <a href="/home">products</a>&#187;<a :href="'/' + this.category_name">{{this.category_name.replace('%20', ' ')}}</a>
+                    <a href="/home">products</a>&#187;<a :href="'products/' + this.category_name">{{this.category_name}}</a>
                 </div>
                 <div class="row">
-                    <div class="page_item" :class="{'col-lg': adaptive, 'col-4': non_adaptive}" v-for="item in products">
+                    <div class="page_item" v-for="item in products">
                         <list-item
                             :id="item.id"
                             :email="item.user.email"
@@ -54,7 +54,7 @@ export default {
             products: [],
             adaptive: false,
             non_adaptive: true,
-            category_name: window.location.href.substring(22).replace('%20', ' '),
+            category_name: window.location.href.substring(31),
             subcategories: []
         }
     },
@@ -63,9 +63,17 @@ export default {
     mounted() {
         this.getProducts(this.page)
         this.getSubcategories()
+        this.rightLinks()
     },
 
     methods: {
+        rightLinks() {
+            for (const key in this.category_name.split('%20',)){
+                if(this.category_name.includes('%20')) {
+                    this.category_name = this.category_name.replace('%20', ' ')
+                }
+            }
+        },
 
         async getSubcategories()
         {

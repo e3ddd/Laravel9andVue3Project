@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminPanelController;
 use App\Http\Controllers\Auth\AddProductController;
 use App\Http\Controllers\Auth\AddProductImageController;
 use App\Http\Controllers\Auth\LoginController;
@@ -14,7 +15,6 @@ use App\Http\Controllers\GetUsersController;
 use App\Http\Controllers\IndexRoutesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProductsController;
-use App\Http\Controllers\UserProductsListController;
 use App\Http\Controllers\ViewsStatisticTableController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,16 +31,41 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/test', [\App\Http\Controllers\Test::class, 'index']);
 Route::get('/test/show', [\App\Http\Controllers\Test::class, 'show']);
-Route::get('/fill_all_categories', [CategoriesNavController::class, 'fill']);
+
+Route::controller(IndexRoutesController::class)->group(function () {
+    Route::get('/home', 'index')->name('home');
+    Route::get('/registration', 'registration');
+    Route::get('/login', 'login')->name('login');
+    Route::get('/users_products', 'userProducts')->middleware('auth');
+});
+
+Route::controller(AdminPanelController::class)->group(function() {
+    Route::get('/admin', 'show');
+    Route::get('/admin/createCategory', 'createCategory');
+    Route::get('/admin/editCategory', 'editCategory');
+    Route::get('/admin/deleteCategory', 'deleteCategory');
+    Route::get('/admin/searchCategory', 'searchCategory');
+    Route::get('/admin/createAttr', 'createAttribute');
+});
+
+Route::controller(CategoriesNavController::class)->group(function (){
+    Route::get('/products/{category}', 'showByCategory');
+    Route::get('/products/{category}/{subcategory}', 'showBySubcategory');
+});
+
+Route::controller(GetCategoriesController::class)->group(function (){
+    Route::get('/get_categories', 'get');
+    Route::get('/get_all_categories',  'getAll');
+});
+
+Route::controller(VerificationController::class)->group(function (){
+    Route::get('/email/verify', [VerificationController::class, 'notice'])->middleware('auth')->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
+});
 
 
-Route::get('/home', [IndexRoutesController::class, 'index'])->name('home');
-Route::get('/registration', [IndexRoutesController::class, 'registration']);
-Route::get('/login', [IndexRoutesController::class, 'login'])->name('login');
-Route::get('/users_products', [IndexRoutesController::class, 'userProducts'])->middleware('auth');
 
 Route::post('/reg_form/registration', [RegisterController::class, "store"]);
-
 Route::post('/login/log', [LoginController::class, 'auth']);
 Route::get('/logout', [LogoutController::class, 'logout'])->middleware(['auth', 'verified']);
 
@@ -66,12 +91,3 @@ Route::resource('add_image', AddProductImageController::class)->middleware(['aut
 Route::resource('users', UserController::class);
 //Route::resource('users_products', UserProductsListController::class);
 
-Route::get('/{category}', [CategoriesNavController::class, 'showByCategory']);
-Route::get('/{category}/{subcategory}', [CategoriesNavController::class, 'showBySubcategory']);
-Route::post('/get_by_category', [CategoriesNavController::class, 'get']);
-Route::post('/get_categories', [GetCategoriesController::class, 'get']);
-Route::post('/get_subcategories', [GetCategoriesController::class, 'getSub']);
-
-
-Route::get('/email/verify', [VerificationController::class, 'notice'])->middleware('auth')->name('verification.notice');
-Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');

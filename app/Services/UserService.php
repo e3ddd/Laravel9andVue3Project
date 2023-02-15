@@ -25,7 +25,7 @@ class UserService
 
     public function create($userEmail, $userPassword)
     {
-        return $this->userRepository->createUSer($userEmail, $userPassword);
+        return $this->userRepository->createUser($userEmail, $userPassword);
     }
 
     public function update($userId, $userEmail)

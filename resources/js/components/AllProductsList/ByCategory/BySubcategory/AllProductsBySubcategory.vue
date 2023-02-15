@@ -4,11 +4,11 @@
             <div class="col-10 products">
                 <div class="all__link">
                     <a href="/home">products</a>&#187;
-                    <a :href="'/' + this.categories.split('/', 2)[0]">{{this.categories.split('/', 2)[0].replace('%20', ' ')}}</a>&#187;
-                    <a :href="'/' + this.categories.split('/', 2)[1]">{{this.categories.split('/', 2)[1].replace('%20', ' ')}}</a>
+                    <a :href="'/' + this.categories[0] + '/' + this.categories[1]">{{this.categories[1]}}</a>&#187;
+                    <a :href="'/' + this.categories[0] + '/' + this.categories[1] + '/' + this.categories[2]">{{this.categories[2]}}</a>
                 </div>
                 <div class="row">
-                    <div class="page_item" :class="{'col-lg': adaptive, 'col-4': non_adaptive}" v-for="item in products">
+                    <div class="page_item" v-for="item in products">
                         <list-item
                             :id="item.id"
                             :email="item.user.email"
@@ -52,17 +52,30 @@ export default {
             non_adaptive: true,
             categories: window.location.href
                 .replace(/^http:\/\/127.0.0.1:8000\//, '')
-                .replace('%20', ' '),
         }
     },
 
 
     mounted() {
+        this.rightLinks()
         this.getProducts(this.page)
     },
 
     methods: {
-
+        rightLinks() {
+            const arr = this.categories.split('/')
+            for (const key in arr){
+                if(arr[key].includes('%20')) {
+                    if(arr[key].split('%20')){
+                        for (const keyKey in arr[key]) {
+                            arr[key] = arr[key].replace('%20', ' ')
+                        }
+                    }
+                    arr[key] = arr[key].replace('%20', ' ')
+                }
+            }
+            this.categories = arr
+        },
         onUpdate() {
             this.products = []
         },

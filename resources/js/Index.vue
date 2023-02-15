@@ -2,9 +2,8 @@
     <div class="container-fluid page">
             <main-categories-list
                 :categories="this.categories"
+                :subcategories="this.subcategories"
             />
-
-
         </div>
 </template>
 
@@ -18,9 +17,6 @@ export default {
 
     data() {
         return {
-            limit: 9,
-            total: 1,
-            page: 1,
             products: [],
             adaptive: false,
             non_adaptive: true,
@@ -44,10 +40,10 @@ export default {
 
         async getCategories()
         {
-            const response = axios.post('get_categories')
+            const response = axios.get('/get_all_categories')
                 .then((response) => {
-                    console.log(response)
-                    this.categories = response.data
+                    this.categories = response.data.filter(item => item.parent_id == null)
+                    this.subcategories = response.data.filter(item => item.parent_id !== null)
                 })
         },
 
@@ -66,7 +62,6 @@ export default {
         },
 
         async getProducts(page) {
-            console.log(page)
             const response = await axios.get('/products_list?page=' + page)
                 .then((response) => {
                     this.total = Math.ceil(response.data.total / this.limit)

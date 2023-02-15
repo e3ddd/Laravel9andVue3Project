@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Enums;
+namespace App\Http\Enums\MagnitudeEnums;
 
 use App\Http\Interfaces\Enums\EnumCoefficients;
 
@@ -21,8 +21,4 @@ enum WeightEnum: string implements EnumCoefficients
         };
     }
 
-    public function convertTo($value, WeightEnum $from, WeightEnum $to)
-    {
-        return $value * ($from->coefficient() / $to->coefficient());
-    }
 }

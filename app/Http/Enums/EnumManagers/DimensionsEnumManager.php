@@ -2,7 +2,7 @@
 
 namespace App\Http\Enums\EnumManagers;
 
-use App\Http\Enums\DimensionsEnum;
+use App\Http\Enums\MagnitudeEnums\DimensionsEnum;
 use App\Http\Interfaces\Enums\EnumManager;
 
 class DimensionsEnumManager implements EnumManager
@@ -14,6 +14,11 @@ class DimensionsEnumManager implements EnumManager
     {
         $this->from = $from;
         $this->value = $value;
+    }
+
+    public function convertTo(DimensionsEnum $to)
+    {
+        return $this->value * ($this->from->coefficient() / $to->coefficient());
     }
     public function toString(): string
     {

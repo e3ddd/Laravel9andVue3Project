@@ -2,7 +2,7 @@
 
 namespace App\Http\Enums\EnumManagers;
 
-use App\Http\Enums\CapacityEnum;
+use App\Http\Enums\MagnitudeEnums\CapacityEnum;
 use App\Http\Interfaces\Enums\EnumManager;
 
 class CapacityEnumManager implements EnumManager
@@ -15,6 +15,10 @@ class CapacityEnumManager implements EnumManager
         $this->value = $value;
     }
 
+    public function convertTo(CapacityEnum $to)
+    {
+        return $this->value * ($this->from->coefficient() / $to->coefficient());
+    }
     public function toString(): string
     {
         return $this->value . " " . $this->from->value;

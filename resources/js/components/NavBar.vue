@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid d-flex p-0 index__btns">
         <div class="col-2">
-            <a href="/home"><img src="../logo.png" alt="Logo"></a>
+            <a href="/home"><img src="" alt="Logo"></a>
         </div>
         <div class="col-8 d-flex justify-content-center search">
             <div class="reg_log" v-if="this.userEmail === undefined">
@@ -10,9 +10,9 @@
                 |
                 <a href="/login">Login</a>
             </div>
-            <form>
-                <input type="text" name="search" v-model="this.search" placeholder="Search product...">
-                <button class="searchBtn" @click="this.searchProduct">Search</button>
+            <form @submit.prevent>
+                <input type="search" name="search" v-model="this.search" placeholder="Search product...">
+                <button class="searchBtn" @click="searchProduct">Search</button>
             </form>
         </div>
         <div class="col-2 authUser" v-if="this.userEmail !== undefined">
