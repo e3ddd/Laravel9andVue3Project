@@ -11,7 +11,7 @@ class AddProductController extends Controller
 {
     public function index()
     {
-        return view('AddProduct/layout');
+        return view('AddProduct.layout');
     }
 
 

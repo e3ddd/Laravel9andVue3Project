@@ -3,6 +3,7 @@ import './bootstrap';
 
 import {createApp} from 'vue'
 
+import AdminPanel from "./components/AdminPanel/AdminPanel.vue";
 import TestForm from "./components/TestForm.vue";
 import Index from './Index.vue'
 import NavBar from "./components/NavBar.vue";
@@ -18,6 +19,7 @@ import AllProductsBySubcategory
     from "./components/AllProductsList/ByCategory/BySubcategory/AllProductsBySubcategory.vue";
 
 
+createApp(AdminPanel).mount('#admin-panel')
 createApp(TestForm).mount('#test-form')
 createApp(Index).mount("#index")
 createApp(NavBar).mount("#nav-bar")
@@ -30,3 +32,4 @@ createApp(ProductList).mount("#product-list")
 createApp(ProductsViewStatistic).mount("#product-view-statistic")
 createApp(AllProductsByCategory).mount('#all-products-by-category')
 createApp(AllProductsBySubcategory).mount('#all-products-by-subcategory')
+

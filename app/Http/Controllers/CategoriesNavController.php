@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Category;
-use App\Models\Subcategory;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Enums\EnumManagers;
 
-use App\Http\Enums\MemoryValuesEnum;
+use App\Http\Enums\MagnitudeEnums\MemoryValuesEnum;
 use App\Http\Interfaces\Enums\EnumManager;
 
 class MemoryEnumManager implements EnumManager
@@ -14,6 +14,11 @@ class MemoryEnumManager implements EnumManager
     {
         $this->from = $from;
         $this->value = $value;
+    }
+
+    public function convertTo(MemoryValuesEnum $to)
+    {
+        return $this->value * ($this->from->coefficient() / $to->coefficient());
     }
     public function toString(): string
     {

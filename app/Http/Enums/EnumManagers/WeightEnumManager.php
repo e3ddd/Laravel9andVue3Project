@@ -2,7 +2,7 @@
 
 namespace App\Http\Enums\EnumManagers;
 
-use App\Http\Enums\WeightEnum;
+use App\Http\Enums\MagnitudeEnums\WeightEnum;
 use App\Http\Interfaces\Enums\EnumManager;
 
 class WeightEnumManager implements EnumManager
@@ -14,6 +14,11 @@ class WeightEnumManager implements EnumManager
     {
         $this->from = $from;
         $this->value = $value;
+    }
+
+    public function convertTo(WeightEnum $to)
+    {
+        return $this->value * ($this->from->coefficient() / $to->coefficient());
     }
     public function toString(): string
     {

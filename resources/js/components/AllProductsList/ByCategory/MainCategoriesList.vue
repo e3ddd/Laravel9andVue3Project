@@ -3,8 +3,8 @@
         <div :class="category.name" class="link col-3" v-for="category in categories">
             <div class="col-sm-auto">
                 <a :href="category.name">{{category.name}}</a>
-                <div class="sub__links" v-for="subcategory in category.subcategory">
-                    <a :href="category.name + '/' + subcategory.name">{{subcategory.name}}</a>
+                <div class="sub__links" v-for="subcategory in subcategories">
+                    <a :href="category.name + '/' + subcategory.name" v-if="subcategory.parent_id === category.id">{{subcategory.name}}</a>
                 </div>
             </div>
         </div>
@@ -13,8 +13,10 @@
 
 <script>
 export default {
+
     props: {
         categories: Array,
+        subcategories: Array,
     },
 
     methods: {

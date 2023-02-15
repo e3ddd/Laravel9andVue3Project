@@ -11,7 +11,7 @@
                 <a href="/login">Login</a>
             </div>
             <form>
-                <input type="text" name="search" v-model="this.search" placeholder="Search product...">
+                <input type="search" name="search" v-model="this.search" placeholder="Search product...">
                 <button class="searchBtn" @click="this.searchProduct">Search</button>
             </form>
         </div>

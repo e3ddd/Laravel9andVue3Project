@@ -3,14 +3,14 @@
 namespace App\Http\Factories\Convert;
 
 
-use App\Http\Enums\CapacityEnum;
-use App\Http\Enums\DimensionsEnum;
 use App\Http\Enums\EnumManagers\CapacityEnumManager;
 use App\Http\Enums\EnumManagers\DimensionsEnumManager;
 use App\Http\Enums\EnumManagers\MemoryEnumManager;
 use App\Http\Enums\EnumManagers\WeightEnumManager;
-use App\Http\Enums\MemoryValuesEnum;
-use App\Http\Enums\WeightEnum;
+use App\Http\Enums\MagnitudeEnums\CapacityEnum;
+use App\Http\Enums\MagnitudeEnums\DimensionsEnum;
+use App\Http\Enums\MagnitudeEnums\MemoryValuesEnum;
+use App\Http\Enums\MagnitudeEnums\WeightEnum;
 
 class ConvertValueManager
 {
