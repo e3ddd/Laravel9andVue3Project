@@ -2,8 +2,7 @@
         <div class="col-md-auto links">
             <div :class="category.name" class="link" v-for="category in categories">
                 <div class="col-sm-auto">
-                    <a :href="'/' + mainCategory + '/' + category.name">{{category.name}}</a>
-
+                    <a :href="'/products' + '/' + mainCategory + '/' + category.name">{{category.name}}</a>
                 </div>
             </div>
         </div>

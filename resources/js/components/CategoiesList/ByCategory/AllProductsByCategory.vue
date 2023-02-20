@@ -60,7 +60,7 @@ export default {
     },
 
 
-    mounted() {
+    created() {
         this.getProducts(this.page)
         this.getSubcategories()
         this.rightLinks()
@@ -77,11 +77,17 @@ export default {
 
         async getSubcategories()
         {
-            const response = await axios.post('/get_subcategories', {
-                category: this.category_name
+            const response = await axios.get('/get_subcategories', {
+                params: {
+                    category: this.category_name.replace('%20', ' ')
+                }
             })
                 .then((response) => {
+                    console.log(response)
                     this.subcategories = response.data
+                })
+                .catch((err) => {
+                    console.log(err)
                 })
         },
 
@@ -90,16 +96,7 @@ export default {
         },
 
         async getProducts(page) {
-            const response = await axios.post('/get_by_category?page=' + page,
-                 {
-                    category: this.category_name
-                }
-            )
-                .then((response) => {
-                    console.log(response)
-                    this.total = Math.ceil(response.data.total / this.limit)
-                    this.products = response.data.data
-                })
+
         },
     }
 }

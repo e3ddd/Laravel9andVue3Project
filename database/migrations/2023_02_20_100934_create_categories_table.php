@@ -1,3 +1,5 @@
+
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -13,20 +15,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users_products', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->integer('category_id');
-            $table->integer('subcategory_id');
             $table->string('name');
-            $table->float('price');
-            $table->string('producer');
+            $table->integer('parent_id')->nullable();
             $table->timestamps();
 
-            $table->foreignId('user_id')
-                ->constrained('users')
-                ->onDelete('restrict')
-                ->onUpdate('cascade')
-            ;
         });
 
     }
@@ -38,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_products');
+        Schema::dropIfExists('categories');
     }
 };

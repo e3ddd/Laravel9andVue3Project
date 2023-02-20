@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import MainCategoriesList from "./components/AllProductsList/ByCategory/MainCategoriesList.vue";
+import MainCategoriesList from "./components/CategoiesList/ByCategory/MainCategoriesList.vue";
 import Math from "lodash";
 export default {
     components: {
@@ -62,11 +62,7 @@ export default {
         },
 
         async getProducts(page) {
-            const response = await axios.get('/products_list?page=' + page)
-                .then((response) => {
-                    this.total = Math.ceil(response.data.total / this.limit)
-                    this.products = response.data.data
-                })
+
         },
     }
 }

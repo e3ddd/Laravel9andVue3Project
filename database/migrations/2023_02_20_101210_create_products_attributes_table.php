@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId('subcategory_id')
                 ->constrained('categories')
                 ->onDelete('restrict')
-                ->onUpdate('cascade')
+                ->onUpdate('restrict')
             ;
         });
 

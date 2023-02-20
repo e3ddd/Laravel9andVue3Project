@@ -1,5 +1,4 @@
 <template>
-    <admin-navbar/>
     <div class="container">
         <div class="row">
             <div class="col-4">
@@ -29,13 +28,11 @@
 import CategoriesList from "./Categories/CategoriesList.vue";
 import CreateCategory from "./Categories/CreateCategory.vue";
 import CreateAttribute from "./Attributes/CreateAttribute.vue";
-import AdminNavbar from "./AdminNavbar.vue";
 export default {
     components: {
         CategoriesList,
         CreateCategory,
         CreateAttribute,
-        AdminNavbar
     },
 
     data() {
@@ -49,8 +46,8 @@ export default {
         },
 
     methods: {
-     getCategories() {
-            const response = axios.get('/get_all_categories')
+    async getCategories() {
+            const response = await axios.get('/get_all_categories')
                 .then((response) => {
                     this.categories = response.data
                 })

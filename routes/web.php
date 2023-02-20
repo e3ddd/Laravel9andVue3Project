@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\AdminPanelController;
 use App\Http\Controllers\Auth\AddProductController;
 use App\Http\Controllers\Auth\AddProductImageController;
+use App\Http\Controllers\Auth\Admin\CategoriesAndAttributesController;
+use App\Http\Controllers\Auth\Admin\ProductsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\PersonalAccountController;
@@ -39,13 +40,18 @@ Route::controller(IndexRoutesController::class)->group(function () {
     Route::get('/users_products', 'userProducts')->middleware('auth');
 });
 
-Route::controller(AdminPanelController::class)->group(function() {
+Route::controller(CategoriesAndAttributesController::class)->group(function() {
     Route::get('/admin', 'show');
     Route::get('/admin/createCategory', 'createCategory');
     Route::get('/admin/editCategory', 'editCategory');
     Route::get('/admin/deleteCategory', 'deleteCategory');
     Route::get('/admin/searchCategory', 'searchCategory');
     Route::get('/admin/createAttr', 'createAttribute');
+});
+
+Route::controller(ProductsController::class)->group(function() {
+    Route::get('/admin/products', 'show');
+    Route::get('/get_attributes', 'getAttributes');
 });
 
 Route::controller(CategoriesNavController::class)->group(function (){
@@ -56,6 +62,7 @@ Route::controller(CategoriesNavController::class)->group(function (){
 Route::controller(GetCategoriesController::class)->group(function (){
     Route::get('/get_categories', 'get');
     Route::get('/get_all_categories',  'getAll');
+    Route::get('/get_subcategories', 'getSubcategoriesBuyCategoryId');
 });
 
 Route::controller(VerificationController::class)->group(function (){

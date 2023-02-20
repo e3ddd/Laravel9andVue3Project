@@ -13,7 +13,8 @@ class ProductAttribute extends Model
     protected $fillable = [
         'name',
         'dimension',
-        'subcategory_id'
+        'subcategory_id',
+        'name_id'
     ];
 
     public function category()

@@ -46,8 +46,8 @@ export default {
     },
 
     methods: {
-        createCategory() {
-                const response = axios.get('/admin/createCategory', {
+       async createCategory() {
+                const response = await axios.get('/admin/createCategory', {
                 params: {
                     categoryName: this.categoryName,
                     subcategoryName: this.subcategoryName,

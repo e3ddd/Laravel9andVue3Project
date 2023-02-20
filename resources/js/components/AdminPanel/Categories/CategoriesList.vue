@@ -87,9 +87,9 @@ export default {
             this.categoriesList = []
         },
 
-        getCategoriesList(page) {
+       async getCategoriesList(page) {
             this.showLoading = true
-            const response = axios.get('/get_categories?page=' + page)
+            const response = await axios.get('/get_categories?page=' + page)
                 .then((response) => {
                     this.categoriesList = response.data.data
                     this.total = Math.ceil(response.data.total / this.limit)
@@ -100,9 +100,9 @@ export default {
                 })
         },
 
-        searchCategory() {
+      async  searchCategory() {
             this.showLoading = true
-            const response = axios.get('/admin/searchCategory', {
+            const response = await axios.get('/admin/searchCategory', {
                 params: {
                     search: this.search
                 }
@@ -117,8 +117,8 @@ export default {
                 })
         },
 
-        del(id) {
-            const response = axios.get('/admin/deleteCategory',
+        async del(id) {
+            const response = await axios.get('/admin/deleteCategory',
                 {
                     params: {
                         categoryId: id

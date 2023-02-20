@@ -53,8 +53,8 @@ export default {
 
         },
 
-        edit() {
-            const response = axios.get('/admin/editCategory', {
+       async edit() {
+            const response = await axios.get('/admin/editCategory', {
                 params: {
                     categoryId: this.id,
                     newCategoryName: this.newCategory,

@@ -76,8 +76,8 @@ export default {
             this.categoriesList = []
         },
 
-        getCategoriesList(page) {
-            const response = axios.get('/get_categories?page=' + page)
+       async getCategoriesList(page) {
+            const response = await axios.get('/get_categories?page=' + page)
                 .then((response) => {
                     this.categoriesList = response.data.data
                     this.total = Math.ceil(response.data.total / this.limit)
@@ -88,8 +88,8 @@ export default {
                 })
         },
 
-        del(id) {
-            const response = axios.get('/admin/deleteCategory',
+        async del(id) {
+            const response = await axios.get('/admin/deleteCategory',
                 {
                     params: {
                         categoryId: id

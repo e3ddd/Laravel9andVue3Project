@@ -4,6 +4,8 @@ import './bootstrap';
 import {createApp} from 'vue'
 
 import AdminPanel from "./components/AdminPanel/AdminPanel.vue";
+import AdminNavbar from "./components/AdminPanel/AdminNavbar.vue";
+import ProductsPage from "./components/AdminPanel/Products/ProductsPage.vue";
 import TestForm from "./components/TestForm.vue";
 import Index from './Index.vue'
 import NavBar from "./components/NavBar.vue";
@@ -14,12 +16,14 @@ import UserList from "./components/UserList.vue";
 import AddProducts from "./components/AddProducts.vue";
 import ProductList from "./components/ProductList.vue";
 import ProductsViewStatistic from "./components/ProductsViewStatistic.vue";
-import AllProductsByCategory from "./components/AllProductsList/ByCategory/AllProductsByCategory.vue";
+import AllProductsByCategory from "./components/CategoiesList/ByCategory/AllProductsByCategory.vue";
 import AllProductsBySubcategory
-    from "./components/AllProductsList/ByCategory/BySubcategory/AllProductsBySubcategory.vue";
+    from "./components/CategoiesList/ByCategory/BySubcategory/AllProductsBySubcategory.vue";
 
 
 createApp(AdminPanel).mount('#admin-panel')
+createApp(AdminNavbar).mount('#admin-navbar')
+createApp(ProductsPage).mount('#product-page')
 createApp(TestForm).mount('#test-form')
 createApp(Index).mount("#index")
 createApp(NavBar).mount("#nav-bar")

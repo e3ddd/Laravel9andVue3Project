@@ -13,18 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('hash_id')->unique();
-            $table->string('user_id');
+            $table->string('name');
+            $table->integer('subcategory_id');
             $table->timestamps();
 
-            $table->foreignId('product_id')
-                ->constrained('users_products')
+            $table->foreignId('category_id')
+                ->constrained('categories')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
         });
-
     }
 
     /**
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('products');
     }
 };

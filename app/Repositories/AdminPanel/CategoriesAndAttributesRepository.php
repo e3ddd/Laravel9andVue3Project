@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\AdminPanel;
 
 use App\Models\Category;
 use App\Models\ProductAttribute;
 
-class AdminRepository
+class CategoriesAndAttributesRepository
 {
-    public function createCategory(string $categoryName, string $subcategoryName, bool $subCheck)
+    public function createCategory(string $categoryName, string|null $subcategoryName, bool|null $subCheck)
     {
        if($subCheck){
                Category::create([
                    'name' => $subcategoryName,
-                   'parent_id' => Category::where('name', $categoryName)->first()->toArray()['id']
+                   'parent_id' => Category::where('name', $categoryName)->first()->id
                ]);
        }else{
            if(Category::where('name', $categoryName)->doesntExist()){
@@ -61,7 +61,7 @@ class AdminRepository
         ProductAttribute::create([
             'subcategory_id' => $subcategoryId,
             'name' => $attrName,
-            'dimension' => $attrValue
+            'dimension' => $attrValue,
         ]);
     }
 }
