@@ -21,4 +21,5 @@ class ProductAttribute extends Model
     {
         return $this->belongsTo(Category::class, 'subcategory_id');
     }
+
 }

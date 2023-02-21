@@ -1,5 +1,5 @@
 <template>
-        <input :type="type" :value="modelValue" @input="updateInput" :name="name" class="form-control input-sm" :placeholder="placeholder">
+        <input :type="type" :value="modelValue" @input="updateInput" :name="name" class="" :placeholder="placeholder">
 </template>
 
 <script>
@@ -22,6 +22,5 @@ export default {
 <style scoped>
 input {
 
-    border: 1px solid black
 }
 </style>

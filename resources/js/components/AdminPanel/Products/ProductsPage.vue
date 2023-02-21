@@ -1,12 +1,10 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-4">
+            <div class="col-md-auto">
                 <create-product/>
             </div>
-            <div class="col-8">
 
-            </div>
         </div>
     </div>
 </template>
