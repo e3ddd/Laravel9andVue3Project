@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('subcategory_id');
+            $table->string('price');
+            $table->string('producer');
+            $table->string('description');
             $table->timestamps();
 
-            $table->foreignId('category_id')
+            $table->foreignId('subcategory_id')
                 ->constrained('categories')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');

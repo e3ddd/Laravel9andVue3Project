@@ -33,11 +33,11 @@ class CategoriesAndAttributesService
         return $this->categoriesAndAttributesRepository->searchCategory($search);
     }
 
-    public function createAttribute($subcategory, $attrName, $attrValue)
+    public function createAttribute($subcategoryId, $attrName, $attrValue)
     {
         $attrName = strtolower($attrName);
         $attrValue = strtolower($attrValue);
 
-        $this->categoriesAndAttributesRepository->createAttribute($subcategory, $attrName, $attrValue);
+        $this->categoriesAndAttributesRepository->createAttribute($subcategoryId, $attrName, $attrValue, 0);
     }
 }

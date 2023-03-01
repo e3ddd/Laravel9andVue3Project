@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('products_attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('dimension');
+            $table->string('value')->nullable();
+            $table->integer('order')->nullable();
             $table->timestamps();
 
             $table->foreignId('subcategory_id')

@@ -4,14 +4,14 @@
        <div class="col">
            <label for="select">Select category:</label>
            <select name="" id="" class="select" v-model="this.categoryName">
-               <option v-for="category in categories.filter(item => item.parent_id == null)">{{category.id}}, {{category.name}}</option>
+               <option v-for="category in categories.filter(item => item.parent_id == null)">{{category.name}}</option>
            </select>
        </div>
 
        <div class="col" v-if="this.categoryName !== ''">
            <label for="select">Select subcategory: </label>
            <select name="" id="" class="select" v-model="this.subcategoryName">
-               <option v-for="category in categories.filter(item => item.parent_id == this.categoryName.match('^\\d+')[0])">{{category.name}}</option>
+               <option v-for="category in categories.filter(item => item.parent_id == this.categoryId)">{{category.name}}</option>
            </select>
        </div>
        <div class="col">
@@ -19,7 +19,7 @@
            <input id="attributeName" type="text" v-model="this.attributeName">
        </div>
        <div class="col">
-           <label for="attributeDimension">Enter characteristic dimension: <br><span>(number,string,centimeters ...)</span></label>
+           <label for="attributeDimension">Enter characteristic dimension: <br><span>(integer,string)</span></label>
            <input id="attributeDimension" type="text" v-model="this.attributeValue">
        </div>
            <div class="error d-flex justify-content-left">
@@ -45,6 +45,8 @@ export default {
         return {
             categoryName: '',
             subcategoryName: '',
+            categoryId: '',
+            subcategoryId: '',
             attributeName: '',
             attributeValue: '',
             err: '',
@@ -55,12 +57,25 @@ export default {
         categories: Array,
     },
 
+    watch: {
+        categoryName(newName, oldName){
+            let categories = this.categories.filter(item => item.name == newName)
+            this.categoryId = categories[0].id
+        },
+
+        subcategoryName(newName, oldName){
+            let subcategories = this.categories.filter(item => item.name == newName)
+            this.subcategoryId = subcategories[0].id
+        },
+
+    },
+
     methods: {
         createAttr()
         {
             const response = axios.get('/admin/createAttr', {
                 params: {
-                    subcategoryName: this.subcategoryName,
+                    subcategoryId: this.subcategoryId,
                     attrName: this.attributeName,
                     attrValue: this.attributeValue,
                 }

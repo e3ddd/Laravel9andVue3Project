@@ -13,19 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products_attributes_values', function (Blueprint $table) {
+        Schema::create('products_size_attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('string_value')->nullable();
-            $table->integer('integer_value')->nullable();
+            $table->string('value');
             $table->timestamps();
 
-
-            $table->foreignId('attribute_id')
-                ->constrained('products_attributes')
+            $table->foreignId('subcategory_id')
+                ->constrained('categories')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
         });
+
+
     }
 
     /**
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products_attributes_values');
+        Schema::dropIfExists('product_size_attribute');
     }
 };

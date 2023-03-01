@@ -9,12 +9,16 @@ class ProductAttributeValue extends Model
 {
     use HasFactory;
 
-    protected $table = "product_attribute_value";
+    protected $table = "products_attributes_values";
 
     protected $fillable = [
         'name',
-        'string_value',
-        'number_value'
+        'value',
+        'product_id'
     ];
+
+    public function product() {
+        return $this->hasOne(Product::class, 'product_id');
+    }
 
 }

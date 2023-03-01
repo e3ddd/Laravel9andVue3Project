@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_size', function (Blueprint $table) {
+        Schema::create('products_attributes_values', function (Blueprint $table) {
             $table->id();
-            $table->float('long')->nullable();
-            $table->float('width')->nullable();
-            $table->float('height')->nullable();
+            $table->string('name');
+            $table->string('value');
             $table->timestamps();
+
 
             $table->foreignId('product_id')
                 ->constrained('products')
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_size');
+        Schema::dropIfExists('products_attributes_values');
     }
 };

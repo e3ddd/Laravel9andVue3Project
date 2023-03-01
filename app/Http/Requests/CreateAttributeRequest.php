@@ -24,7 +24,6 @@ class CreateAttributeRequest extends FormRequest
     public function rules()
     {
         return [
-            'subcategoryName' => 'required|string',
             'attrName' => 'required|string',
             'attrValue' => 'required|string'
         ];

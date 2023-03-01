@@ -26,7 +26,7 @@ class CategoriesAndAttributesRepository
 
     public function editCategory(int $categoryId, string $newCategoryName)
     {
-            return Category::find($categoryId)->update(['name' => $newCategoryName]);
+        return Category::find($categoryId)->update(['name' => $newCategoryName]);
     }
 
     public function deleteCategory($categoryId)
@@ -48,20 +48,26 @@ class CategoriesAndAttributesRepository
         return Category::where('name', 'like', $search . '%')->paginate(10);
     }
 
-    public function createAttribute($subcategory, $attrName, $attrValue)
+    public function createAttribute($subcategoryId, $attrName, $attrValue, $default)
     {
-        $subcategoryId = Category::where('name', $subcategory)->first()->toArray()['id'];
-
         if(ProductAttribute::where('subcategory_id', $subcategoryId)
             ->where('name', $attrName)
+            ->where('default', 0)
             ->exists()){
             throw new \Exception('This attribute already exist !');
+        }
+        if(ProductAttribute::where('subcategory_id', $subcategoryId)
+            ->where('name', $attrName)
+            ->where('default', 1)
+            ->exists()){
+            return 0;
         }
 
         ProductAttribute::create([
             'subcategory_id' => $subcategoryId,
             'name' => $attrName,
-            'dimension' => $attrValue,
+            'value' => $attrValue,
+            'default' => $default,
         ]);
     }
 }

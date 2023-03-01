@@ -2,15 +2,11 @@
 
 namespace App\Repositories\AdminPanel;
 
-use App\Http\Enums\MagnitudeEnums\CapacityEnum;
-use App\Http\Enums\MagnitudeEnums\DimensionsEnum;
-use App\Http\Enums\MagnitudeEnums\WeightEnum;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductAttributeValue;
-use App\Models\ProductSize;
-use Exception;
+
 
 class ProductRepository
 {
@@ -18,65 +14,72 @@ class ProductRepository
     {
         $subcategoryId = Category::where('name', $subcategory)->first()->id;
 
-        $productAttributes = ProductAttribute::where('subcategory_id', $subcategoryId)->get();
-        foreach ($productAttributes as $attribute){
-            switch ($attribute['name']){
-                case 'size':
-                    foreach (DimensionsEnum::cases() as $case){
-                        if($case->name == $attribute['dimension']){
-                            $productAttributes[] = ['alt_dimension' => $case->value];
-                        }
-                    }
-                case 'weight':
-                    foreach (WeightEnum::cases() as $case){
-                        if($case->name == $attribute['dimension']){
-                            $productAttributes[] = ['alt_weight' => $case->value];
-                        }
-                    }
-                case 'capacity':
-                    foreach (CapacityEnum::cases() as $case){
-                        if($case->name == $attribute['dimension']){
-                            $productAttributes[] = ['alt_capacity' => $case->value];
-                        }
-                    }
-            }
-        }
-        return $productAttributes;
+        return ProductAttribute::where('subcategory_id', $subcategoryId)->get();
     }
 
-    public function storeProduct($productName, $productCategory)
+    public function getProductByName($productName)
     {
-            Product::create([
-                'name' => $productName,
-                'category_id' => $productCategory
+        return Product::where('name', $productName)->first();
+    }
+
+    public function getProductById($productId)
+    {
+        return Product::find($productId);
+    }
+
+    public function getAllProducts()
+    {
+        return Product::all();
+    }
+
+    public function getProductByCategory()
+    {
+
+    }
+
+    public function storeAttributesValues($attrName, $attrValue, $prodId)
+    {
+        if (empty(ProductAttributeValue::where('product_id', $prodId)->where('name', $attrName)->get()->toArray())) {
+            ProductAttributeValue::create([
+                'name' => $attrName,
+                'value' => $attrValue,
+                'product_id' => $prodId,
             ]);
-    }
-
-    public function storeAttrOrder($subcategory, $attrOrder)
-    {
-        $subcategoryId = Category::where('name', $subcategory)->first()->id;
-
-            foreach ($attrOrder as $key => $value){
-                ProductAttribute::where('subcategory_id', $subcategoryId)->where('name', $key)->update(['order' => $value]);
-            }
-
-    }
-
-    public function storeProductSize($productName, $productSize)
-    {
-        $prodSize = $productSize;
-        $prodSize['product_id'] = Product::where('name', $productName)->first()->toArray()['id'];
-        ProductSize::create($prodSize);
-    }
-
-    public function storeProductAttrValue($attrValues)
-    {
-        foreach ($attrValues as $key => $value){
-           ProductAttributeValue::create([
-               'name' => $key,
-
-           ]);
+        } else {
+            throw new \Exception('Attribute value exist !');
         }
+    }
+
+    public function getProductBySubcategory($subcategoryId)
+    {
+        return Product::where('subcategory_id', $subcategoryId)->get();
+    }
+
+    public function storeProduct($productName, $productPrice, $productProducer, $productDescription, $subcategoryId)
+    {
+        Product::create([
+            'name' => $productName,
+            'price' => $productPrice,
+            'producer' => $productProducer,
+            'description' => $productDescription,
+            'subcategory_id' => $subcategoryId
+        ]);
+
+    }
+
+    public function updateAttrOrder($subcategoryId, $attrName, $order)
+    {
+        ProductAttribute::where('subcategory_id', $subcategoryId)->where('name', $attrName)->update(['order' => $order]);
+    }
+
+    public function storeProdAttrValues($productName, $attrs)
+    {
+
+    }
+
+    public function storeProductSize()
+    {
+
     }
 
 

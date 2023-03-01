@@ -42,6 +42,12 @@ class CategoriesAndAttributesController extends Controller
     public function createAttribute(CreateAttributeRequest $request)
     {
         $categoriesAndAttributesRepositoryService = app(CategoriesAndAttributesService::class);
-        $categoriesAndAttributesRepositoryService->createAttribute($request->subcategoryName, $request->attrName, $request->attrValue);
+        $categoriesAndAttributesRepositoryService->createAttribute($request->subcategoryId, $request->attrName, $request->attrValue);
+    }
+
+    public function createSizeAttribute(Request $request)
+    {
+        $categoriesAndAttributesRepositoryService = app(CategoriesAndAttributesService::class);
+
     }
 }

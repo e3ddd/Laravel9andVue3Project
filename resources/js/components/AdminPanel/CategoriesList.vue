@@ -1,7 +1,4 @@
 <template>
-    <div class="row title">
-        <h4 class="d-flex justify-content-center">Categories List</h4>
-    </div>
     <div class="container categoriesList">
         <div class="row">
             <div class="col-3">
