@@ -67,17 +67,14 @@ class ProductRepository
 
     }
 
-    public function updateAttrOrder($subcategoryId, $attrName, $order)
+    public function updateAttrOrder($subcategoryId, $attrs)
     {
-        ProductAttribute::where('subcategory_id', $subcategoryId)->where('name', $attrName)->update(['order' => $order]);
+        foreach ($attrs as $attr){
+            ProductAttribute::where('subcategory_id', $subcategoryId)->where('name', $attr['name'])->update(['order' => $attr['order']]);
+        }
     }
 
     public function storeProdAttrValues($productName, $attrs)
-    {
-
-    }
-
-    public function storeProductSize()
     {
 
     }

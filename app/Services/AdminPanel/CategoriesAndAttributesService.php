@@ -36,8 +36,12 @@ class CategoriesAndAttributesService
     public function createAttribute($subcategoryId, $attrName, $attrValue)
     {
         $attrName = strtolower($attrName);
-        $attrValue = strtolower($attrValue);
 
         $this->categoriesAndAttributesRepository->createAttribute($subcategoryId, $attrName, $attrValue, 0);
+    }
+
+    public function getMagnitudeValues($magnitudeName)
+    {
+        return $this->categoriesAndAttributesRepository->getMagnitudeValues($magnitudeName);
     }
 }

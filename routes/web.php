@@ -48,13 +48,14 @@ Route::controller(CategoriesAndAttributesController::class)->group(function() {
     Route::get('/admin/searchCategory', 'searchCategory');
     Route::get('/admin/createAttr', 'createAttribute');
     Route::get('/admin/createSizeAttr', 'createSizeAttribute');
+    Route::post('/admin/get_magnitude_values', 'getMagnitudeValues');
 });
 
 Route::controller(ProductsController::class)->group(function() {
     Route::get('/admin/products', 'show');
     Route::get('/get_attributes', 'getAttributes');
     Route::get('/get_products_by_subcategory', 'getProductBySubcategory');
-    Route::post('/store_product', 'storeProduct');
+    Route::post('/create_product', 'storeProduct');
     Route::post('/store_product_attrs_values', 'storeAttributesValues');
 });
 

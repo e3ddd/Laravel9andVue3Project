@@ -14,14 +14,26 @@
                <option v-for="category in categories.filter(item => item.parent_id == this.categoryId)">{{category.name}}</option>
            </select>
        </div>
-       <div class="col">
+
+       <div class="col attribute">
            <label for="attributeName">Enter characteristic name:</label>
            <input id="attributeName" type="text" v-model="this.attributeName">
        </div>
-       <div class="col">
-           <label for="attributeDimension">Enter characteristic dimension: <br><span>(integer,string)</span></label>
-           <input id="attributeDimension" type="text" v-model="this.attributeValue">
-       </div>
+           <div class="col checkbox_magnitude">
+               <label style="padding-right: 10px;" for="">Magnitude</label>
+               <input type="checkbox" v-model="this.dimensionCheck">
+               <select class="small_select" @change="getMagnitudeValues" v-model="this.magnitudeName" v-if="this.dimensionCheck == true">
+                   <option v-for="magnitude in this.magnitudes">{{magnitude.name}}</option>
+               </select>
+           </div>
+
+           <div class="col">
+               <label for="select">Select characteristic value:</label>
+               <select name="" id="" class="select" v-model="this.magnitudeValue">
+                   <option v-for="attributeValue in this.attributeValues">{{attributeValue.name}}</option>
+               </select>
+           </div>
+
            <div class="error d-flex justify-content-left">
            <error-message
                :err="this.err"
@@ -48,7 +60,18 @@ export default {
             categoryId: '',
             subcategoryId: '',
             attributeName: '',
-            attributeValue: '',
+            attributeValues: [
+                {name:'string'},
+                {name:'number'},
+            ],
+            magnitudeValue: '',
+            magnitudeName: '',
+            magnitudes: [
+                {name:'dimension'},
+                {name:'weight'},
+                {name:'capacity'},
+            ],
+            dimensionCheck: '',
             err: '',
         }
     },
@@ -71,13 +94,27 @@ export default {
     },
 
     methods: {
-        createAttr()
-        {
-            const response = axios.get('/admin/createAttr', {
+
+        async getMagnitudeValues() {
+            this.attributeValues = []
+            const response = await axios.post('/admin/get_magnitude_values', {
+                magnitudeName: this.magnitudeName
+            })
+                .then((response) => {
+                    response.data.map((item,key) => {
+
+                        this.attributeValues.push({name: item})
+                    })
+                })
+                .catch(err => console.log(err))
+        },
+
+        async createAttr() {
+            const response = await axios.get('/admin/createAttr', {
                 params: {
                     subcategoryId: this.subcategoryId,
+                    attrValue: this.magnitudeValue,
                     attrName: this.attributeName,
-                    attrValue: this.attributeValue,
                 }
             })
                 .then((response) => {
@@ -110,5 +147,8 @@ label span{
     opacity: 0.75;
 }
 
+.small_select {
+    margin-left: 10px;
+}
 
 </style>

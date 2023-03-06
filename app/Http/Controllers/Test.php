@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\CreateProductClass;
 use App\Http\Enums\MagnitudeEnums\DimensionsEnum;
+use App\Http\Enums\MagnitudeEnums\WeightEnum;
+use App\Http\Factories\Convert\ConvertValueManager;
+use App\Http\Traits\ValidateTrait;
 use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductAttributeValue;
@@ -21,8 +25,8 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-
-       dd(preg_replace('/\s+|\W+|[[:alpha:]]+|\_+/', '', '100 000, 000-000dfsfds--32ffds-f-v-fdb-rth?XCV>K@#Uvdfs'));
+        $validPrice = new CreateProductClass();
+        dd($validPrice->validatePrice(100.332));
     }
 }
 

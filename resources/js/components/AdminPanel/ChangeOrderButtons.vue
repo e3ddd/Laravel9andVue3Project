@@ -19,8 +19,8 @@ export default {
                 let tmp = prevObj.order
                 prevObj.order = currObj.order
                 currObj.order = tmp
-
                 this.obj[prevIndex] = currObj
+
                 this.obj[event.target.id] = prevObj
             }
         },
@@ -30,7 +30,7 @@ export default {
             const nextObj = this.obj[nextIndex]
             const currObj = this.obj[event.target.id]
 
-            if (nextIndex <= 3) {
+            if (nextIndex <= this.obj.length - 1) {
                 let tmp = nextObj.order
                 nextObj.order = currObj.order
                 currObj.order = tmp

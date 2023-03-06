@@ -28,14 +28,15 @@ export default {
 
     data() {
         return {
-            product: {
-                0: {name: 'name', order: 0, value: ''},
-                1: {name: 'price', order: 1, value: ''},
-                2: {name: 'producer', order: 2, value: ''},
-                3: {name: 'description', order: 3, value: ''},
-            },
+            product: [
+                 {name: 'name', order: 0, value: '', type: 'string'},
+                 {name: 'price', order: 1, value: '', type: 'banknote'},
+                 {name: 'producer', order: 2, value: '', type: 'string'},
+                 {name: 'description', order: 3, value: '', type: 'string'},
+            ],
         }
     },
+
     methods: {
     }
 }

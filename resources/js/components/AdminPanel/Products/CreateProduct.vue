@@ -3,10 +3,10 @@
         <label><h4>Create product</h4></label>
         <form @submit.prevent>
             <div class="row">
-                <div class="col-5">
+                <div class="col-3">
                     <label for="select">Select category:</label>
                 </div>
-                <div class="col-7">
+                <div class="col-3">
                     <select class="select" v-model="this.categoryName">
                         <option v-for="category in this.categories.filter(item => item.parent_id == null)">{{category.name}}</option>
                     </select>
@@ -14,10 +14,10 @@
             </div>
 
             <div class="row" v-if="this.categoryName !== ''">
-                <div class="col-5">
+                <div class="col-3">
                     <label for="select">Select subcategory: </label>
                 </div>
-                <div class="col-7">
+                <div class="col-3">
                     <select class="select" v-model="this.subcategoryName">
                         <option v-for="category in this.categories.filter(item => item.parent_id == this.categoryId)">{{category.name}}</option>
                     </select>
@@ -28,16 +28,17 @@
                      v-for="(item, key) in product"
                 >
                     <div class="row">
-                        <div class="col-sm-2 label">
+                        <div class="col-2 label">
                             <label>{{item.name}}:</label>
                         </div>
-                        <div class="col-lg input">
+                        <div class="col-2 input">
                             <my-input
                                 :type="'text'"
                                 v-model="item.value"
                             />
                         </div>
-                        <div class="col-2">
+                        <div class="col-1"></div>
+                        <div class="col-3">
                             <ChangeOrderButtons
                                 :id="key"
                                 :obj="this.product"
@@ -51,6 +52,10 @@
             Create
         </admin-panel-but>
         </form>
+        <error-message
+            class="w-50 mt-4"
+            :err="this.err"
+        />
     </div>
 </template>
 
@@ -58,8 +63,10 @@
 import MyInput from "../../MyInput.vue";
 import AdminPanelBut from "../AdminPanelBut.vue";
 import ChangeOrderButtons from "../ChangeOrderButtons.vue";
+import ErrorMessage from "../../ErrorMessage.vue";
 export default {
     components: {
+        ErrorMessage,
         ChangeOrderButtons,
         MyInput,
         AdminPanelBut
@@ -75,7 +82,8 @@ export default {
             subcategoryId: '',
             categories: [],
             categoryName: '',
-            subcategoryName: ''
+            subcategoryName: '',
+            err: ''
         }
     },
 
@@ -97,6 +105,15 @@ export default {
 
     methods: {
 
+        checkFraction(event) {
+                if(event.target.value > 99){
+                   this.product.map((item) => {
+                   if(item.name == 'price'){
+                       item.value.fraction = 99
+                   }
+                   })
+                }
+        },
 
         async getCategories() {
             const response = await axios.get('/get_all_categories')
@@ -106,12 +123,8 @@ export default {
         },
 
        async submit() {
-           for (const key in this.product) {
-               if(this.product[key].name == 'price'){
-                   this.product[key].value = Number(this.product[key].value)
-               }
-           }
-            const response = await axios.post('/store_product', {
+
+            const response = await axios.post('/create_product', {
                     subcategoryId: this.subcategoryId,
                     subcategoryName: this.subcategoryName,
                     product: this.product,
@@ -121,7 +134,15 @@ export default {
                     console.log(response)
                     // alert('Product created !')
                 })
-                // .catch(err => alert(err))
+                .catch((err) => {
+                    console.log(err)
+                    this.err = err.response.data.message
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        this.err = ''
+                    }, 3000)
+                })
         }
     }
 }

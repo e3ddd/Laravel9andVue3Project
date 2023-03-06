@@ -2,6 +2,9 @@
 
 namespace App\Repositories\AdminPanel;
 
+use App\Http\Enums\MagnitudeEnums\CapacityEnum;
+use App\Http\Enums\MagnitudeEnums\DimensionsEnum;
+use App\Http\Enums\MagnitudeEnums\WeightEnum;
 use App\Models\Category;
 use App\Models\ProductAttribute;
 
@@ -47,27 +50,43 @@ class CategoriesAndAttributesRepository
     {
         return Category::where('name', 'like', $search . '%')->paginate(10);
     }
-
-    public function createAttribute($subcategoryId, $attrName, $attrValue, $default)
+    public function createAttribute($subcategoryId, $attrs, $default)
     {
-        if(ProductAttribute::where('subcategory_id', $subcategoryId)
-            ->where('name', $attrName)
-            ->where('default', 0)
-            ->exists()){
-            throw new \Exception('This attribute already exist !');
-        }
-        if(ProductAttribute::where('subcategory_id', $subcategoryId)
-            ->where('name', $attrName)
-            ->where('default', 1)
-            ->exists()){
-            return 0;
+        foreach ($attrs as $attr){
+            if(ProductAttribute::where('subcategory_id', $subcategoryId)
+                ->where('name', $attr['name'])
+                ->where('default', 0)
+                ->exists()){
+                throw new \Exception('This attribute already exist !');
+            }
+            if(ProductAttribute::where('subcategory_id', $subcategoryId)
+                ->where('name', $attr['name'])
+                ->where('default', 1)
+                ->exists()){
+                return 0;
+            }
+            ProductAttribute::create([
+                'subcategory_id' => $subcategoryId,
+                'name' => $attr['name'],
+                'value' => $attr['type'],
+                'default' => $default,
+            ]);
+
         }
 
-        ProductAttribute::create([
-            'subcategory_id' => $subcategoryId,
-            'name' => $attrName,
-            'value' => $attrValue,
-            'default' => $default,
-        ]);
+
     }
+
+    public function getMagnitudeValues($magnitudeName)
+    {
+        switch ($magnitudeName){
+            case 'dimension':
+                return DimensionsEnum::cases();
+            case 'weight':
+                return WeightEnum::cases();
+            case 'capacity':
+                return CapacityEnum::cases();
+        }
+    }
+
 }
