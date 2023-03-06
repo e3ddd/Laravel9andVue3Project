@@ -11,7 +11,7 @@ use App\Http\Factories\Convert\ConvertValueManager;
 
 class Validate
 {
-    public function validate($value, $type)
+    public function validate($item, $type)
     {
         $dimension = DimensionsEnum::tryFrom($type);
         $weight = WeightEnum::tryFrom($type);
@@ -23,10 +23,10 @@ class Validate
 
         foreach ($enums as $enum){
             if(isset($enum)){
-                if (is_numeric($value['value'])) {
-                    $validNum = ConvertValueManager::for($enum, $value['value'])->convertToSmallest();
+                if (is_numeric($item['value'])) {
+                    $validNum = ConvertValueManager::for($enum, $item['value'])->convertToSmallest();
                 } else {
-                    throw new \Exception('Bad ' . $value['name'] . ' value format !');
+                    throw new \Exception('Bad ' . $item['name'] . ' value format !');
                 }
                 return $validNum;
             }
