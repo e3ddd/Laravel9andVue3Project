@@ -53,7 +53,7 @@
         </admin-panel-but>
         </form>
         <error-message
-            class="w-50 mt-4"
+            class="w-25 mt-4 d-flex justify-content-center align-content-center"
             :err="this.err"
         />
     </div>
@@ -104,16 +104,6 @@ export default {
     },
 
     methods: {
-
-        checkFraction(event) {
-                if(event.target.value > 99){
-                   this.product.map((item) => {
-                   if(item.name == 'price'){
-                       item.value.fraction = 99
-                   }
-                   })
-                }
-        },
 
         async getCategories() {
             const response = await axios.get('/get_all_categories')

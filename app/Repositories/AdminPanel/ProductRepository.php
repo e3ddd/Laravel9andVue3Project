@@ -37,16 +37,18 @@ class ProductRepository
 
     }
 
-    public function storeAttributesValues($attrName, $attrValue, $prodId)
+    public function storeAttributesValues($attrs, $prodId)
     {
-        if (empty(ProductAttributeValue::where('product_id', $prodId)->where('name', $attrName)->get()->toArray())) {
-            ProductAttributeValue::create([
-                'name' => $attrName,
-                'value' => $attrValue,
-                'product_id' => $prodId,
-            ]);
-        } else {
-            throw new \Exception('Attribute value exist !');
+        foreach ($attrs as $name => $attr){
+            if(ProductAttributeValue::where('product_id', $prodId)->where('name', $name)->exists()){
+                throw new \Exception('Attributes values for this product exist !');
+            }else{
+                ProductAttributeValue::create([
+                    'name' => $name,
+                    'value' => $attr,
+                    'product_id' => $prodId,
+                ]);
+            }
         }
     }
 

@@ -58,6 +58,10 @@
                     </div>
                 </div>
             </div>
+            <error-message
+                class="w-25 mt-4 d-flex justify-content-center align-content-center"
+                :err="this.err"
+            />
             <admin-panel-but
                 :func="submit"
             >
@@ -71,8 +75,10 @@
 import MyInput from "../../MyInput.vue";
 import AdminPanelBut from "../AdminPanelBut.vue";
 import ChangeOrderButtons from "../ChangeOrderButtons.vue";
+import ErrorMessage from "../../ErrorMessage.vue";
 export default {
     components: {
+        ErrorMessage,
         MyInput,
         AdminPanelBut,
         ChangeOrderButtons
@@ -87,7 +93,8 @@ export default {
             products: [],
             categoryName: '',
             subcategoryName: '',
-            productName: ''
+            productName: '',
+            err: '',
         }
     },
 
@@ -119,10 +126,6 @@ export default {
                 .then((response) => {
                     this.categories = response.data
                 })
-        },
-
-        checkFraction(event) {
-
         },
 
         async getAttr() {
@@ -164,9 +167,17 @@ export default {
             })
                 .then((response) => {
                     console.log(response)
-                    alert('Attributes values added !')
+                    // alert('Attributes values added !')
                 })
-                .catch(err => alert(err.response.data.message))
+                .catch((err) => {
+                    console.log(err)
+                    this.err = err.response.data.message
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        this.err = ''
+                    }, 3000)
+                })
         }
     }
 }

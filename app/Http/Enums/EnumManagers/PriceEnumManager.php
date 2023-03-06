@@ -20,6 +20,11 @@ class PriceEnumManager implements EnumManager
     {
         return $this->value * ($this->from->coefficient() / $to->coefficient());
     }
+
+    public function convertToSmallest()
+    {
+        return $this->value * ($this->from->coefficient() / PriceEnum::coin->coefficient());
+    }
     public function toString(): string
     {
         return $this->value . " " . $this->from->value;

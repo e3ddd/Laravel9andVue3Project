@@ -2,7 +2,7 @@
 
 namespace App\Services\AdminPanel;
 
-use App\Http\CreateProductClass;
+use App\Http\Validate;
 use App\Http\Enums\MagnitudeEnums\PriceEnum;
 use App\Repositories\AdminPanel\CategoriesAndAttributesRepository;
 use App\Repositories\AdminPanel\ProductRepository;
@@ -45,23 +45,40 @@ class ProductService
 
     public function storeAttributesValues($prodId, $subcategoryId, $attrValues)
     {
+        $validate = new Validate();
+        $validValues = [];
 
+        foreach ($attrValues as $attrValue){
+            if($attrValue['type'] != 'string'){
+                $validValues[$attrValue['name']] = $validate->validate($attrValue, $attrValue['type']);
+            }else{
+                $validValues[$attrValue['name']] = $attrValue['value'];
+            }
+        }
+        $this->productRepository->storeAttributesValues($validValues, $prodId);
+
+        $this->productRepository->updateAttrOrder($subcategoryId, $attrValues);
     }
 
     public function storeProduct($subcategoryId, $productValues)
     {
-        $validate = new CreateProductClass();
-
-            $validProduct = $validate->validate($productValues, PriceEnum::tryFrom('banknote'), PriceEnum::coin);
-
-            $validPrice = explode('.', $validProduct['price'])[0];
+        $validate = new Validate();
+        $product = [];
+        $price = 0;
+        foreach ($productValues as $value){
+            if($value['name'] == 'price'){
+                $price = $validate->validate($value, $value['type']);
+            }
+            $product[$value['name']] = $value['value'];
+        }
+            $validPrice = explode('.', $price)[0];
 
             $this->categoriesAndAttributesRepository->createAttribute($subcategoryId, $productValues, 1);
             $this->productRepository->updateAttrOrder($subcategoryId, $productValues);
 
 
-            $this->productRepository->storeProduct($validProduct['name'], $validPrice,
-                                              $validProduct['producer'], $validProduct['description'],
+            $this->productRepository->storeProduct($product['name'], $validPrice,
+                                                    $product['producer'], $product['description'],
                                                                      $subcategoryId);
     }
 }

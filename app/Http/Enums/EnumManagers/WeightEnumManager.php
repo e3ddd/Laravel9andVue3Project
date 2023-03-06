@@ -20,6 +20,11 @@ class WeightEnumManager implements EnumManager
     {
         return $this->value * ($this->from->coefficient() / $to->coefficient());
     }
+
+    public function convertToSmallest()
+    {
+        return $this->value * ($this->from->coefficient() / WeightEnum::milligram->coefficient());
+    }
     public function toString(): string
     {
         return $this->value . " " . $this->from->value;

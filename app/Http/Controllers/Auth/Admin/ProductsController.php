@@ -30,7 +30,8 @@ class ProductsController extends Controller
     public function storeAttributesValues(Request $request)
     {
         $productService = app(ProductService::class);
-        $productService->storeAttributesValues($request->productId, $request->subcategoryId, $request->attributesValue);
+
+        return $productService->storeAttributesValues($request->productId, $request->subcategoryId, $request->attributesValues);
     }
 
     public function getProductBySubcategory(Request $request)
