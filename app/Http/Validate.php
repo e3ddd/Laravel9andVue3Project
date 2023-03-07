@@ -13,18 +13,16 @@ class Validate
 {
     public function validate($item, $type)
     {
-        $dimension = DimensionsEnum::tryFrom($type);
-        $weight = WeightEnum::tryFrom($type);
-        $capacity = CapacityEnum::tryFrom($type);
-        $price = PriceEnum::tryFrom($type);
-        $memory = MemoryValuesEnum::tryFrom($type);
 
-        $enums = [$dimension, $weight, $capacity, $price, $memory];
+
+        $enums = [DimensionsEnum::class,  WeightEnum::class,
+                  CapacityEnum::class, PriceEnum::class, MemoryValuesEnum::class];
 
         foreach ($enums as $enum){
-            if(isset($enum)){
+            $tryFrom = $enum::tryFrom($type);
+            if(isset($tryFrom)){
                 if (is_numeric($item['value'])) {
-                    $validNum = ConvertValueManager::for($enum, $item['value'])->convertToSmallest();
+                    $validNum = ConvertValueManager::for($tryFrom, $item['value'])->convertToSmallest();
                 } else {
                     throw new \Exception('Bad ' . $item['name'] . ' value format !');
                 }

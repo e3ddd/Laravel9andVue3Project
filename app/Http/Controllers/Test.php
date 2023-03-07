@@ -28,12 +28,18 @@ class Test extends Controller
 
     public function index(Request $request)
     {
+
+        $test = new Validate();
         $type = 'cm';
 
-        $dimension = DimensionsEnum::tryFrom($type);
+        $arr = [
+            'name' => 'test',
+            'value' => 100
+        ];
 
-        $res = ConvertValueManager::for($dimension, 10)->convertToSmallest();
-        dump($res);
+        $dimension = $test->validate($arr, $type);
+
+        dump($dimension);
     }
 }
 
