@@ -94,7 +94,6 @@ export default {
     },
 
     methods: {
-
         async getMagnitudeValues() {
             this.attributeValues = []
             const response = await axios.post('/admin/get_magnitude_values', {
@@ -110,11 +109,13 @@ export default {
         },
 
         async createAttr() {
-            const response = await axios.get('/admin/createAttr', {
+            let attribute = [{name: this.attributeName, type: this.magnitudeValue}]
+
+            const response = await axios.get('/admin/create_attribute', {
                 params: {
                     subcategoryId: this.subcategoryId,
-                    attrValue: this.magnitudeValue,
-                    attrName: this.attributeName,
+                    attribute: attribute,
+                    default: 0
                 }
             })
                 .then((response) => {

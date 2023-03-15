@@ -1,18 +1,27 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col">
-                <create-product
-                :product="this.product"
-                />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col mt-4">
-                <add-attributes-value/>
-            </div>
-        </div>
+    <div class="row">
+        <div class="col-5">
+            <div class="container-fluid page">
+                <div class="row">
+                    <div class="col">
+                        <create-product
+                        :product="this.product"
+                        />
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col mt-4">
+                        <add-attributes-value/>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="col-7">
+        <div class="container-fluid page">
+            <product-list/>
+        </div>
+    </div>
     </div>
 </template>
 
@@ -20,9 +29,11 @@
 
 import CreateProduct from "./CreateProduct.vue";
 import AddAttributesValue from "./AddAttributesValue.vue";
+import ProductList from "./ProductList.vue";
 export default {
     components: {
         AddAttributesValue,
+        ProductList,
         CreateProduct
     },
 
@@ -43,5 +54,8 @@ export default {
 </script>
 
 <style scoped>
-
+.page {
+    border: 2px solid silver;
+    padding: 20px;
+}
 </style>

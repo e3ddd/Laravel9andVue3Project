@@ -13,5 +13,12 @@ class Category extends Model
         'name',
         'parent_id'
     ];
+
+
+    public function attributes()
+    {
+        return $this->hasMany(ProductAttribute::class, 'subcategory_id');
+
+    }
 }
 

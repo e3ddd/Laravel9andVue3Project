@@ -2,43 +2,53 @@
     <div class="create-product-form">
         <label><h4>Create product</h4></label>
         <form @submit.prevent>
-            <div class="row">
-                <div class="col-3">
-                    <label for="select">Select category:</label>
-                </div>
-                <div class="col-3">
-                    <select class="select" v-model="this.categoryName">
-                        <option v-for="category in this.categories.filter(item => item.parent_id == null)">{{category.name}}</option>
-                    </select>
-                </div>
-            </div>
+            <CategoriesSelect
+            :categories="this.categories"
+            :category-id="null"
+            :label="'Select category:'"
+            @onUpdate="onUpdateCategory"
+            />
 
-            <div class="row" v-if="this.categoryName !== ''">
-                <div class="col-3">
-                    <label for="select">Select subcategory: </label>
-                </div>
-                <div class="col-3">
-                    <select class="select" v-model="this.subcategoryName">
-                        <option v-for="category in this.categories.filter(item => item.parent_id == this.categoryId)">{{category.name}}</option>
-                    </select>
-                </div>
-            </div>
+
+            <CategoriesSelect
+                v-if="this.categoryId !== ''"
+                :categories="this.categories"
+                :category-id="this.categoryId"
+                :label="'Select subcategory:'"
+                @onUpdate="onUpdateSubcategory"
+            />
 
                 <div class="inputs"
                      v-for="(item, key) in product"
                 >
-                    <div class="row">
-                        <div class="col-2 label">
+                    <div class="row" v-if="item.name != 'description'">
+                        <div class="col label">
                             <label>{{item.name}}:</label>
                         </div>
-                        <div class="col-2 input">
+                        <div class="col input">
                             <my-input
                                 :type="'text'"
                                 v-model="item.value"
                             />
                         </div>
                         <div class="col-1"></div>
-                        <div class="col-3">
+                        <div class="col">
+                            <ChangeOrderButtons
+                                :id="key"
+                                :obj="this.product"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="row" v-if="item.name == 'description'">
+                        <div class="col label">
+                            <label>{{item.name}}:</label>
+                        </div>
+                        <div class="col input">
+                            <textarea cols="24" rows="3" v-model="item.value"/>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col">
                             <ChangeOrderButtons
                                 :id="key"
                                 :obj="this.product"
@@ -64,8 +74,10 @@ import MyInput from "../../MyInput.vue";
 import AdminPanelBut from "../AdminPanelBut.vue";
 import ChangeOrderButtons from "../ChangeOrderButtons.vue";
 import ErrorMessage from "../../ErrorMessage.vue";
+import CategoriesSelect from "./CategoriesSelect.vue";
 export default {
     components: {
+        CategoriesSelect,
         ErrorMessage,
         ChangeOrderButtons,
         MyInput,
@@ -81,8 +93,6 @@ export default {
             categoryId: '',
             subcategoryId: '',
             categories: [],
-            categoryName: '',
-            subcategoryName: '',
             err: ''
         }
     },
@@ -91,19 +101,15 @@ export default {
         this.getCategories()
     },
 
-    watch: {
-        categoryName(newName, oldName){
-            let categories = this.categories.filter(item => item.name == newName)
-            this.categoryId = categories[0].id
+    methods: {
+
+        onUpdateCategory(categoryId) {
+            this.categoryId = categoryId
         },
 
-        subcategoryName(newName, oldName){
-            let subcategories = this.categories.filter(item => item.name == newName)
-            this.subcategoryId = subcategories[0].id
-        }
-    },
-
-    methods: {
+        onUpdateSubcategory(subcategoryId) {
+            this.subcategoryId = subcategoryId
+        },
 
         async getCategories() {
             const response = await axios.get('/get_all_categories')
@@ -114,7 +120,7 @@ export default {
 
        async submit() {
 
-            const response = await axios.post('/create_product', {
+            const response = await axios.post('/admin/create_product', {
                     subcategoryId: this.subcategoryId,
                     subcategoryName: this.subcategoryName,
                     product: this.product,
@@ -132,6 +138,7 @@ export default {
                     setTimeout(() => {
                         this.err = ''
                     }, 3000)
+                    this.product.map(item => item.value = '')
                 })
         }
     }
@@ -139,16 +146,6 @@ export default {
 </script>
 
 <style scoped>
-.select {
-    width: 75%;
-    margin-left: 30px;
-}
-
-.create-product-form {
-    border: 2px solid silver;
-    padding: 10px;
-}
-
 
 .input {
     display: flex;

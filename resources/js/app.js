@@ -13,7 +13,6 @@ import RegForm from "./components/RegForm.vue";
 import LoginForm from "./components/LoginForm.vue";
 import PersonalAccount from "./components/PersonalAccount.vue";
 import UserList from "./components/UserList.vue";
-import ProductList from "./components/ProductList.vue";
 import ProductsViewStatistic from "./components/ProductsViewStatistic.vue";
 import AllProductsByCategory from "./components/CategoiesList/ByCategory/AllProductsByCategory.vue";
 import AllProductsBySubcategory
@@ -30,7 +29,6 @@ createApp(RegForm).mount("#reg-form")
 createApp(LoginForm).mount("#login-form")
 createApp(PersonalAccount).mount("#personal-account")
 createApp(UserList).mount("#user-list")
-createApp(ProductList).mount("#product-list")
 createApp(ProductsViewStatistic).mount("#product-view-statistic")
 createApp(AllProductsByCategory).mount('#all-products-by-category')
 createApp(AllProductsBySubcategory).mount('#all-products-by-subcategory')

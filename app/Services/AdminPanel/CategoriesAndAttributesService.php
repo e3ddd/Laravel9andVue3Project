@@ -2,6 +2,7 @@
 
 namespace App\Services\AdminPanel;
 
+use App\Http\Factories\Convert\ConvertValueManager;
 use App\Repositories\AdminPanel\CategoriesAndAttributesRepository;
 
 class CategoriesAndAttributesService
@@ -11,6 +12,13 @@ class CategoriesAndAttributesService
     public function __construct(CategoriesAndAttributesRepository $adminRepository)
     {
         $this->categoriesAndAttributesRepository = $adminRepository;
+    }
+
+    public function getConvertedAttributesValues($subcategoryId, $productId)
+    {
+        $convertValueManager = new ConvertValueManager();
+        return $convertValueManager->getConvertValue($this->categoriesAndAttributesRepository->getAttributesValuesByProductId($productId)->toArray(),
+            $this->categoriesAndAttributesRepository->getAttributesBySubcategoryId($subcategoryId, 0)->toArray());
     }
 
     public function createCategory(string $categoryName, string|null $subcategoryName, bool|null $subCheck): void
@@ -33,11 +41,19 @@ class CategoriesAndAttributesService
         return $this->categoriesAndAttributesRepository->searchCategory($search);
     }
 
-    public function createAttribute($subcategoryId, $attrName, $attrValue)
+    public function getAttributesBySubcategoryId($subcategoryId, $default)
     {
-        $attrName = strtolower($attrName);
+        return $this->categoriesAndAttributesRepository->getAttributesBySubcategoryId($subcategoryId, $default);
+    }
 
-        $this->categoriesAndAttributesRepository->createAttribute($subcategoryId, $attrName, $attrValue, 0);
+    public function createAttribute($subcategoryId, $attrs, $default)
+    {
+        $this->categoriesAndAttributesRepository->createAttribute($subcategoryId, $attrs, $default);
+    }
+
+    public function deleteAttribute($attributeId)
+    {
+        $this->categoriesAndAttributesRepository->deleteAttribute($attributeId);
     }
 
     public function getMagnitudeValues($magnitudeName)

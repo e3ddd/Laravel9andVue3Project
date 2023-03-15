@@ -17,11 +17,6 @@
                 <div class="subcategoryInput" v-if="this.subCheck === true">
                     <label for="subcategoryInput">Enter subcategory name:</label>
                     <input id="subcategoryInput" type="text" v-model="this.subcategoryName">
-<!--                    <div class="subcategoryInput" v-if="this.subcategoryNames.length > 0" v-for="item in this.subcategoryNames" >-->
-<!--                        <label for="moreSubcategoryInput">Enter subcategory name:</label>-->
-<!--                        <input id="moreSubcategoryInput" type="text" v-model="this.moreSub">-->
-<!--                    </div>-->
-<!--                    <admin-panel-but :func="addMoreSubcategoryInput">More +</admin-panel-but>-->
                 </div>
             <admin-panel-but :func="createCategory">Create</admin-panel-but>
             </div>
@@ -46,7 +41,7 @@ export default {
 
     methods: {
        async createCategory() {
-                const response = await axios.get('/admin/createCategory', {
+                const response = await axios.get('/admin/create_category', {
                 params: {
                     categoryName: this.categoryName,
                     subcategoryName: this.subcategoryName,

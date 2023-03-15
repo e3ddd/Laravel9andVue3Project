@@ -10,7 +10,7 @@ class GetCategoriesController extends Controller
 {
     public function get()
     {
-        return Category::paginate(10);
+        return Category::with('attributes')->paginate(10);
     }
 
     public function getSubcategoriesBuyCategoryId(Request $request)
@@ -22,7 +22,7 @@ class GetCategoriesController extends Controller
 
     public function getAll()
     {
-        return Category::all();
+        return Category::with('attributes')->get();
     }
 
 }

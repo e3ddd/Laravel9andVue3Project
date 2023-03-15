@@ -2,7 +2,6 @@
 
  namespace App\Repositories;
 
- use App\Models\Product;
  use App\Models\ProductImage;
  use Illuminate\Support\Facades\Storage;
  use Imagick;
@@ -19,13 +18,12 @@
          return ProductImage::where('product_id', $productId);
      }
 
-     public function createProductImage($imgHash, $productId, $userId)
+     public function createProductImage($imgHash, $productId)
      {
          if(ProductImage::where('hash_id', $imgHash)->doesntExist()){
              return ProductImage::create([
                  "hash_id" => $imgHash,
                  "product_id" => $productId,
-                 "user_id" => $userId,
              ]);
         }
      }
@@ -56,9 +54,9 @@
                      0
                  );
                  $imagickDst->setImageFormat("jpg");
-                 $imagickSrc->resizeImage(200,200,0,1);
+                 $imagickSrc->resizeImage(250,200,0,1);
                  $imagickSrc->writeImage($imgPath);
-                 $imagickSrc->resizeImage(50,50,0,1);
+                 $imagickSrc->resizeImage(70,50,0,1);
                  $imagickSrc->writeImage($smallImgPath);
              }
      }

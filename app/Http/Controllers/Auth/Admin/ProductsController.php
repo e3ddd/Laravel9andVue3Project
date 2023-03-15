@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateProductRequest;
 use App\Services\AdminPanel\ProductService;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -13,12 +13,6 @@ class ProductsController extends Controller
    {
        return view('AdminPanel.Products.layout');
    }
-
-    public function getAttributes(Request $request)
-    {
-        $productService = app(ProductService::class);
-        return $productService->getAttributes($request->subcategoryName);
-    }
 
     public function storeProduct(Request $request)
     {
@@ -34,10 +28,38 @@ class ProductsController extends Controller
         return $productService->storeAttributesValues($request->productId, $request->subcategoryId, $request->attributesValues);
     }
 
-    public function getProductBySubcategory(Request $request)
+    public function storeProductImages(Request $request)
+    {
+        $imageService = app(ImageService::class);
+        foreach ($request->images as $image){
+            $imageService->saveImage($image, $imageService->storeImage($request->productId, $image));
+        }
+    }
+
+    public function getProductById(Request $request)
+    {
+        $productService = app(ProductService::class);
+        return $productService->getProductById($request->productId);
+    }
+
+    public function getProductBySubcategoryPaginate(Request $request)
     {
         $productService = app(ProductService::class);
 
-        return $productService->getProductBySubcategory($request->subcategoryId);
+        return $productService->getProductBySubcategoryIdWithPaginate($request->subcategoryId);
+    }
+
+    public function searchProduct(Request $request)
+    {
+        $productService = app(ProductService::class);
+
+        return $productService->searchProduct($request->search);
+    }
+
+    public function deleteProduct(Request $request)
+    {
+        $productService = app(ProductService::class);
+
+        return $productService->deleteProduct($request->productId);
     }
 }

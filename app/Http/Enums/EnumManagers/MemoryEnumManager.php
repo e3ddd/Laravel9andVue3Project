@@ -25,8 +25,15 @@ class MemoryEnumManager implements EnumManager
     {
         return $this->value * ($this->from->coefficient() / MemoryValuesEnum::kilobyte->coefficient());
     }
+
+    public function convertFromSmallest()
+    {
+        return $this->value * (MemoryValuesEnum::kilobyte->coefficient() / $this->from->coefficient());
+    }
+
     public function toString(): string
     {
         return $this->value . " " . $this->from->value;
     }
+
 }

@@ -39,6 +39,7 @@
                 <edit-category-modal
                     :id="item.id"
                     :category="item.name"
+                    :attributes="item.attributes"
                 />
             </div>
             <div class="col-sm-auto">
@@ -102,7 +103,7 @@ export default {
 
       async  searchCategory() {
             this.showLoading = true
-            const response = await axios.get('/admin/searchCategory', {
+            const response = await axios.get('/admin/search_category', {
                 params: {
                     search: this.search
                 }
@@ -118,7 +119,7 @@ export default {
         },
 
         async del(id) {
-            const response = await axios.get('/admin/deleteCategory',
+            const response = await axios.get('/admin/delete_category',
                 {
                     params: {
                         categoryId: id

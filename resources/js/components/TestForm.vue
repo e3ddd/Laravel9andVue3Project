@@ -1,17 +1,9 @@
 <template>
 
-    <form action="" @submit.prevent>
-<!--        <div class="row">-->
-<!--        <input type="text" v-model="this.value">-->
-<!--        </div>-->
-<!--        <select v-model="this.dimensionType">-->
-<!--            <option>mg</option>-->
-<!--            <option>g</option>-->
-<!--            <option>kg</option>-->
-<!--            <option>t</option>-->
-<!--        </select>-->
+    <form action="" @submit.prevent enctype="multipart/form-data">
+
         <label for="subCat">Subcategory</label>
-        <input type="checkbox" v-model="this.value" name="subCat" id="subCat">
+        <input type="file" name="subCat" id="subCat" @change="onFileUpdate">
         <button @click="this.sendRequest">Submit</button>
     </form>
 
@@ -22,15 +14,26 @@ export default {
     data() {
         return {
                 dimensionType: '',
-                value: ''
+                value: '',
+            file: null
         }
     },
 
     methods: {
+        onFileUpdate(e) {
+            this.file = e.target.files[0]
+        },
+
         sendRequest() {
+            let fd = new FormData();
+            fd.append('file', this.file, this.file.name)
             const response = axios.get('/test', {
                 params: {
-                    subCat: this.value
+                    fd
+                }
+            },{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
                 }
             })
                 .then(response => console.log(response))

@@ -16,10 +16,4 @@ class ProductAttribute extends Model
         'subcategory_id',
         'default'
     ];
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'subcategory_id');
-    }
-
 }

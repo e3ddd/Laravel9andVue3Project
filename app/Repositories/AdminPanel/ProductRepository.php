@@ -2,7 +2,6 @@
 
 namespace App\Repositories\AdminPanel;
 
-use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductAttributeValue;
@@ -10,11 +9,9 @@ use App\Models\ProductAttributeValue;
 
 class ProductRepository
 {
-    public function getAttributes($subcategory)
+    public function getAttributeByName($attrName)
     {
-        $subcategoryId = Category::where('name', $subcategory)->first()->id;
-
-        return ProductAttribute::where('subcategory_id', $subcategoryId)->get();
+        return ProductAttribute::where('name', $attrName)->first();
     }
 
     public function getProductByName($productName)
@@ -32,11 +29,6 @@ class ProductRepository
         return Product::all();
     }
 
-    public function getProductByCategory()
-    {
-
-    }
-
     public function storeAttributesValues($attrs, $prodId)
     {
         foreach ($attrs as $name => $attr){
@@ -52,20 +44,34 @@ class ProductRepository
         }
     }
 
-    public function getProductBySubcategory($subcategoryId)
+    public function getProductBySubcategoryIdWithPaginate($subcategoryId)
     {
-        return Product::where('subcategory_id', $subcategoryId)->get();
+        return Product::where('subcategory_id', $subcategoryId)->with('image')->paginate(10);
+    }
+
+    public function searchProduct($search)
+    {
+        return Product::where('name', 'like', $search . '%')->paginate(10);
+    }
+
+    public function deleteProduct($productId)
+    {
+        Product::destroy($productId);
     }
 
     public function storeProduct($productName, $productPrice, $productProducer, $productDescription, $subcategoryId)
     {
-        Product::create([
-            'name' => $productName,
-            'price' => $productPrice,
-            'producer' => $productProducer,
-            'description' => $productDescription,
-            'subcategory_id' => $subcategoryId
-        ]);
+        if(Product::where('name', $productName)->exists()){
+            throw new \Exception('Product name exist !');
+        }else{
+            Product::create([
+                'name' => $productName,
+                'price' => $productPrice,
+                'producer' => $productProducer,
+                'description' => $productDescription,
+                'subcategory_id' => $subcategoryId
+            ]);
+        }
 
     }
 
@@ -75,11 +81,5 @@ class ProductRepository
             ProductAttribute::where('subcategory_id', $subcategoryId)->where('name', $attr['name'])->update(['order' => $attr['order']]);
         }
     }
-
-    public function storeProdAttrValues($productName, $attrs)
-    {
-
-    }
-
 
 }

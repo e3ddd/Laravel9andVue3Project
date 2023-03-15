@@ -24,18 +24,17 @@ class ImageService
         return $this->imageRepository->getProductImage($productId);
     }
 
-    public function store($productId, $file)
+    public function storeImage($productId, $fileName)
     {
         $prod = Product::find($productId);
-        $userId = $prod->user->id;
-        $imgHash =  $file->hashName();
-        $storeName = $userId . "_" . $prod->id . "_" . $imgHash;
-        $this->imageRepository->createProductImage($imgHash, $productId, $userId);
+        $imgHash =  $fileName->hashName();
+        $storeName = $prod->id . "_" . $imgHash;
+        $this->imageRepository->createProductImage($imgHash, $productId);
 
         return $storeName;
     }
 
-    public function saveImg($file, $storeName)
+    public function saveImage($file, $storeName)
     {
        $this->imageRepository->saveImageToStorage($file, $storeName);
     }

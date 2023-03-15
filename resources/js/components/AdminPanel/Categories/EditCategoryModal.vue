@@ -1,7 +1,7 @@
 <template>
     <div class="edit_form" v-if="show" @click="show = false">
         <div @click.stop class="edit_form_item">
-                <label for="category">Edit category:</label>
+                <label for="category"><h5>Edit category name:</h5></label>
                 <my-input
                     :placeholder="category"
                     :type="'text'"
@@ -13,6 +13,40 @@
             >
                 Edit
             </admin-panel-but>
+            <div class="subcategory_attributes pt-2" v-if="attributes.length !== 0">
+                <h5>Attributes List</h5>
+                <div v-for="attribute in attributes" v-if="this.newAttributes.length == 0">
+                    <div class="row">
+                        <div class="col mt-2 attribute">
+                            {{attribute.name}}
+                        </div>
+                        <div class="col">
+                            <admin-panel-but
+                                :func="del"
+                                :attr="attribute.id"
+                            >
+                                Delete
+                            </admin-panel-but>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-for="attribute in this.newAttributes" v-if="this.newAttributes.length !== 0">
+                    <div class="row">
+                        <div class="col mt-2 attribute">
+                            {{attribute.name}}
+                        </div>
+                        <div class="col">
+                            <admin-panel-but
+                                :func="del"
+                                :attr="attribute.id"
+                            >
+                                Delete
+                            </admin-panel-but>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <admin-panel-but
@@ -26,7 +60,6 @@
 import AdminPanelBut from "../AdminPanelBut.vue";
 import MyInput from "../../MyInput.vue";
 export default {
-
     components: {
         AdminPanelBut,
         MyInput
@@ -36,25 +69,25 @@ export default {
         return {
             show: false,
             newCategory: this.category,
+            newAttributes: []
         }
     },
     props: {
         id: Number,
         category: String,
+        attributes: Array,
     },
 
-    mounted() {
-    },
 
     methods: {
         showDialog() {
             this.show = true
-            console.log(this.id)
-
         },
 
+
+
        async edit() {
-            const response = await axios.get('/admin/editCategory', {
+            const response = await axios.get('/admin/edit_category', {
                 params: {
                     categoryId: this.id,
                     newCategoryName: this.newCategory,
@@ -62,14 +95,23 @@ export default {
 
             })
                 .then((response) => {
-                    console.log(this.newCategory)
+                    console.log(response)
                 })
 
                 .catch((err) => {
                     console.log(err)
-                    console.log(this.newCategory)
-
                 })
+        },
+
+        async del(id) {
+            const response = await axios.post('/admin/delete_attribute', {
+                attributeId: id
+            })
+                .then((response) => {
+
+                    this.newAttributes = this.attributes.filter(item => item.id !== id)
+                })
+                .catch(err => console.log(err))
         }
     }
 }
@@ -78,6 +120,10 @@ export default {
 <style scoped>
 label {
     margin-right: 10px;
+}
+
+.but {
+    margin-right: 5px;
 }
 
 .edit_form {
@@ -97,5 +143,9 @@ label {
     border-radius: 12px;
     min-height: 50px;
     min-width: 300px;
+}
+
+.attribute:first-letter {
+    text-transform: uppercase;
 }
 </style>

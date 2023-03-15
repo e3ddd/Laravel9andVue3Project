@@ -4,6 +4,7 @@ namespace App\Http\Enums\EnumManagers;
 
 use App\Http\Enums\MagnitudeEnums\CapacityEnum;
 use App\Http\Interfaces\Enums\EnumManager;
+use Illuminate\Validation\ValidationException;
 
 class CapacityEnumManager implements EnumManager
 {
@@ -24,6 +25,12 @@ class CapacityEnumManager implements EnumManager
     {
         return $this->value * ($this->from->coefficient() / CapacityEnum::milliliter->coefficient());
     }
+
+    public function convertFromSmallest()
+    {
+        return $this->value * (CapacityEnum::milliliter->coefficient() / $this->from->coefficient());
+    }
+
     public function toString(): string
     {
         return $this->value . " " . $this->from->value;

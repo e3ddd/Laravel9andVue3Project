@@ -42,21 +42,26 @@ Route::controller(IndexRoutesController::class)->group(function () {
 
 Route::controller(CategoriesAndAttributesController::class)->group(function() {
     Route::get('/admin', 'show');
-    Route::get('/admin/createCategory', 'createCategory');
-    Route::get('/admin/editCategory', 'editCategory');
-    Route::get('/admin/deleteCategory', 'deleteCategory');
-    Route::get('/admin/searchCategory', 'searchCategory');
-    Route::get('/admin/createAttr', 'createAttribute');
-    Route::get('/admin/createSizeAttr', 'createSizeAttribute');
+    Route::get('/admin/create_category', 'createCategory');
+    Route::get('/admin/edit_category', 'editCategory');
+    Route::get('/admin/delete_category', 'deleteCategory');
+    Route::get('/admin/search_category', 'searchCategory');
+    Route::get('/admin/create_attribute', 'createAttribute');
+    Route::post('/admin/get_attributes_by_subcategory', 'getAttributesBySubcategoryId');
+    Route::get('/admin/get_converted_attributes', 'getConvertedAttributesValues');
+    Route::post('/admin/delete_attribute', 'deleteAttribute');
     Route::post('/admin/get_magnitude_values', 'getMagnitudeValues');
 });
 
 Route::controller(ProductsController::class)->group(function() {
     Route::get('/admin/products', 'show');
-    Route::get('/get_attributes', 'getAttributes');
-    Route::get('/get_products_by_subcategory', 'getProductBySubcategory');
-    Route::post('/create_product', 'storeProduct');
-    Route::post('/store_product_attrs_values', 'storeAttributesValues');
+    Route::get('/admin/get_product_by_id', 'getProductById');
+    Route::get('/admin/get_products_by_subcategory', 'getProductBySubcategoryPaginate');
+    Route::post('/admin/create_product', 'storeProduct');
+    Route::post('/admin/store_product_images', 'storeProductImages');
+    Route::post('/admin/store_product_attrs_values', 'storeAttributesValues');
+    Route::post('/admin/search_product', 'searchProduct');
+    Route::post('/admin/delete_product', 'deleteProduct');
 });
 
 Route::controller(CategoriesNavController::class)->group(function (){
@@ -86,10 +91,6 @@ Route::post('/get_user', [UserController::class, 'get']);
 Route::get('/users/all', [GetUsersController::class, 'get']);
 Route::get('/users/{id}/delete', [UserController::class, 'destroy']);
 Route::get('/users/edit_user', [UserController::class, 'show']);
-Route::get('/users/products_list', [UserProductsController::class, 'index']);
-Route::get('/users/products/', [UserProductsController::class, 'show']);
-Route::get('/users/products/edit', [UserProductsController::class, 'edit'])->middleware(['auth', 'verified']);
-Route::get('/users/products/{id}/delete', [UserProductsController::class, 'destroy'])->middleware(['auth', 'verified']);
 Route::post('/users/products/delete_img', [AddProductImageController::class, 'destroy'])->middleware(['auth', 'verified']);
 
 Route::get('/personal_account', [PersonalAccountController::class, 'show'])->middleware(['auth', 'verified']);
@@ -98,8 +99,6 @@ Route::get('/products_list', [GetAllProductsController::class, 'get']);
 
 Route::get('/view_statistic', [ViewsStatisticTableController::class, 'index']);
 
-Route::resource('add_product', AddProductController::class)->middleware(['auth', 'verified']);
-Route::resource('add_image', AddProductImageController::class)->middleware(['auth', 'verified']);
 Route::resource('users', UserController::class);
 //Route::resource('users_products', UserProductsListController::class);
 

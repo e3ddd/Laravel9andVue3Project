@@ -7,9 +7,21 @@ use App\Http\Enums\MagnitudeEnums\DimensionsEnum;
 use App\Http\Enums\MagnitudeEnums\WeightEnum;
 use App\Models\Category;
 use App\Models\ProductAttribute;
+use App\Models\ProductAttributeValue;
 
 class CategoriesAndAttributesRepository
 {
+
+    public function getAttributesBySubcategoryId($subcategoryId, $default)
+    {
+        return ProductAttribute::where('subcategory_id', $subcategoryId)->where('default', $default)->orderBy('order')->get();
+    }
+
+    public function getAttributesValuesByProductId($productId)
+    {
+        return ProductAttributeValue::where('product_id', $productId)->get();
+    }
+
     public function createCategory(string $categoryName, string|null $subcategoryName, bool|null $subCheck)
     {
        if($subCheck){
@@ -54,27 +66,30 @@ class CategoriesAndAttributesRepository
     {
         foreach ($attrs as $attr){
             if(ProductAttribute::where('subcategory_id', $subcategoryId)
-                ->where('name', $attr['name'])
+                ->where('name', strtolower($attr['name']))
                 ->where('default', 0)
                 ->exists()){
                 throw new \Exception('This attribute already exist !');
             }
             if(ProductAttribute::where('subcategory_id', $subcategoryId)
-                ->where('name', $attr['name'])
+                ->where('name', strtolower($attr['name']))
                 ->where('default', 1)
                 ->exists()){
                 return 0;
             }
             ProductAttribute::create([
                 'subcategory_id' => $subcategoryId,
-                'name' => $attr['name'],
+                'name' => strtolower($attr['name']),
                 'value' => $attr['type'],
                 'default' => $default,
             ]);
 
         }
+    }
 
-
+    public function deleteAttribute($attributeId)
+    {
+        ProductAttribute::destroy($attributeId);
     }
 
     public function getMagnitudeValues($magnitudeName)

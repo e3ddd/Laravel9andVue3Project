@@ -1,56 +1,58 @@
 <template>
     <div class="create-product-form">
         <label><h4>Add value to product attribute</h4></label>
-        <form @submit.prevent>
-            <div class="row">
-                <div class="col-3">
-                    <label for="select">Select category:</label>
-                </div>
-                <div class="col-3">
-                    <select class="select" v-model="this.categoryName">
-                        <option v-for="category in this.categories.filter(item => item.parent_id == null)">{{category.name}}</option>
-                    </select>
-                </div>
-            </div>
+        <form @submit.prevent enctype="multipart/form-data">
+            <CategoriesSelect
+                :categories="this.categories"
+                :category-id="null"
+                :label="'Select category:'"
+                @onUpdate="onUpdateCategory"
+            />
 
-            <div class="row" v-if="this.categoryName !== ''">
-                <div class="col-3">
-                    <label for="select">Select subcategory: </label>
-                </div>
-                <div class="col-3">
-                    <select class="select" @change="getProducts" v-model="this.subcategoryName">
-                        <option v-for="category in this.categories.filter(item => item.parent_id == this.categoryId)">{{category.name}}</option>
-                    </select>
-                </div>
-            </div>
+            <CategoriesSelect
+                v-if="this.categoryId !== ''"
+                :categories="this.categories"
+                :category-id="this.categoryId"
+                :label="'Select subcategory:'"
+                @change="getProducts"
+                @onUpdate="onUpdateSubcategory"
+            />
 
-            <div class="row" v-if="this.subcategoryName != ''">
-                <div class="col-3">
+            <div class="row" v-if="this.subcategoryId != ''">
+                <div class="col">
                     <label for="select">Select product:</label>
                 </div>
-                <div class="col-3">
+                <div class="col">
                     <select class="select" @change="getAttr" v-model="this.productName">
                         <option v-for="product in this.products">{{product.name}}</option>
                     </select>
                 </div>
             </div>
+            <div class="images" v-if="this.products.length !== 0">
+                <upload-product-image
+                    :product-id="this.productId"
+                    :files="this.images"
+                    @getImages="onImages"
+                    @deleteImage="updateImages"
+                />
+            </div>
             <div class="inputs"
                  v-for="(attribute, key) in this.attributesValues"
             >
                 <div class="row">
-                    <div class="col-2 label">
+                    <div class="col label">
                         <label>{{attribute.name}}:</label>
                     </div>
-                    <div class="col-2 input">
+                    <div class="col input">
                         <my-input
                             :type="'text'"
                             v-model="this.attributesValues[key].value"
                         />
                     </div>
-                    <div class="col-1 d-flex justify-content-center mt-3">
+                    <div class="col d-flex justify-content-center mt-3">
                         {{attribute.type}}
                     </div>
-                    <div class="col-3 btns">
+                    <div class="col btns">
                         <ChangeOrderButtons
                         :id="key"
                         :obj="this.attributesValues"
@@ -75,10 +77,14 @@
 import MyInput from "../../MyInput.vue";
 import AdminPanelBut from "../AdminPanelBut.vue";
 import ChangeOrderButtons from "../ChangeOrderButtons.vue";
+import UploadProductImage from "./UploadProductImage.vue";
 import ErrorMessage from "../../ErrorMessage.vue";
+import CategoriesSelect from "./CategoriesSelect.vue";
 export default {
     components: {
+        CategoriesSelect,
         ErrorMessage,
+        UploadProductImage,
         MyInput,
         AdminPanelBut,
         ChangeOrderButtons
@@ -87,12 +93,11 @@ export default {
         return {
             categoryId: '',
             subcategoryId: '',
-            productId: '',
+            productId: 0,
             categories: [],
             attributesValues: [],
             products: [],
-            categoryName: '',
-            subcategoryName: '',
+            images: [],
             productName: '',
             err: '',
         }
@@ -103,43 +108,50 @@ export default {
     },
 
     watch: {
-        categoryName(newName, oldName){
-            let categories = this.categories.filter(item => item.name == newName)
-            this.categoryId = categories[0].id
-        },
-
-        subcategoryName(newName, oldName){
-            let subcategories = this.categories.filter(item => item.name == newName)
-            this.subcategoryId = subcategories[0].id
-        },
-
         productName(newName, oldName){
             let products = this.products.filter(item => item.name == newName)
             this.productId = products[0].id
-        }
+        },
 
     },
 
     methods: {
+
+        onUpdateCategory(categoryId) {
+            this.categoryId = categoryId
+        },
+
+        onUpdateSubcategory(subcategoryId) {
+            this.subcategoryId = subcategoryId
+        },
+
+        onImages(imgs){
+            this.images = imgs
+        },
+
+        updateImages(id){
+            this.images = this.images.filter(item => item.id != id)
+        },
+
         async getCategories() {
             const response = await axios.get('/get_all_categories')
                 .then((response) => {
                     this.categories = response.data
                 })
+                .catch((err) => {
+                    console.log(err)
+                })
         },
 
         async getAttr() {
             this.attributesValues = []
-            const response = await axios.get('/get_attributes', {
-                params: {
-                    subcategoryName: this.subcategoryName
-                }
+            const response = await axios.post('/admin/get_attributes_by_subcategory', {
+                    subcategoryId: this.subcategoryId,
+                    default: 0
             })
                 .then((response) => {
                     for (let key in response.data) {
-                        if (response.data[key]['default'] == 0) {
-                                this.attributesValues.push({name: response.data[key]['name'], value: '', order: Number(key), type: response.data[key]['value']})
-                        }
+                        this.attributesValues.push({name: response.data[key]['name'], value: '', order: Number(key), type: response.data[key]['value']})
                     }
                 })
                 .catch((err) => {
@@ -148,26 +160,27 @@ export default {
         },
 
         async getProducts() {
-            const response = await axios.get('/get_products_by_subcategory', {
+            const response = await axios.get('/admin/get_products_by_subcategory', {
                 params: {
                     subcategoryId: this.subcategoryId
                 }
             })
                 .then((response) => {
-                    this.products = response.data
+                    this.products = response.data.data
+                })
+                .catch((err) => {
+                    console.log(err)
                 })
         },
 
         async submit() {
-
-            const response = await axios.post('/store_product_attrs_values', {
-                    productId: this.productId,
-                    subcategoryId: this.subcategoryId,
-                    attributesValues: this.attributesValues
+            let response = await axios.post('/admin/store_product_attrs_values', {
+                productId: this.productId,
+                subcategoryId: this.subcategoryId,
+                attributesValues: this.attributesValues,
             })
                 .then((response) => {
                     console.log(response)
-                    // alert('Attributes values added !')
                 })
                 .catch((err) => {
                     console.log(err)
@@ -178,6 +191,33 @@ export default {
                         this.err = ''
                     }, 3000)
                 })
+
+
+
+            if(this.err == ''){
+                const fd = new FormData();
+                this.images.map(item => fd.append('images[]', item.file, item.file.name))
+                fd.append('productId', this.productId)
+                let response = await axios.post('/admin/store_product_images', fd,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    .then((response) => {
+                        console.log(response)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        this.err = err.response.data.message
+                    })
+                    .finally(() => {
+                        setTimeout(() => {
+                            this.err = ''
+                        }, 3000)
+                    })
+            }
+
         }
     }
 }
@@ -187,11 +227,6 @@ export default {
 .select {
     width: 75%;
     margin-left: 30px;
-}
-
-.create-product-form {
-    border: 2px solid silver;
-    padding: 10px;
 }
 
 

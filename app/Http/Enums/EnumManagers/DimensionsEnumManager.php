@@ -25,6 +25,11 @@ class DimensionsEnumManager implements EnumManager
     {
         return $this->value * ($this->from->coefficient() / DimensionsEnum::millimeter->coefficient());
     }
+
+    public function convertFromSmallest()
+    {
+        return $this->value * (DimensionsEnum::millimeter->coefficient() / $this->from->coefficient());
+    }
     public function toString(): string
     {
         return $this->value . " " . $this->from->value;
