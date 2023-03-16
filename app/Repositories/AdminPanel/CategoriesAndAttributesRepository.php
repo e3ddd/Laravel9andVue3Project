@@ -26,13 +26,13 @@ class CategoriesAndAttributesRepository
     {
        if($subCheck){
                Category::create([
-                   'name' => $subcategoryName,
+                   'name' => strtolower($subcategoryName),
                    'parent_id' => Category::where('name', $categoryName)->first()->id
                ]);
        }else{
            if(Category::where('name', $categoryName)->doesntExist()){
                Category::create([
-                   'name' => $categoryName,
+                   'name' => strtolower($categoryName),
                    'parent_id' => null
                ]);
            }

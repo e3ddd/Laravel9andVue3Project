@@ -10,12 +10,7 @@
                 <div class="row">
                     <div class="page_item" v-for="item in products">
                         <list-item
-                            :id="item.id"
-                            :email="item.user.email"
-                            :name="item.name"
-                            :price="item.price"
-                            :description="item.description"
-                            :images="item.image"
+
                         />
                     </div>
                     <paginator
@@ -81,19 +76,7 @@ export default {
         },
 
         async getProducts(page) {
-            let sub = this.categories.split('/', 2)[1]
-            const response = await axios.post('/get_by_category?page=' + page,
-                {
-                    subcategory: sub
-                }
-            )
-                .then((response) => {
-                    this.total = Math.ceil(response.data.total / this.limit)
-                    this.products = response.data.data
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+
         },
     }
 }

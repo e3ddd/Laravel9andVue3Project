@@ -53,6 +53,11 @@ class ProductService
         return $this->productRepository->getProductBySubcategoryIdWithPaginate($subcategoryId);
     }
 
+    public function getAllProductsByCategory($categoryName)
+    {
+        return $this->productRepository->getAllProductsByCategory($categoryName);
+    }
+
     public function deleteProduct($productId)
     {
         $this->productRepository->deleteProduct($productId);

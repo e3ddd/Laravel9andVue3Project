@@ -1,33 +1,28 @@
 <template>
-    <div class="container page">
+    <div class="container-fluid page">
         <div class="row">
-            <div class="col-3">
+            <div class="col-sm-3">
                 <categories-list
                     :mainCategory="this.category_name"
                     :categories="this.subcategories"
                 />
             </div>
-            <div class="col-9 products">
+            <div class="col-lg-9 products">
                 <div class="all__link">
                     <a href="/home">products</a>&#187;<a :href="'products/' + this.category_name">{{this.category_name}}</a>
                 </div>
-                <div class="row">
-                    <div class="page_item" v-for="item in products">
+                  <div class="row">
+                    <div class="col-3" v-for="product in products">
                         <list-item
-                            :id="item.id"
-                            :email="item.user.email"
-                            :name="item.name"
-                            :price="item.price"
-                            :description="item.description"
-                            :images="item.image"
+                            :product="product.data"
                         />
                     </div>
-                    <paginator
-                        v-model:total="total"
-                        :get="getProducts"
-                        @update="onUpdate"
-                    />
-                </div>
+                  </div>
+                <paginator
+                    v-model:total="total"
+                    :get="getProducts"
+                    @update="onUpdate"
+                />
             </div>
         </div>
     </div>
@@ -52,8 +47,6 @@ export default {
             total: 1,
             page: 1,
             products: [],
-            adaptive: false,
-            non_adaptive: true,
             category_name: window.location.href.substring(31),
             subcategories: []
         }
@@ -79,11 +72,10 @@ export default {
         {
             const response = await axios.get('/get_subcategories', {
                 params: {
-                    category: this.category_name.replace('%20', ' ')
+                    category: this.category_name
                 }
             })
                 .then((response) => {
-                    console.log(response)
                     this.subcategories = response.data
                 })
                 .catch((err) => {
@@ -96,7 +88,16 @@ export default {
         },
 
         async getProducts(page) {
-
+            const response = await axios.get('/admin/get_all_products_by_category?page=' + page, {
+                params: {
+                    categoryName: this.category_name
+                }
+            })
+                .then((response) => {
+                    this.products = response.data
+                    console.log(response)
+                })
+                .catch(err => console.log(err))
         },
     }
 }

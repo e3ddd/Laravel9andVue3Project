@@ -39,6 +39,7 @@ export default {
         }
     },
 
+
     methods: {
        async createCategory() {
                 const response = await axios.get('/admin/create_category', {

@@ -15,7 +15,7 @@ class GetCategoriesController extends Controller
 
     public function getSubcategoriesBuyCategoryId(Request $request)
     {
-        $categoryId = Category::where('name', $request->category)->first()->id;
+        $categoryId = Category::where('name', urldecode($request->category))->first()->id;
 
         return Category::where('parent_id', $categoryId)->get();
     }

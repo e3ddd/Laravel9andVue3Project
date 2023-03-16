@@ -44,24 +44,26 @@ Route::controller(CategoriesAndAttributesController::class)->group(function() {
     Route::get('/admin', 'show');
     Route::get('/admin/create_category', 'createCategory');
     Route::get('/admin/edit_category', 'editCategory');
-    Route::get('/admin/delete_category', 'deleteCategory');
+    Route::post('/admin/delete_category', 'deleteCategory');
     Route::get('/admin/search_category', 'searchCategory');
     Route::get('/admin/create_attribute', 'createAttribute');
-    Route::post('/admin/get_attributes_by_subcategory', 'getAttributesBySubcategoryId');
+    Route::get('/admin/get_attributes_by_subcategory', 'getAttributesBySubcategoryId');
     Route::get('/admin/get_converted_attributes', 'getConvertedAttributesValues');
     Route::post('/admin/delete_attribute', 'deleteAttribute');
-    Route::post('/admin/get_magnitude_values', 'getMagnitudeValues');
+    Route::get('/admin/get_magnitude_values', 'getMagnitudeValues');
 });
 
 Route::controller(ProductsController::class)->group(function() {
     Route::get('/admin/products', 'show');
     Route::get('/admin/get_product_by_id', 'getProductById');
     Route::get('/admin/get_products_by_subcategory', 'getProductBySubcategoryPaginate');
-    Route::post('/admin/create_product', 'storeProduct');
+    Route::get('/admin/create_product', 'storeProduct');
     Route::post('/admin/store_product_images', 'storeProductImages');
     Route::post('/admin/store_product_attrs_values', 'storeAttributesValues');
-    Route::post('/admin/search_product', 'searchProduct');
+    Route::get('/admin/search_product', 'searchProduct');
     Route::post('/admin/delete_product', 'deleteProduct');
+    Route::get('/admin/get_all_products_by_category', 'getAllProductsByCategory');
+    Route::get('/admin/get_all_products_by_subcategory', 'getAllProductsBySubcategory');
 });
 
 Route::controller(CategoriesNavController::class)->group(function (){

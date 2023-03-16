@@ -120,15 +120,16 @@ export default {
 
        async submit() {
 
-            const response = await axios.post('/admin/create_product', {
+            const response = await axios.get('/admin/create_product', {
+                params: {
                     subcategoryId: this.subcategoryId,
                     subcategoryName: this.subcategoryName,
                     product: this.product,
+                }
 
             })
                 .then((response) => {
-                    console.log(response)
-                    // alert('Product created !')
+                    alert('Product created !')
                 })
                 .catch((err) => {
                     console.log(err)

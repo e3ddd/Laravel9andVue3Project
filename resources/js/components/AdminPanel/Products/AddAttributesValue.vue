@@ -145,9 +145,11 @@ export default {
 
         async getAttr() {
             this.attributesValues = []
-            const response = await axios.post('/admin/get_attributes_by_subcategory', {
+            const response = await axios.get('/admin/get_attributes_by_subcategory', {
+                params:{
                     subcategoryId: this.subcategoryId,
                     default: 0
+                }
             })
                 .then((response) => {
                     for (let key in response.data) {

@@ -42,6 +42,13 @@ class ProductsController extends Controller
         return $productService->getProductById($request->productId);
     }
 
+    public function getAllProductsByCategory(Request $request)
+    {
+        $productService = app(ProductService::class);
+
+        return $productService->getAllProductsByCategory($request->categoryName);
+    }
+
     public function getProductBySubcategoryPaginate(Request $request)
     {
         $productService = app(ProductService::class);

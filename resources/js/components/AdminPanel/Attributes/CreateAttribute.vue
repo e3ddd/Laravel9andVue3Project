@@ -96,8 +96,10 @@ export default {
     methods: {
         async getMagnitudeValues() {
             this.attributeValues = []
-            const response = await axios.post('/admin/get_magnitude_values', {
-                magnitudeName: this.magnitudeName
+            const response = await axios.get('/admin/get_magnitude_values', {
+                params: {
+                    magnitudeName: this.magnitudeName
+                }
             })
                 .then((response) => {
                     response.data.map((item,key) => {

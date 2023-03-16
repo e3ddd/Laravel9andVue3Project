@@ -26,7 +26,7 @@
             <div class="col-3">
                 {{item.id}}
             </div>
-            <div class="col-3">
+            <div class="col-3 name">
                 {{item.name}}
             </div>
             <div class="col-3" v-if="item.parent_id !== null">
@@ -119,16 +119,13 @@ export default {
         },
 
         async del(id) {
-            const response = await axios.get('/admin/delete_category',
+            const response = await axios.post('/admin/delete_category',
                 {
-                    params: {
                         categoryId: id
-                    }
                 }
             )
                 .then((response) => {
                     this.categoriesList = this.categoriesList.filter(item => item.id !== id)
-                    console.log(response)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -146,6 +143,10 @@ export default {
     padding: 20px;
     border: 1px solid silver;
     box-shadow: 2px 2px 2px silver;
+}
+
+.name:first-letter {
+    text-transform: uppercase;
 }
 
 .search {

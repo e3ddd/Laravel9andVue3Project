@@ -113,8 +113,10 @@ export default {
         },
 
         async searchProduct() {
-            const response = await axios.post('/admin/search_product', {
-                search: this.search
+            const response = await axios.get('/admin/search_product', {
+                params: {
+                    search: this.search
+                }
             })
                 .then((response) => {
                     this.productsList = response.data.data

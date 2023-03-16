@@ -18,8 +18,6 @@ export default {
     data() {
         return {
             products: [],
-            adaptive: false,
-            non_adaptive: true,
             categories: [],
             subcategories:[]
 
@@ -27,9 +25,7 @@ export default {
     },
 
     created() {
-        this.onAdaptive()
         this.getCategories()
-        window.addEventListener("resize", this.onAdaptive);
     },
 
     mounted() {
@@ -47,15 +43,6 @@ export default {
                 })
         },
 
-        onAdaptive() {
-            if(window.innerWidth < 1200){
-                this.adaptive = true
-                this.non_adaptive = false
-            }else{
-                this.adaptive = false
-                this.non_adaptive = true
-            }
-        },
 
         onUpdate() {
             this.products = []

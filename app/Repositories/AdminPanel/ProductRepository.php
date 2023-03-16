@@ -2,9 +2,11 @@
 
 namespace App\Repositories\AdminPanel;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductAttributeValue;
+use App\Models\ProductImage;
 
 
 class ProductRepository
@@ -27,6 +29,21 @@ class ProductRepository
     public function getAllProducts()
     {
         return Product::all();
+    }
+
+    public function getAllProductsByCategory($categoryName)
+    {
+        $categoryId = Category::where('name', urldecode($categoryName))->first()->id;
+        $subcategories = Category::where('parent_id', $categoryId)->get('id');
+        $products = [];
+        foreach ($subcategories as $subcategory){
+            if(!empty(Product::where('subcategory_id', $subcategory->id)->get()->toArray())){
+                $products[] = Product::where('subcategory_id', $subcategory->id)->with('image')
+                                                                                ->with('attributeValue')
+                                                                                ->paginate(9);
+            }
+        }
+        return $products;
     }
 
     public function storeAttributesValues($attrs, $prodId)
