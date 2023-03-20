@@ -4,18 +4,9 @@ namespace App\Repositories\AdminPanel;
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductAttribute;
-use App\Models\ProductAttributeValue;
-use App\Models\ProductImage;
-
 
 class ProductRepository
 {
-    public function getAttributeByName($attrName)
-    {
-        return ProductAttribute::where('name', $attrName)->first();
-    }
-
     public function getProductByName($productName)
     {
         return Product::where('name', $productName)->first();
@@ -31,44 +22,34 @@ class ProductRepository
         return Product::all();
     }
 
-    public function getAllProductsByCategory($categoryName)
+    public function getAllProductsByCategoryName($categoryName)
     {
-        $categoryId = Category::where('name', urldecode($categoryName))->first()->id;
-        $subcategories = Category::where('parent_id', $categoryId)->get('id');
-        $products = [];
-        foreach ($subcategories as $subcategory){
-            if(!empty(Product::where('subcategory_id', $subcategory->id)->get()->toArray())){
-                $products[] = Product::where('subcategory_id', $subcategory->id)->with('image')
-                                                                                ->with('attributeValue')
-                                                                                ->paginate(9);
-            }
-        }
-        return $products;
+        $categoryId = Category::where('name', $categoryName)->first()->id;
+        $subcategories = Category::where('parent_id', $categoryId)->get('id')->toArray();
+
+        return Product::whereIn('subcategory_id', $subcategories)->with('image')->with('attribute')->paginate(9);
     }
 
-    public function storeAttributesValues($attrs, $prodId)
+    public function getAllProductBySubcategoryNameWithPaginate($subcategoryName)
     {
-        foreach ($attrs as $name => $attr){
-            if(ProductAttributeValue::where('product_id', $prodId)->where('name', $name)->exists()){
-                throw new \Exception('Attributes values for this product exist !');
-            }else{
-                ProductAttributeValue::create([
-                    'name' => $name,
-                    'value' => $attr,
-                    'product_id' => $prodId,
-                ]);
-            }
-        }
+        $subcategoryId = Category::where('name', $subcategoryName)->first()->id;
+
+        return Product::where('subcategory_id', $subcategoryId)->with('image')->with('attribute')->paginate(9);
     }
 
-    public function getProductBySubcategoryIdWithPaginate($subcategoryId)
+    public function getAllProductBySubcategoryIdWithPaginate($subcategoryId)
     {
         return Product::where('subcategory_id', $subcategoryId)->with('image')->paginate(10);
     }
 
     public function searchProduct($search)
     {
-        return Product::where('name', 'like', $search . '%')->paginate(10);
+        return Product::where('name', 'like', '%' . $search . '%')->with('image')->get();
+    }
+
+    public function searchProductBySubcategory($search, $subcategoryId)
+    {
+        return Product::where('name', 'like', '%' . $search . '%')->where('subcategory_id', $subcategoryId)->paginate(10);
     }
 
     public function deleteProduct($productId)
@@ -91,12 +72,4 @@ class ProductRepository
         }
 
     }
-
-    public function updateAttrOrder($subcategoryId, $attrs)
-    {
-        foreach ($attrs as $attr){
-            ProductAttribute::where('subcategory_id', $subcategoryId)->where('name', $attr['name'])->update(['order' => $attr['order']]);
-        }
-    }
-
 }

@@ -1,44 +1,42 @@
 <template>
-    <div class="container-fluid page">
+    <div class="container page">
         <div class="row">
             <div class="col-sm-3">
                 <categories-list
-                    :mainCategory="this.category_name"
-                    :categories="this.subcategories"
+                    :mainCategory="this.category"
+                    :subcategories="this.subcategories"
                 />
             </div>
             <div class="col-lg-9 products">
-                <div class="all__link">
-                    <a href="/home">products</a>&#187;<a :href="'products/' + this.category_name">{{this.category_name}}</a>
-                </div>
-                  <div class="row">
-                    <div class="col-3" v-for="product in products">
-                        <list-item
-                            :product="product.data"
+                <product-list-by-category
+                    :category="this.category"
+                    :products="this.products"
+                />
+                <div class="row">
+                    <div class="col">
+                        <paginator
+                            v-model:total="total"
+                            :get="getProducts"
+                            @update="onUpdate"
                         />
                     </div>
-                  </div>
-                <paginator
-                    v-model:total="total"
-                    :get="getProducts"
-                    @update="onUpdate"
-                />
+                </div>
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
 import CategoriesList from "./CategoriesList.vue";
 import Paginator from "../../UserList/Paginator.vue";
-import ListItem from "../ListItem.vue";
+import ProductListByCategory from "./ProductListByCategory.vue";
 import Math from "lodash";
+
 export default {
     components: {
         Paginator,
-        ListItem,
-        CategoriesList
+        CategoriesList,
+        ProductListByCategory
     },
 
     data() {
@@ -47,32 +45,29 @@ export default {
             total: 1,
             page: 1,
             products: [],
-            category_name: window.location.href.substring(31),
+            category: window.location.href,
             subcategories: []
         }
     },
 
 
     created() {
-        this.getProducts(this.page)
-        this.getSubcategories()
         this.rightLinks()
+        this.getSubcategories()
+        this.getProducts(this.page)
     },
 
     methods: {
+
         rightLinks() {
-            for (const key in this.category_name.split('%20',)){
-                if(this.category_name.includes('%20')) {
-                    this.category_name = this.category_name.replace('%20', ' ')
-                }
-            }
+            this.category = decodeURI(this.category.split('/')[4])
         },
 
         async getSubcategories()
         {
-            const response = await axios.get('/get_subcategories', {
+            const response = await axios.get('/get_subcategories_by_parent_category_name', {
                 params: {
-                    category: this.category_name
+                    categoryName: this.category
                 }
             })
                 .then((response) => {
@@ -88,14 +83,15 @@ export default {
         },
 
         async getProducts(page) {
-            const response = await axios.get('/admin/get_all_products_by_category?page=' + page, {
+            const response = await axios.get('/admin/get_all_products_by_category_name?page=' + page, {
                 params: {
-                    categoryName: this.category_name
+                    categoryName: this.category
                 }
             })
                 .then((response) => {
-                    this.products = response.data
-                    console.log(response)
+                    this.products = response.data.data
+                    console.log(response.data)
+                    this.total = Math.ceil(response.data.total / response.data.per_page)
                 })
                 .catch(err => console.log(err))
         },
@@ -104,21 +100,13 @@ export default {
 </script>
 
 <style scoped>
+.page {
+    margin-top: 50px;
+}
+
 .products {
     border: 2px solid silver;
     box-shadow: 3px 3px 3px lightgray;
 }
 
-.all__link a {
-    padding: 10px;
-    text-decoration: none;
-    text-transform: uppercase;
-    color: black;
-    font-size: 14px;
-}
-
-.all__link a:hover {
-    text-decoration: underline;
-    color: #df4949;
-}
 </style>

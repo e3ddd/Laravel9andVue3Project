@@ -13,7 +13,7 @@
             >
                 Edit
             </admin-panel-but>
-            <div class="subcategory_attributes pt-2" v-if="attributes.length !== 0">
+            <div class="subcategory_attributes pt-2" >
                 <h5>Attributes List</h5>
                 <div v-for="attribute in attributes" v-if="this.newAttributes.length == 0">
                     <div class="row">

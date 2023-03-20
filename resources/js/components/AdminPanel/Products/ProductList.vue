@@ -1,29 +1,35 @@
 <template>
-    <h4>Product List</h4>
-    <div class="container-fluid products_list">
-        <CategoriesSelect
-            :categories="this.categories"
-            :category-id="null"
-            :label="'Select category:'"
-            @onUpdate="onUpdateCategory"
-        />
-
-
-        <CategoriesSelect
-            v-if="this.categoryId !== ''"
-            :categories="this.categories"
-            :category-id="this.categoryId"
-            :label="'Select subcategory:'"
-            @change="getProductsList"
-            @onUpdate="onUpdateSubcategory"
-        />
-
-        <div class="search">
+    <div class="container list">
+        <h4>Product List</h4>
+        <div class="row">
+            <div class="col-4">
+                <div class="row"><label for="">Select category:</label></div>
+                <div class="row" v-if="this.categoryId !== ''"><label for="">Select subcategory:</label></div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <CategoriesSelect
+                        :categories="this.categories"
+                        :category-id="null"
+                        @onUpdate="onUpdateCategory"
+                    />
+                </div>
+                <div class="row">
+                    <CategoriesSelect
+                        v-if="this.categoryId !== ''"
+                        :categories="this.categories"
+                        :category-id="this.categoryId"
+                        @change="getProductsList"
+                        @onUpdate="onUpdateSubcategory"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <form @submit.prevent>
                 <input type="search" name="search" @input="searchProduct" v-model="this.search" placeholder="Search product...">
             </form>
         </div>
-
         <div class="row product" v-for="product in this.productsList">
             <div class="col-sm-1 item">
                 ID: {{product.id}}
@@ -57,11 +63,13 @@
                 </admin-panel-but>
             </div>
         </div>
-        <paginator
-            v-model:total="this.total"
-            :get="getProductsList"
-            @update="onUpdate"
-        />
+        <div class="row">
+            <paginator
+                v-model:total="this.total"
+                :get="getProductsList"
+                @update="onUpdate"
+            />
+        </div>
     </div>
 </template>
 
@@ -84,7 +92,6 @@ export default {
     data() {
         return {
             page: 1,
-            limit: 10,
             total: 1,
             productsList: [],
             categories: [],
@@ -113,8 +120,9 @@ export default {
         },
 
         async searchProduct() {
-            const response = await axios.get('/admin/search_product', {
+            const response = await axios.get('/admin/search_product_by_subcategory', {
                 params: {
+                    subcategoryId: this.subcategoryId,
                     search: this.search
                 }
             })
@@ -159,6 +167,13 @@ export default {
 </script>
 
 <style scoped>
+.list {
+    border: 2px solid silver;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 20px;
+}
+
 .product {
     margin-top: 10px;
 }

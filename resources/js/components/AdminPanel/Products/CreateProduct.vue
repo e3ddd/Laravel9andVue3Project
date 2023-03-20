@@ -1,71 +1,64 @@
 <template>
-    <div class="create-product-form">
-        <label><h4>Create product</h4></label>
+    <div class="container form">
+      <h4>Create product</h4>
+        <div class="row">
+            <div class="col-4">
+                <div class="row"><label for="">Select category:</label></div>
+                <div class="row" v-if="this.categoryId !== ''"><label for="">Select subcategory:</label></div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <CategoriesSelect
+                    :categories="this.categories"
+                    :category-id="null"
+                    @onUpdate="onUpdateCategory"
+                />
+                </div>
+                <div class="row">
+                    <CategoriesSelect
+                        v-if="this.categoryId !== ''"
+                        :categories="this.categories"
+                        :category-id="this.categoryId"
+                        @onUpdate="onUpdateSubcategory"
+                    />
+                </div>
+            </div>
+        </div>
         <form @submit.prevent>
-            <CategoriesSelect
-            :categories="this.categories"
-            :category-id="null"
-            :label="'Select category:'"
-            @onUpdate="onUpdateCategory"
-            />
-
-
-            <CategoriesSelect
-                v-if="this.categoryId !== ''"
-                :categories="this.categories"
-                :category-id="this.categoryId"
-                :label="'Select subcategory:'"
-                @onUpdate="onUpdateSubcategory"
-            />
-
-                <div class="inputs"
-                     v-for="(item, key) in product"
-                >
-                    <div class="row" v-if="item.name != 'description'">
-                        <div class="col label">
-                            <label>{{item.name}}:</label>
-                        </div>
-                        <div class="col input">
-                            <my-input
-                                :type="'text'"
-                                v-model="item.value"
-                            />
-                        </div>
-                        <div class="col-1"></div>
-                        <div class="col">
-                            <ChangeOrderButtons
-                                :id="key"
-                                :obj="this.product"
-                            />
-                        </div>
-                    </div>
-
-                    <div class="row" v-if="item.name == 'description'">
-                        <div class="col label">
-                            <label>{{item.name}}:</label>
-                        </div>
-                        <div class="col input">
-                            <textarea cols="24" rows="3" v-model="item.value"/>
-                        </div>
-                        <div class="col-1"></div>
-                        <div class="col">
-                            <ChangeOrderButtons
-                                :id="key"
-                                :obj="this.product"
-                            />
-                        </div>
+            <div class="row"  v-for="(item, key) in this.product">
+                <div class="col-sm">
+                    <div class="row label">
+                        <label for="">{{item.name}}:</label>
                     </div>
                 </div>
-        <admin-panel-but
-        :func="submit"
-        >
-            Create
-        </admin-panel-but>
+                <div class="col-sm input" v-if="item.name !== 'description'">
+                        <my-input
+                            :type="'text'"
+                            v-model="item.value"
+                        />
+                </div>
+
+                <div class="col-sm input" v-if="item.name == 'description'">
+                    <textarea cols="24" rows="3" v-model="item.value"/>
+                </div>
+                <div class="col-sm">
+                    <ChangeOrderButtons
+                        :id="key"
+                        :obj="this.product"
+                    />
+                </div>
+            </div>
+            <error-message
+                class="w-25 mt-4 d-flex justify-content-center align-content-center"
+                :err="this.err"
+            />
+            <admin-panel-but
+                class="m-2"
+                :func="submit"
+            >
+                Create
+            </admin-panel-but>
         </form>
-        <error-message
-            class="w-25 mt-4 d-flex justify-content-center align-content-center"
-            :err="this.err"
-        />
     </div>
 </template>
 
@@ -84,12 +77,15 @@ export default {
         AdminPanelBut
     },
 
-    props: {
-      product: Object,
-    },
 
     data() {
         return {
+            product: [
+                {name: 'name', order: 0, value: '', type: 'string'},
+                {name: 'price', order: 1, value: '', type: 'banknote'},
+                {name: 'producer', order: 2, value: '', type: 'string'},
+                {name: 'description', order: 3, value: '', type: 'string'},
+            ],
             categoryId: '',
             subcategoryId: '',
             categories: [],
@@ -102,6 +98,10 @@ export default {
     },
 
     methods: {
+
+        onUpdate(value){
+
+        },
 
         onUpdateCategory(categoryId) {
             this.categoryId = categoryId
@@ -119,7 +119,6 @@ export default {
         },
 
        async submit() {
-
             const response = await axios.get('/admin/create_product', {
                 params: {
                     subcategoryId: this.subcategoryId,
@@ -129,7 +128,8 @@ export default {
 
             })
                 .then((response) => {
-                    alert('Product created !')
+                    console.log(response)
+                    // alert('Product created !')
                 })
                 .catch((err) => {
                     console.log(err)
@@ -147,6 +147,10 @@ export default {
 </script>
 
 <style scoped>
+.form {
+    padding: 20px;
+    border: 2px solid silver;
+}
 
 .input {
     display: flex;
@@ -163,6 +167,4 @@ export default {
 .label :first-letter {
     text-transform: uppercase;
 }
-
-
 </style>

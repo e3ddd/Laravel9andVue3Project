@@ -2,24 +2,20 @@
 
 namespace App\Services\AdminPanel;
 
-use App\Http\Enums\MagnitudeEnums\CapacityEnum;
-use App\Http\Enums\MagnitudeEnums\DimensionsEnum;
-use App\Http\Enums\MagnitudeEnums\MemoryValuesEnum;
-use App\Http\Enums\MagnitudeEnums\WeightEnum;
 use App\Http\Factories\Convert\ConvertValueManager;
 use App\Http\Enums\MagnitudeEnums\PriceEnum;
-use App\Repositories\AdminPanel\CategoriesAndAttributesRepository;
+use App\Repositories\AdminPanel\AttributesRepository;
 use App\Repositories\AdminPanel\ProductRepository;
 
 class ProductService
 {
     private ProductRepository $productRepository;
-    private CategoriesAndAttributesRepository $categoriesAndAttributesRepository;
+    private AttributesRepository $attributesRepository;
 
-    public function __construct(ProductRepository $productRepository, CategoriesAndAttributesRepository $categoriesAndAttributesRepository)
+    public function __construct(ProductRepository $productRepository, AttributesRepository $attributesRepository)
     {
         $this->productRepository = $productRepository;
-        $this->categoriesAndAttributesRepository = $categoriesAndAttributesRepository;
+        $this->attributesRepository = $attributesRepository;
     }
 
 
@@ -48,14 +44,19 @@ class ProductService
         return $this->productRepository->getAllProducts();
     }
 
-    public function getProductBySubcategoryIdWithPaginate($subcategoryId)
+    public function getAllProductBySubcategoryIdWithPaginate($subcategoryId)
     {
-        return $this->productRepository->getProductBySubcategoryIdWithPaginate($subcategoryId);
+        return $this->productRepository->getAllProductBySubcategoryIdWithPaginate($subcategoryId);
     }
 
-    public function getAllProductsByCategory($categoryName)
+    public function getAllProductBySubcategoryNameWithPaginate($subcategoryName)
     {
-        return $this->productRepository->getAllProductsByCategory($categoryName);
+        return $this->productRepository->getAllProductBySubcategoryNameWithPaginate($subcategoryName);
+    }
+
+    public function getAllProductsByCategoryName($categoryName)
+    {
+        return $this->productRepository->getAllProductsByCategoryName($categoryName);
     }
 
     public function deleteProduct($productId)
@@ -63,25 +64,14 @@ class ProductService
         $this->productRepository->deleteProduct($productId);
     }
 
-    public function storeAttributesValues($prodId, $subcategoryId, $attrValues)
-    {
-        $validValues = [];
-        $convertValueManager = new ConvertValueManager();
-        foreach ($attrValues as $attrValue){
-            if($attrValue['type'] != 'string'){
-                    $validValues[$attrValue['name']] = $convertValueManager->validate($attrValue, $attrValue['type']);
-            }else{
-                $validValues[$attrValue['name']] = $attrValue['value'];
-            }
-        }
-        $this->productRepository->storeAttributesValues($validValues, $prodId);
-
-        $this->productRepository->updateAttrOrder($subcategoryId, $attrValues);
-    }
-
     public function searchProduct($search)
     {
         return $this->productRepository->searchProduct($search);
+    }
+
+    public function searchProductBySubcategory($search, $subcategoryId)
+    {
+        return $this->productRepository->searchProductBySubcategory($search, $subcategoryId);
     }
 
     public function storeProduct($subcategoryId, $productValues)
@@ -98,8 +88,8 @@ class ProductService
         }
             $validPrice = explode('.', $price)[0];
 
-            $this->categoriesAndAttributesRepository->createAttribute($subcategoryId, $productValues, 1);
-            $this->productRepository->updateAttrOrder($subcategoryId, $productValues);
+            $this->attributesRepository->createAttribute($subcategoryId, $productValues, 1);
+            $this->attributesRepository->updateAttrOrder($subcategoryId, $productValues);
 
 
             $this->productRepository->storeProduct($product['name'], $validPrice,

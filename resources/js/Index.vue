@@ -1,9 +1,13 @@
 <template>
     <div class="container-fluid page">
-            <main-categories-list
-                :categories="this.categories"
-                :subcategories="this.subcategories"
-            />
+        <div class="row">
+            <div class="col">
+                <main-categories-list
+                    :categories="this.categories"
+                    :subcategories="this.subcategories"
+                />
+            </div>
+        </div>
         </div>
 </template>
 

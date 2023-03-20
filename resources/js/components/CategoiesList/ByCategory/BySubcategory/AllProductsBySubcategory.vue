@@ -1,16 +1,16 @@
 <template>
     <div class="container page">
         <div class="row">
-            <div class="col-10 products">
+            <div class="col products">
                 <div class="all__link">
                     <a href="/home">products</a>&#187;
-                    <a :href="'/' + this.categories[0] + '/' + this.categories[1]">{{this.categories[1]}}</a>&#187;
-                    <a :href="'/' + this.categories[0] + '/' + this.categories[1] + '/' + this.categories[2]">{{this.categories[2]}}</a>
+                    <a :href="'/' + 'products' + '/' + this.category">{{this.category}}</a>&#187;
+                    <a :href="'/' + 'products' + '/' + this.category + '/' + this.subcategory">{{this.subcategory}}</a>
                 </div>
                 <div class="row">
-                    <div class="page_item" v-for="item in products">
+                    <div class="col-3 p-4" v-for="product in products">
                         <list-item
-
+                            :product="product"
                         />
                     </div>
                     <paginator
@@ -39,14 +39,15 @@ export default {
 
     data() {
         return {
-            limit: 9,
             total: 1,
             page: 1,
             products: [],
             adaptive: false,
             non_adaptive: true,
-            categories: window.location.href
-                .replace(/^http:\/\/127.0.0.1:8000\//, '')
+            categories: window.location.href,
+            category: '',
+            subcategory: '',
+
         }
     },
 
@@ -69,16 +70,28 @@ export default {
                     arr[key] = arr[key].replace('%20', ' ')
                 }
             }
-            this.categories = arr
+            this.category = arr[4]
+            this.subcategory = arr[5]
         },
         onUpdate() {
             this.products = []
         },
 
         async getProducts(page) {
-
+            console.log(this.subcategory)
+            const response = await axios.get('/admin/get_all_products_by_subcategory_name?page=' + page, {
+                params: {
+                    subcategoryName: this.subcategory
+                }
+            })
+                .then((response) => {
+                    console.log(response)
+                    this.products = response.data.data
+                    this.total = Math.ceil(response.data.total / response.data.per_page)
+                })
+                .catch(err => console.log(err))
         },
-    }
+    },
 }
 </script>
 

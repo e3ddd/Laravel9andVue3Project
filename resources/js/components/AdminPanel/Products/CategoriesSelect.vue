@@ -1,20 +1,12 @@
 <template>
-            <div class="row">
-                <div class="col">
-                    <label for="select">{{label}}</label>
-                </div>
-                <div class="col">
-                    <select class="select" @change="updateCategory" v-model="categoryName">
-                        <option v-for="category in categories.filter(item => item.parent_id == categoryId)">{{category.name}}</option>
-                    </select>
-                </div>
-            </div>
+    <select class="select" @change="updateCategory" v-model="categoryName">
+        <option v-for="category in categories.filter(item => item.parent_id == categoryId)">{{category.name}}</option>
+    </select>
 </template>
 
 <script>
 export default {
     props: {
-        label: String,
         categories: Array,
         categoryId: [Number,null]
     },
@@ -44,7 +36,7 @@ export default {
 
 <style scoped>
 .select {
-    width: 75%;
+    width: 100%;
     margin-left: 30px;
 }
 

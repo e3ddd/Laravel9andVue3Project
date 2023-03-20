@@ -1,33 +1,36 @@
 <template>
-    <div class="create-product-form">
-        <label><h4>Add value to product attribute</h4></label>
-        <form @submit.prevent enctype="multipart/form-data">
-            <CategoriesSelect
-                :categories="this.categories"
-                :category-id="null"
-                :label="'Select category:'"
-                @onUpdate="onUpdateCategory"
-            />
-
-            <CategoriesSelect
-                v-if="this.categoryId !== ''"
-                :categories="this.categories"
-                :category-id="this.categoryId"
-                :label="'Select subcategory:'"
-                @change="getProducts"
-                @onUpdate="onUpdateSubcategory"
-            />
-
-            <div class="row" v-if="this.subcategoryId != ''">
-                <div class="col">
-                    <label for="select">Select product:</label>
+    <div class="container form">
+        <h4>Add value to product attribute</h4>
+        <div class="row">
+            <div class="col-4">
+                <div class="row"><label for="">Select category:</label></div>
+                <div class="row" v-if="this.categoryId !== ''"><label for="">Select subcategory:</label></div>
+                <div class="row" v-if="this.subcategoryId != ''"><label for="select">Select product:</label></div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <CategoriesSelect
+                        :categories="this.categories"
+                        :category-id="null"
+                        @onUpdate="onUpdateCategory"
+                    />
                 </div>
-                <div class="col">
+                <div class="row" v-if="this.categoryId !== ''">
+                    <CategoriesSelect
+                        :categories="this.categories"
+                        :category-id="this.categoryId"
+                        @change="getProducts"
+                        @onUpdate="onUpdateSubcategory"
+                    />
+                </div>
+                <div class="row" v-if="this.subcategoryId != ''">
                     <select class="select" @change="getAttr" v-model="this.productName">
                         <option v-for="product in this.products">{{product.name}}</option>
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="images" v-if="this.products.length !== 0">
                 <upload-product-image
                     :product-id="this.productId"
@@ -36,10 +39,12 @@
                     @deleteImage="updateImages"
                 />
             </div>
-            <div class="inputs"
-                 v-for="(attribute, key) in this.attributesValues"
-            >
-                <div class="row">
+        </div>
+        <div class="row">
+            <form @submit.prevent enctype="multipart/form-data">
+                <div class="row inputs"
+                     v-for="(attribute, key) in this.attributesValues"
+                >
                     <div class="col label">
                         <label>{{attribute.name}}:</label>
                     </div>
@@ -49,28 +54,32 @@
                             v-model="this.attributesValues[key].value"
                         />
                     </div>
-                    <div class="col d-flex justify-content-center mt-3">
+
+                    <div class="col mt-3">
                         {{attribute.type}}
                     </div>
-                    <div class="col btns">
+
+                    <div class="col">
                         <ChangeOrderButtons
-                        :id="key"
-                        :obj="this.attributesValues"
+                            :id="key"
+                            :obj="this.attributesValues"
                         />
                     </div>
                 </div>
-            </div>
-            <error-message
-                class="w-25 mt-4 d-flex justify-content-center align-content-center"
-                :err="this.err"
-            />
-            <admin-panel-but
-                :func="submit"
-            >
-                Create
-            </admin-panel-but>
-        </form>
+                <error-message
+                    class="w-25 mt-4 d-flex justify-content-center align-content-center"
+                    :err="this.err"
+                />
+                <admin-panel-but
+                    class="m-2"
+                    :func="submit"
+                >
+                    Create
+                </admin-panel-but>
+            </form>
+        </div>
     </div>
+
 </template>
 
 <script>
@@ -226,6 +235,12 @@ export default {
 </script>
 
 <style scoped>
+.form {
+    margin-top: 50px;
+    padding: 20px;
+    border: 2px solid silver;
+}
+
 .select {
     width: 75%;
     margin-left: 30px;

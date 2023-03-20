@@ -1,7 +1,7 @@
 <template>
-    <div class="row links">
-        <div :class="category.name" class="link col-3" v-for="category in categories">
-            <div class="col-sm-auto">
+    <div class="container-fluid">
+        <div class="row links">
+            <div :class="category.name" class="col link" v-for="category in categories">
                 <a :href="'products/' + category.name">{{category.name}}</a>
                 <div class="sub__links" v-for="subcategory in subcategories">
                     <a :href="'products/' + category.name + '/' + subcategory.name" v-if="subcategory.parent_id === category.id">{{subcategory.name}}</a>

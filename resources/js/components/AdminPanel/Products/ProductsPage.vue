@@ -1,28 +1,28 @@
 <template>
-    <div class="row">
-        <div class="col-5">
-            <div class="container-fluid page">
+    <div class="container-fluid page">
+        <div class="row">
+            <div class="col-sm-5">
                 <div class="row">
-                    <div class="col">
-                        <create-product
-                        :product="this.product"
-                        />
-                    </div>
+                    <create-product/>
                 </div>
+                <div class="row">
+                    <add-attributes-value/>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="row">
+                    <product-list/>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                <div class="row">
-                    <div class="col mt-4">
-                        <add-attributes-value/>
-                    </div>
-                </div>
-        </div>
-    </div>
-    <div class="col-7">
-        <div class="container-fluid page">
-            <product-list/>
-        </div>
-    </div>
-    </div>
+
+
+
+
+
+
 </template>
 
 <script>
@@ -39,12 +39,7 @@ export default {
 
     data() {
         return {
-            product: [
-                 {name: 'name', order: 0, value: '', type: 'string'},
-                 {name: 'price', order: 1, value: '', type: 'banknote'},
-                 {name: 'producer', order: 2, value: '', type: 'string'},
-                 {name: 'description', order: 3, value: '', type: 'string'},
-            ],
+
         }
     },
 
@@ -55,6 +50,7 @@ export default {
 
 <style scoped>
 .page {
+    margin-top: 50px;
     border: 2px solid silver;
     padding: 20px;
 }

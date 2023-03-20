@@ -1,23 +1,21 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-4">
-                <div class="row createForm">
-                    <label><h4>Create category</h4></label>
+    <div class="container-fluid">
+        <div class="row page">
+            <div class="col-sm-4">
+                <div class="row m-4 p-1 form">
+                    <h4>Create category</h4>
                     <create-category/>
                 </div>
-                <div class="row createForm">
-                    <label><h4>Create attribute</h4></label>
+                <div class="row m-4 p-1 form">
+                    <h4>Create attribute</h4>
                     <create-attribute
                         :categories="this.categories"
                     />
                  </div>
             </div>
-            <div class="col-8">
-                <div class="container adminPanel">
-                    <div class="container-fluid categoryListTable">
-                        <categories-list/>
-                    </div>
+            <div class="col-md-8">
+                <div class="row m-4">
+                    <categories-list/>
                 </div>
             </div>
         </div>
@@ -57,18 +55,21 @@ export default {
 </script>
 
 <style scoped>
-.adminPanel {
-    padding: 20px;
+body {
+    margin: 0;
+    padding: 0;
 }
 
-.createForm {
-    margin-top: 55px;
-    padding: 10px;
+.page {
+    margin-top: 50px;
+}
+
+.form {
     border: 2px solid silver;
     box-shadow: 2px 2px 2px silver;
-
 }
 
-.categoryListTable {
+.createForm label {
+    margin-left: 20px;
 }
 </style>

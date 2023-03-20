@@ -21,13 +21,6 @@ class ProductsController extends Controller
         return $productService->storeProduct($request->subcategoryId, $request->product);
     }
 
-    public function storeAttributesValues(Request $request)
-    {
-        $productService = app(ProductService::class);
-
-        return $productService->storeAttributesValues($request->productId, $request->subcategoryId, $request->attributesValues);
-    }
-
     public function storeProductImages(Request $request)
     {
         $imageService = app(ImageService::class);
@@ -42,25 +35,36 @@ class ProductsController extends Controller
         return $productService->getProductById($request->productId);
     }
 
-    public function getAllProductsByCategory(Request $request)
+    public function getAllProductsByCategoryName(Request $request)
     {
         $productService = app(ProductService::class);
 
-        return $productService->getAllProductsByCategory($request->categoryName);
+        return $productService->getAllProductsByCategoryName($request->categoryName);
     }
 
-    public function getProductBySubcategoryPaginate(Request $request)
+    public function getAllProductBySubcategoryIdWithPaginate(Request $request)
     {
         $productService = app(ProductService::class);
 
-        return $productService->getProductBySubcategoryIdWithPaginate($request->subcategoryId);
+        return $productService->getAllProductBySubcategoryIdWithPaginate($request->subcategoryId);
+    }
+
+    public function getAllProductBySubcategoryNameWithPaginate(Request $request)
+    {
+        $productService = app(ProductService::class);
+        return $productService->getAllProductBySubcategoryNameWithPaginate($request->subcategoryName);
     }
 
     public function searchProduct(Request $request)
     {
         $productService = app(ProductService::class);
-
         return $productService->searchProduct($request->search);
+    }
+    public function searchProductBySubcategory(Request $request)
+    {
+        $productService = app(ProductService::class);
+
+        return $productService->searchProductBySubcategory($request->search, $request->subcategoryId);
     }
 
     public function deleteProduct(Request $request)

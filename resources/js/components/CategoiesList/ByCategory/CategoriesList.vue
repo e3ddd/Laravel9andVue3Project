@@ -1,8 +1,8 @@
 <template>
         <div class="col-md-auto links">
-            <div :class="category.name" class="link" v-for="category in categories">
+            <div :class="subcategory.name" class="link" v-for="subcategory in subcategories">
                 <div class="col-sm-auto">
-                    <a :href="'/products' + '/' + mainCategory + '/' + category.name">{{category.name}}</a>
+                    <a :href="'/products' + '/' + mainCategory + '/' + subcategory.name">{{subcategory.name}}</a>
                 </div>
             </div>
         </div>
@@ -11,7 +11,7 @@
 <script>
 export default {
     props: {
-        categories: Array,
+        subcategories: Array,
         mainCategory: String,
     },
 

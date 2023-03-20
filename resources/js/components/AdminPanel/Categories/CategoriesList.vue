@@ -1,59 +1,66 @@
 <template>
-    <div class="row title">
-        <h4 class="d-flex justify-content-center">Categories List</h4>
-    </div>
     <div class="container categoriesList">
-        <div class="search">
-            <form @submit.prevent>
-                <input type="search" name="search" @input="searchCategory" v-model="this.search" placeholder="Search category...">
-            </form>
-        </div>
-        <div class="loading" v-if="this.showLoading">
-            Loading...
-        </div>
         <div class="row">
-            <div class="col-3">
-                ID
-            </div>
-            <div class="col-3">
-                Name
-            </div>
-            <div class="col-3">
-                Parent ID
+            <div class="col">
+                <h4>Categories List</h4>
             </div>
         </div>
-        <div class="row item" v-for="item in this.categoriesList">
-            <div class="col-3">
-                {{item.id}}
+            <div class="row search">
+                <form @submit.prevent>
+                    <div class="col-sm-auto">
+                        <input type="search" class="w-25" name="search" @input="searchCategory" v-model="this.search" placeholder="Search category...">
+                    </div>
+                </form>
             </div>
-            <div class="col-3 name">
-                {{item.name}}
+            <div class="loading" v-if="this.showLoading">
+                Loading...
             </div>
-            <div class="col-3" v-if="item.parent_id !== null">
-                {{item.parent_id}}
+            <div class="row">
+                <div class="col-sm">
+                    ID
+                </div>
+                <div class="col-sm">
+                    Name
+                </div>
+                <div class="col-sm">
+                    Parent ID
+                </div>
+                <div class="col-sm">
+
+                </div>
             </div>
-            <div class="col-3" v-else>
-                It's parent !
+            <div class="row" v-for="item in this.categoriesList">
+                <div class="col-sm-3">
+                    {{item.id}}
+                </div>
+                <div class="col-sm-3 name">
+                    {{item.name}}
+                </div>
+                <div class="col-3" v-if="item.parent_id !== null">
+                    {{item.parent_id}}
+                </div>
+                <div class="col-3" v-else>
+                    It's parent !
+                </div>
+                <div class="col-sm">
+                    <edit-category-modal
+                        :id="item.id"
+                        :category="item.name"
+                        :attributes="item.attributes"
+                    />
+                </div>
+                <div class="col-sm">
+                    <admin-panel-but
+                        :attr="item.id"
+                        :func="del">Delete</admin-panel-but>
+                </div>
             </div>
-            <div class="col-sm-auto">
-                <edit-category-modal
-                    :id="item.id"
-                    :category="item.name"
-                    :attributes="item.attributes"
-                />
-            </div>
-            <div class="col-sm-auto">
-                <admin-panel-but
-                    :attr="item.id"
-                    :func="del">Delete</admin-panel-but>
-            </div>
+            <paginator
+                v-model:total="this.total"
+                :get="getCategoriesList"
+                @update="onUpdate"
+            />
         </div>
-        <paginator
-            v-model:total="this.total"
-            :get="getCategoriesList"
-            @update="onUpdate"
-        />
-    </div>
 </template>
 
 <script>
@@ -73,7 +80,6 @@ export default {
             showLoading: false,
             categoriesList: [],
             page: 1,
-            limit: 10,
             total: '',
             search: '',
         }
@@ -90,10 +96,10 @@ export default {
 
        async getCategoriesList(page) {
             this.showLoading = true
-            const response = await axios.get('/get_categories?page=' + page)
+            const response = await axios.get('/get_all_categories_with_pagination?page=' + page)
                 .then((response) => {
                     this.categoriesList = response.data.data
-                    this.total = Math.ceil(response.data.total / this.limit)
+                    this.total = Math.ceil(response.data.total / response.data.per_page)
                     this.showLoading = false
                 })
                 .catch((err) => {
@@ -138,8 +144,6 @@ export default {
 
 <style scoped>
 .categoriesList{
-    width: 1000px;
-    height: 513px;
     padding: 20px;
     border: 1px solid silver;
     box-shadow: 2px 2px 2px silver;

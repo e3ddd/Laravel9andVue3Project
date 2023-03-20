@@ -1,11 +1,22 @@
 <template>
-        <div class="row list_item d-flex justify-content-center" v-for="item in product">
-
-                <img :src="'/storage/images/' + item.image[0].product_id + '_' + item.image[0].hash_id"/>
-
-                {{item.name}}
-
-
+        <div class="row">
+            <div class="col">
+                 <a :href="'/products/' + product.name + '/about'">
+                    <div class="row">
+                        <img :src="'/storage/images/' + product.image[0].product_id + '_' + product.image[0].hash_id"/>
+                    </div>
+                    <div class="row">
+                        <b>{{product.name}}</b>
+                    </div>
+                </a>
+                <div class="row">
+                    <div class="col button">
+                        <action-btn>
+                            Buy
+                        </action-btn>
+                    </div>
+                </div>
+            </div>
         </div>
 </template>
 
@@ -19,36 +30,18 @@ export default {
         ActionBtn
     },
 
-    data() {
-        return {
-
-        }
-    },
-
    props: {
         product: Array
    },
-
-    mounted() {
-
-    },
-
-    methods: {
-
-    }
 }
 </script>
 
 <style scoped>
-.list_item {
-    width: 50%;
-    padding: 5px;
-    margin: 5px;
-    border: 2px solid silver;
-    box-shadow: 2px 2px 2px silver;
-}
-
-.list_item img {
-    z-index: -1;
+a {
+    color: black;
+    text-decoration: none;
+  }
+.button {
+    text-align: end;
 }
 </style>

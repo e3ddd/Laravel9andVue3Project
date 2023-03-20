@@ -29,7 +29,7 @@ class Product extends Model
     }
 
 
-    public function attributeValue()
+    public function attribute()
     {
         return $this->hasMany(ProductAttributeValue::class, 'product_id');
     }

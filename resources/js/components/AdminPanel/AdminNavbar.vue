@@ -1,9 +1,9 @@
 <template>
     <div class="container-fluid index__btns">
-        <div class="col-2">
+        <div class="col-sm-auto">
             <a href="/home"><img src="" alt="Logo"></a>
         </div>
-        <div class="col-8 d-flex justify-content-center">
+        <div class="col-lg-auto d-flex justify-content-center">
             <div class="nav__item">
                 <a href="/admin">Categories and Product Attributes</a>
             </div>

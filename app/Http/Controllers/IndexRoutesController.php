@@ -20,4 +20,9 @@ class IndexRoutesController extends Controller
     public function login() {
         return view('Login.item');
     }
+
+    public function adminPanel()
+    {
+        return view('AdminPanel.CategoriesAndAttributes.layout');
+    }
 }
