@@ -1,14 +1,7 @@
 <template>
     <div class="row list" v-if="list.length !== 0">
         <div class="col-sm list-item" v-for="item in list" >
-            <user-products-item
-                :id="item.id"
-                :name="item.name"
-                :price="item.price"
-                :description="item.description"
-                :del="this.delete"
-                :images="item.image"
-            />
+
 
         </div>
 
@@ -24,12 +17,12 @@
 
 <script>
 import Paginator from "../UserList/Paginator.vue";
-import UserProductsItem from "../ProductList/UserProductsItem.vue";
+
 import Math from "lodash";
 export default {
     components: {
         Paginator,
-        UserProductsItem
+
     },
 
 

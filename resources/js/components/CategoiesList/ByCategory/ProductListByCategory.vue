@@ -1,9 +1,10 @@
 <template>
-    <links
-        :category="category"
-    />
-
     <div class="container">
+        <div class="row">
+            <links
+                :category="category"
+            />
+        </div>
         <div class="row">
             <div class="col-3 d-flex justify-content-center" v-for="product in products">
                  <list-item :product="product"/>

@@ -14,7 +14,7 @@ class ProductRepository
 
     public function getProductById($productId)
     {
-        return Product::find($productId);
+        return Product::with('image')->find($productId);
     }
 
     public function getAllProducts()

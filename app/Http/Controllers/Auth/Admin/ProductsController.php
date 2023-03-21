@@ -9,10 +9,15 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
-   public function show()
-   {
-       return view('AdminPanel.Products.layout');
-   }
+    public function show()
+    {
+        return view('AdminPanel.Products.layout');
+    }
+
+    public function showAboutProduct()
+    {
+        return view('AboutProduct.layout');
+    }
 
     public function storeProduct(Request $request)
     {

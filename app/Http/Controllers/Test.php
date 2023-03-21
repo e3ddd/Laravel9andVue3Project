@@ -17,7 +17,7 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-        dump(Product::whereIn('subcategory_id', 2,3)->get());
+        dump(session()->all());
     }
 }
 

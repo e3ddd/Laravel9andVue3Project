@@ -30,7 +30,7 @@ class ProductService
         $convertValueManager = new ConvertValueManager();
         foreach ($this->productRepository->getProductById($productId)->toArray() as $key => $item){
             if($key == 'price'){
-                $product[$key] = $convertValueManager->for(PriceEnum::coin, $item)->convertTo(PriceEnum::banknote);
+                $product[$key] = sprintf("%.2f", $convertValueManager->for(PriceEnum::coin, $item)->convertTo(PriceEnum::banknote)) ;
             }else{
                 $product[$key] = $item;
             }

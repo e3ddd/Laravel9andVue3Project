@@ -13,6 +13,10 @@ export default {
 </script>
 
 <style scoped>
+.all__link {
+    padding-bottom: 10px;
+}
+
 .all__link a {
     padding: 10px;
     text-decoration: none;

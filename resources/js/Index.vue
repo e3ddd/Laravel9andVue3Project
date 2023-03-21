@@ -13,7 +13,6 @@
 
 <script>
 import MainCategoriesList from "./components/CategoiesList/ByCategory/MainCategoriesList.vue";
-import Math from "lodash";
 export default {
     components: {
         MainCategoriesList
