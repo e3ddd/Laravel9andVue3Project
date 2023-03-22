@@ -18,7 +18,6 @@ class Category extends Model
     public function attributes()
     {
         return $this->hasMany(ProductAttribute::class, 'subcategory_id');
-
     }
 }
 

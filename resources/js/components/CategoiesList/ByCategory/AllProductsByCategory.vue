@@ -83,14 +83,13 @@ export default {
         },
 
         async getProducts(page) {
-            const response = await axios.get('/admin/get_all_products_by_category_name?page=' + page, {
+            const response = await axios.get('/get_all_products_by_category_name?page=' + page, {
                 params: {
                     categoryName: this.category
                 }
             })
                 .then((response) => {
                     this.products = response.data.data
-                    console.log(response.data)
                     this.total = Math.ceil(response.data.total / response.data.per_page)
                 })
                 .catch(err => console.log(err))

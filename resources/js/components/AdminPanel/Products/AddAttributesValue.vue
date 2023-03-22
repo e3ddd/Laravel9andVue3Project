@@ -171,7 +171,7 @@ export default {
         },
 
         async getProducts() {
-            const response = await axios.get('/admin/get_products_by_subcategory', {
+            const response = await axios.get('/get_all_products_by_subcategory_id', {
                 params: {
                     subcategoryId: this.subcategoryId
                 }

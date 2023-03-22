@@ -17,8 +17,10 @@
                 </div>
             </div>
 
-            <div class="col-3">
-
+            <div class="col-1">
+                <shopping-cart
+                    :count="this.count"
+                />
             </div>
         </div>
     </div>
@@ -28,21 +30,25 @@
 import Logo from "./Logo.vue";
 import RegAndLogLinks from "./RegAndLogLinks.vue";
 import SearchInput from "./SearchInput.vue";
+import ShoppingCart from "./ShoppingCart.vue";
 export default {
     components: {
         Logo,
         RegAndLogLinks,
-        SearchInput
+        SearchInput,
+        ShoppingCart
     },
 
     data() {
         return {
             showSelectMenu: false,
             userEmail: '',
-            search: ''
+            search: '',
+            count: 0
         }
     },
     created() {
+        this.getNumberOfProductsInShoppingCart()
         this.getUser()
     },
 
@@ -59,6 +65,13 @@ export default {
             this.showSelectMenu = !this.showSelectMenu;
         },
 
+        getNumberOfProductsInShoppingCart() {
+            const response = axios.get('/get_number_of_products_in_shopping_cart')
+                .then((response) => {
+                    this.count = response.data
+                })
+                .catch(err => console.log(err))
+        }
     }
 }
 </script>
@@ -66,20 +79,17 @@ export default {
 <style scoped>
 
 .index__btns {
-    height: 100px;
+    height: 50px;
     background: #f8f7f7;
 }
 
 
 .search {
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 
 .reg_log {
-    margin-top: 15px;
+    margin-top: 5px;
 }
-
-
-
 </style>

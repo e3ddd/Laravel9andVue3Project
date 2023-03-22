@@ -1,7 +1,6 @@
 <template>
     <img :src="'/storage/images/' + image.product_id + '_' + image.hash_id" @click="showDialog" v-if="!small"/>
     <img :src="'/storage/images/SMALL_' + image.product_id + '_' + image.hash_id" @click="showDialog" v-if="small"/>
-
     <div class="show_image" v-if="show" @click="show = false">
             <div @click.stop class="image">
                 <img :src="'/storage/images/' + image.product_id + '_' + image.hash_id" />
@@ -41,6 +40,7 @@ export default {
     background: rgba(0,0,0,0.5);
     position: fixed;
     display: flex;
+    justify-content: center;
 }
 
 .image {
@@ -49,6 +49,6 @@ export default {
     background: white;
     border-radius: 12px;
     min-height: 50px;
-    min-width: 300px;
+    width: 278px;
 }
 </style>

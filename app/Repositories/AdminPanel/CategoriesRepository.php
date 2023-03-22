@@ -28,7 +28,7 @@ class CategoriesRepository
 
     public function getAllCategoriesWithPagination()
     {
-        return Category::paginate(10);
+        return Category::with('attributes')->paginate(10);
     }
     public function createCategory($categoryName, $subcategoryName, $subCheck)
     {

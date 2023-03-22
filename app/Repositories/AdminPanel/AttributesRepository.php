@@ -40,12 +40,16 @@ class AttributesRepository
                 ->exists()){
                 return 0;
             }
-            ProductAttribute::create([
-                'subcategory_id' => $subcategoryId,
-                'name' => strtolower($attr['name']),
-                'value' => $attr['type'],
-                'default' => $default,
-            ]);
+            if($attr['name'] != null && $attr['type'] != null){
+                ProductAttribute::create([
+                    'subcategory_id' => $subcategoryId,
+                    'name' => strtolower($attr['name']),
+                    'value' => $attr['type'],
+                    'default' => $default,
+                ]);
+            }else{
+                throw new \Exception('Name and type required !');
+            }
 
         }
     }

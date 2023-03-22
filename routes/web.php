@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\Admin\ProductsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ShoppingCartController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\CategoriesNavController;
 use App\Http\Controllers\IndexRoutesController;
@@ -61,10 +62,18 @@ Route::controller(ProductsController::class)->group(function() {
     Route::post('/admin/store_product_images', 'storeProductImages');
     Route::get('/admin/search_product_by_subcategory', 'searchProductBySubcategory');
     Route::post('/admin/delete_product', 'deleteProduct');
-    Route::get('/admin/get_all_products_by_category_name', 'getAllProductsByCategoryName');
-    Route::get('/admin/get_all_products_by_subcategory_name', 'getAllProductBySubcategoryNameWithPaginate');
+    Route::get('/get_all_products_by_subcategory_id', 'getAllProductBySubcategoryIdWithPaginate');
+    Route::get('/get_all_products_by_category_name', 'getAllProductsByCategoryName');
+    Route::get('/get_all_products_by_subcategory_name', 'getAllProductBySubcategoryNameWithPaginate');
     Route::get('/products/{name}/about', 'showAboutProduct');
     Route::get('/search_product', 'searchProduct');
+    Route::get('/add_product_to_shopping_cart', 'addProductToShoppingCart');
+});
+
+Route::controller(ShoppingCartController::class)->group(function() {
+    Route::get('/{user}/shopping_cart', 'show');
+    Route::get('/buy_product', 'storeToShoppingCart');
+    Route::get('/get_number_of_products_in_shopping_cart', 'getNumberOfProductsInShoppingCart');
 });
 
 Route::controller(CategoriesNavController::class)->group(function (){

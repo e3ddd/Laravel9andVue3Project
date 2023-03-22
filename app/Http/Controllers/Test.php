@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class Test extends Controller
@@ -17,7 +18,7 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-        dump(session()->all());
+
     }
 }
 
