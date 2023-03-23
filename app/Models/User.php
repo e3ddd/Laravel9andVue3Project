@@ -19,8 +19,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
     ];
 
-    public function product()
+    public function productsInShoppingCart()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(ShoppingCart::class, 'user_id');
     }
 }

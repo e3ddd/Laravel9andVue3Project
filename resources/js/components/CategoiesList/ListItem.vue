@@ -11,9 +11,7 @@
                 </a>
                 <div class="row">
                     <div class="col button">
-                        <action-btn>
-                            Buy
-                        </action-btn>
+                        <a @click="buyProduct" :href="'/' + this.user + '/' + 'shopping_cart'">Buy</a>
                     </div>
                 </div>
             </div>
@@ -31,8 +29,24 @@ export default {
     },
 
    props: {
-        product: Array
+        product: Array,
+        user: String
    },
+
+    methods: {
+        async buyProduct() {
+            const response = await axios.get('/buy_product', {
+                params: {
+                    productId: this.product.id
+                }
+            })
+                .then((response) => {
+
+                })
+                .catch(err => console.log(err))
+        }
+    }
+
 }
 </script>
 
@@ -41,7 +55,21 @@ a {
     color: black;
     text-decoration: none;
   }
-.button {
-    text-align: end;
+
+.button a{
+    float: right;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background: #ff3838;
+    color: white;
+    box-shadow: 2px 2px 5px grey;
+    margin: 5px;
+}
+
+.button a:hover {
+    background: #661515;
+    transition: 0.4s;
+    color: white;
 }
 </style>

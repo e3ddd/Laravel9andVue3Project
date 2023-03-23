@@ -17,10 +17,12 @@
                 </div>
             </div>
 
-            <div class="col-1">
-                <shopping-cart
-                    :count="this.count"
-                />
+            <div class="col-1 shopping_cart">
+                <a :href="'/' + this.userEmail + '/shopping_cart'">
+                    <shopping-cart
+                        :count="this.count"
+                    />
+                </a>
             </div>
         </div>
     </div>
@@ -91,5 +93,9 @@ export default {
 
 .reg_log {
     margin-top: 5px;
+}
+
+.shopping_cart a {
+   text-decoration: none;
 }
 </style>

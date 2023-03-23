@@ -68,6 +68,7 @@ Route::controller(ProductsController::class)->group(function() {
     Route::get('/products/{name}/about', 'showAboutProduct');
     Route::get('/search_product', 'searchProduct');
     Route::get('/add_product_to_shopping_cart', 'addProductToShoppingCart');
+    Route::get('/get_auth_user_products_from_shopping_cart', 'getAuthUserProductsFromShoppingCart');
 });
 
 Route::controller(ShoppingCartController::class)->group(function() {

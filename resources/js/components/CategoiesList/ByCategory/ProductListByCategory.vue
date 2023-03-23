@@ -7,7 +7,10 @@
         </div>
         <div class="row">
             <div class="col-3 d-flex justify-content-center" v-for="product in products">
-                 <list-item :product="product"/>
+                 <list-item
+                     :product="product"
+                     :user="this.user"
+                 />
             </div>
         </div>
     </div>
@@ -26,6 +29,26 @@ export default {
     props: {
         category: String,
         products: Array,
+        user: String,
+    },
+
+    data() {
+      return {
+          user: ''
+      }
+    },
+
+    mounted() {
+      this.getUser()
+    },
+
+    methods: {
+        async getUser() {
+            const response = await axios.get('/get_user').then((response) => {
+                this.user = response.data.email
+                console.log(this.user)
+            })
+        }
     }
 }
 </script>

@@ -46,7 +46,8 @@ export default {
             page: 1,
             products: [],
             category: window.location.href,
-            subcategories: []
+            subcategories: [],
+            user: ''
         }
     },
 

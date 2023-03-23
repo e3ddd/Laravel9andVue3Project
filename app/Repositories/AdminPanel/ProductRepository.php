@@ -70,6 +70,5 @@ class ProductRepository
                 'subcategory_id' => $subcategoryId
             ]);
         }
-
     }
 }

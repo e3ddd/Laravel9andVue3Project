@@ -6,16 +6,21 @@ use App\Http\Factories\Convert\ConvertValueManager;
 use App\Http\Enums\MagnitudeEnums\PriceEnum;
 use App\Repositories\AdminPanel\AttributesRepository;
 use App\Repositories\AdminPanel\ProductRepository;
+use App\Repositories\UserRepository;
+use Vonage\Account\Price;
 
 class ProductService
 {
     private ProductRepository $productRepository;
     private AttributesRepository $attributesRepository;
 
-    public function __construct(ProductRepository $productRepository, AttributesRepository $attributesRepository)
+    private UserRepository $userRepository;
+
+    public function __construct(ProductRepository $productRepository, AttributesRepository $attributesRepository, UserRepository $userRepository)
     {
         $this->productRepository = $productRepository;
         $this->attributesRepository = $attributesRepository;
+        $this->userRepository = $userRepository;
     }
 
 
@@ -95,5 +100,15 @@ class ProductService
             $this->productRepository->storeProduct($product['name'], $validPrice,
                                                     $product['producer'], $product['description'],
                                                                      $subcategoryId);
+    }
+
+    public function getAuthUserProductsFromShoppingCart()
+    {
+        $user = $this->userRepository->getAuthUserWithProductsInShoppingCart();
+        $products = [];
+        foreach ($user->productsInShoppingCart as $product){
+            $products[] = $this->getProductById($product->product_id);
+        }
+        return $products;
     }
 }

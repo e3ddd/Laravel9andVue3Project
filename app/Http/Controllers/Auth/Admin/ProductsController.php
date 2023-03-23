@@ -76,4 +76,10 @@ class ProductsController extends Controller
 
         return $productService->deleteProduct($request->productId);
     }
+
+    public function getAuthUserProductsFromShoppingCart(Request $request)
+    {
+        $productService = app(ProductService::class);
+        return $productService->getAuthUserProductsFromShoppingCart();
+    }
 }

@@ -52,15 +52,15 @@ export default {
     },
 
     methods: {
-        getUser() {
-            const response = axios.get('/get_user')
+        async getUser() {
+            const response = await axios.get('/get_user')
                 .then((response) => {
                     this.user = response.data.email
                 })
         },
 
-        buyProduct() {
-            const response = axios.get('/buy_product', {
+        async buyProduct() {
+            const response = await axios.get('/buy_product', {
                 params: {
                     productId: this.product.id
                 }

@@ -21,6 +21,11 @@ class UserRepository
         return User::find($userId);
     }
 
+    public function getAuthUserWithProductsInShoppingCart()
+    {
+        return User::with('productsInShoppingCart')->find(Auth::user()->getAuthIdentifier());
+    }
+
     public function createUser($userEmail, $userPassword)
     {
        $user = User::create([
