@@ -20,8 +20,8 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-
-//        dump(User::with('productsInShoppingCart')->find(Auth::user()->getAuthIdentifier()));
+        dump(session()->all());
+        dump(session()->has('productIds.' . 1));
     }
 }
 

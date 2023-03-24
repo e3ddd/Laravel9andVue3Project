@@ -67,7 +67,6 @@ export default {
                     remember: this.remember
             })
                 .then((response) => {
-                    console.log(response)
                     if(response.data  !== ''){
                         window.location.href = '/home'
                     }else{
@@ -78,7 +77,7 @@ export default {
                             this.err = ""
                         }, 3000)
                     }
-                    console.log(response)
+                    const response2 = axios.get('/buy_product')
                 })
                 .catch((err) => {
                     this.err = err.response.data.message

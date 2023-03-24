@@ -1,7 +1,7 @@
 <template>
         <div class="row">
             <div class="col">
-                 <a :href="'/products/' + product.id + '/about'">
+                 <a :href="'/about_product/' + product.id">
                     <div class="row">
                         <img :src="'/storage/images/' + product.image[0].product_id + '_' + product.image[0].hash_id"/>
                     </div>

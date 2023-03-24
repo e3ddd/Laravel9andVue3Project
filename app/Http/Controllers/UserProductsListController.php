@@ -7,10 +7,6 @@ use Illuminate\Http\Request;
 
 class   UserProductsListController extends Controller
 {
-    public function index()
-    {
-        return view('UsersProducts.layout');
-    }
 
     public function show(Request $request)
     {

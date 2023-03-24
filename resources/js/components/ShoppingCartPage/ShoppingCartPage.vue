@@ -1,11 +1,16 @@
 <template>
     <div class="container shopping_cart_page">
+        <div class="row" v-if="this.products.length == 0">
+            <div class="col d-flex justify-content-center align-content-center">
+                <h1>Shopping cart is empty !</h1>
+            </div>
+        </div>
         <div class="row">
                 <div class="row product" v-for="(product,key) in this.products">
                     <div class="col-2 image">
                         <img :src="'/storage/images/SMALL_' + product.image[0].product_id + '_' + product.image[0].hash_id">
                     </div>
-                    <div class="col-6  name">
+                    <div class="col-5  name">
                         {{product.name}}
                     </div>
                     <div class="col-2 amount">
@@ -16,15 +21,24 @@
                                 <span class="plus" :id="key" @click="incrementCount">+</span></div>
                         </div>
                     </div>
-                    <div class="col-2 price mt-2">
-                        {{product.price}} UAH
+                    <div class="col-3 price mt-2">
+                        <div class="row">
+                            <div class="col-8">
+                                {{product.price}} UAH
+                            </div>
+                            <div class="col-4 cross" :id="product.id" @click="del">
+                                &times;
+                            </div>
+                        </div>
                     </div>
                 </div>
-            <div class="row checkoutBtn">
-                <div class="col">
-                    <a href="">Checkout</a>
+            <form action="/checkout" v-if="this.products.length !== 0">
+                <div class="row checkoutBtn">
+                    <div class="col">
+                        <input type="submit" value="Checkout">
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </template>
@@ -55,7 +69,7 @@ export default {
         },
 
         async getProducts() {
-            const response = await axios.get('/get_auth_user_products_from_shopping_cart')
+            const response = await axios.get('/get_user_products_from_shopping_cart')
                 .then((response) => {
                     this.products = response.data
                     this.products.forEach((item) => {
@@ -64,6 +78,21 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
+
+        async checkout() {
+            const response = await axios.get('/checkout')
+                .then(response => console.log(response))
+        },
+
+       async del(event) {
+            const response = await axios.post('/delete_from_shopping_cart', {
+                    shoppingCartProductId: event.target.id
+            })
+                .then((response) => {
+                    this.products = this.products.filter((item,key) => item.id === event.target.id)
+                })
+                .catch(err => console.log(err))
+        }
 
 
     }
@@ -98,6 +127,12 @@ export default {
     user-select: none;
 }
 
+.cross {
+    cursor: pointer;
+    user-select: none;
+    font-size: 20px;
+}
+
 .name {
     margin-top: 10px;
     text-align: center;
@@ -113,16 +148,16 @@ export default {
     text-align: right;
 }
 
-.checkoutBtn a{
+.checkoutBtn input{
     border-radius: 10px;
     color: white;
     border: 1px solid #df4949;
     padding: 10px;
     background: #df4949;
-    text-decoration: none;
+
 }
 
-.checkoutBtn a:hover {
+.checkoutBtn input:hover {
     transition: 0.5s;
     background: #661515;
 }

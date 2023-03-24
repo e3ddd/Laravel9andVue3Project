@@ -16,11 +16,9 @@ class LoginService
 
     public function auth($userEmail, $userPassword, $remember)
     {
-        Session::flush();
         if($this->loginRepository->authentication($userEmail, $userPassword, $remember)){
-               return true;
+                return true;
         }
     }
-
 }
 

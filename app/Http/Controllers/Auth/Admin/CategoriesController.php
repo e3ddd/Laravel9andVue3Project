@@ -9,6 +9,16 @@ use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
+    public function showByCategory()
+    {
+        return view("ProductsList.bycategory");
+    }
+
+    public function showBySubcategory()
+    {
+        return view('ProductsList.bysubcategory');
+    }
+
     public function getAllCategories()
     {
         $categoriesService = app(CategoriesService::class);

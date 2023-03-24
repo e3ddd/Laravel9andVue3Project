@@ -7,6 +7,7 @@ use App\Http\Enums\MagnitudeEnums\PriceEnum;
 use App\Repositories\AdminPanel\AttributesRepository;
 use App\Repositories\AdminPanel\ProductRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
 use Vonage\Account\Price;
 
 class ProductService
@@ -104,10 +105,18 @@ class ProductService
 
     public function getAuthUserProductsFromShoppingCart()
     {
-        $user = $this->userRepository->getAuthUserWithProductsInShoppingCart();
         $products = [];
-        foreach ($user->productsInShoppingCart as $product){
-            $products[] = $this->getProductById($product->product_id);
+        if(Auth::check()){
+            $user = $this->userRepository->getAuthUserWithProductsInShoppingCart();
+            foreach ($user->productsInShoppingCart as $product){
+                $products[] = $this->getProductById($product->product_id);
+            }
+        }else{
+            if(session()->has('productIds')){
+                foreach (session()->get('productIds') as $product){
+                    $products[] = $this->getProductById($product);
+                }
+            }
         }
         return $products;
     }
