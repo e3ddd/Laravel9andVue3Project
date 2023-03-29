@@ -26,10 +26,10 @@ class ShoppingCartController extends Controller
     {
         if(Auth::check()){
             $shoppingCartService = app(ShoppingCartService::class);
-            return $shoppingCartService->getNumberOfProductsInShoppingCart(Auth::user()->getAuthIdentifier());
+            return $shoppingCartService->getNumberOfProductsInShoppingCart(Auth::user()->id);
         }else{
-            if(session()->has('productIds')){
-                return count(session()->get('productIds'));
+            if(session()->has('products')){
+                return count(session()->get('products'));
             }
         }
     }
@@ -38,6 +38,18 @@ class ShoppingCartController extends Controller
     {
         $shoppingCartService = app(ShoppingCartService::class);
         return $shoppingCartService->deleteFromShoppingCart($request->shoppingCartProductId);
+    }
+
+    public function updateProductQuantity(Request $request)
+    {
+        $shoppingCartService = app(ShoppingCartService::class);
+        return $shoppingCartService->updateProductQuantity($request->productId, $request->quantity);
+    }
+
+    public function getUserShoppingCart()
+    {
+        $shoppingCartService = app(ShoppingCartService::class);
+        return $shoppingCartService->getUserShoppingCart();
     }
 
     public function checkout()

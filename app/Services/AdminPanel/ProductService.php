@@ -112,9 +112,9 @@ class ProductService
                 $products[] = $this->getProductById($product->product_id);
             }
         }else{
-            if(session()->has('productIds')){
-                foreach (session()->get('productIds') as $product){
-                    $products[] = $this->getProductById($product);
+            if(session()->has('products')){
+                foreach (session()->get('products') as $key => $product){
+                    $products[] = $this->getProductById($key);
                 }
             }
         }

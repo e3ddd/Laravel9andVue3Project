@@ -2,15 +2,19 @@
 
 namespace App\Services;
 
+use App\Repositories\ShoppingCartRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
     private UserRepository $userRepository;
+    private ShoppingCartRepository $shoppingCartRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, ShoppingCartRepository $shoppingCartRepository)
     {
         $this->userRepository = $userRepository;
+        $this->shoppingCartRepository = $shoppingCartRepository;
     }
 
     public function all()
@@ -23,9 +27,23 @@ class UserService
         return $this->userRepository->getUser($userId);
     }
 
-    public function create($userEmail, $userPassword)
+    public function create($userEmail, $userPassword, $userName, $confirm)
     {
-        return $this->userRepository->createUser($userEmail, $userPassword);
+        if($userPassword !== $confirm) {
+            throw new \Exception('Password mismatch !');
+        }
+
+        $this->userRepository->createUser($userEmail, $userPassword, $userName);
+
+        $user = $this->userRepository->getUserByEmail($userEmail);
+
+        if(session()->has('products')){
+            foreach (session()->get('products') as $product){
+                $this->shoppingCartRepository->storeToShoppingCart($user->id, $product[0]->product_id, $product[0]->quantity);
+            }
+            session()->forget('products');
+        }
+
     }
 
     public function update($userId, $userEmail)

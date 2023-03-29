@@ -76,6 +76,8 @@ Route::controller(ProductsController::class)->group(function() {
 Route::controller(ShoppingCartController::class)->group(function() {
     Route::get('/{user}/shopping_cart', 'show');
     Route::get('/buy_product', 'storeToShoppingCart');
+    Route::post('/update_product_quantity', 'updateProductQuantity');
+    Route::get('/get_user_shopping_cart', 'getUserShoppingCart');
     Route::get('/get_number_of_products_in_shopping_cart', 'getNumberOfProductsInShoppingCart');
     Route::post('/delete_from_shopping_cart', 'deleteFromShoppingCart');
     Route::get('/checkout', 'checkout')->middleware('auth.checkout');

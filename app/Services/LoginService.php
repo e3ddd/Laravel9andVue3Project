@@ -2,22 +2,35 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Repositories\LoginRepository;
-use Illuminate\Support\Facades\Session;
+use App\Repositories\ShoppingCartRepository;
+use App\Repositories\UserRepository;
 
 class LoginService
 {
     private LoginRepository $loginRepository;
+    private ShoppingCartRepository $shoppingCartRepository;
+    private UserRepository $userRepository;
 
-    public function __construct(LoginRepository $loginRepository)
+    public function __construct(LoginRepository $loginRepository, ShoppingCartRepository $shoppingCartRepository, UserRepository $userRepository)
     {
         $this->loginRepository = $loginRepository;
+        $this->shoppingCartRepository = $shoppingCartRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function auth($userEmail, $userPassword, $remember)
     {
+        $user = $this->userRepository->getUserByEmail($userEmail);
+
         if($this->loginRepository->authentication($userEmail, $userPassword, $remember)){
-                return true;
+            if(session()->has('products')){
+                foreach (session()->pull('products') as $product){
+                    $this->shoppingCartRepository->storeToShoppingCart($user->id, $product[0]->product_id, $product[0]->quantity);
+                }
+            }
+            return true;
         }
     }
 }

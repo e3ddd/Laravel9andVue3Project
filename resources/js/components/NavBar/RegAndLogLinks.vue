@@ -1,5 +1,5 @@
 <template>
-    <div class="row reg_log" v-if="userEmail === undefined">
+    <div class="row reg_log" v-if="userName === undefined">
         <div class="col-1">
             <img src="../../profile.png" alt="pic" width="20" height="20">
         </div>
@@ -11,15 +11,15 @@
         <div class="col-1">
             <img src="../../profile.png" alt="pic" width="20" height="20">
         </div>
-        <div class="col-10">
+        <div class="col">
             <div class="row" @click="this.showNavMenu">
-                <div class="col-9">
-                    {{userEmail}}
+                <div class="col-md-auto">
+                    {{userName}}
                 </div>
-                <div class="col-3 arrow"> &#9660;</div>
+                <div class="col-7 arrow"> &#9660;</div>
                 <div class="row selectMenu" v-if="this.show == true" @click="this.showNavMenu">
                     <a href="/personal_account">Personal Account</a>
-                    <a :href="'/' + this.userEmail + '/shopping_cart'">Shopping Cart</a>
+                    <a :href="'/' + this.userName + '/shopping_cart'">Shopping Cart</a>
                     <a href="/logout">Log Out</a>
                 </div>
             </div>
@@ -30,7 +30,7 @@
 <script>
 export default {
     props: {
-        userEmail: String
+        userName: String
     },
 
     data() {

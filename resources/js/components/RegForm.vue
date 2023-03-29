@@ -5,25 +5,41 @@
             <h4>Registration Form</h4>
         </div>
         <div class="row-justify-content-center email">
-            <label for="inputEmail" class="p-1">Your Email</label>
+            <label class="p-1">Your Email</label>
             <input
                 v-model="this.email"
                 type="email"
                 name="email"
                 class="form-control input-sm"
-                id="logInputEmail"
                 placeholder="Enter email"
             >
         </div>
+        <div class="row-justify-content-center email">
+            <label class="p-1">Your Name</label>
+            <input
+                v-model="this.name"
+                type="text"
+                name="name"
+                class="form-control input-sm"
+                placeholder="Enter name"
+            >
+        </div>
         <div class="row-justify-content-center password">
-            <label for="inputPassword" class="p-1">Your Password</label>
+            <label class="p-1">Your Password</label>
             <input
                 v-model="this.password"
                 type="password"
                 name="password"
                 class="form-control input-sm"
-                id="logInputPassword"
                 placeholder="Enter password"
+            >
+            <label class="p-1">Confirm Password</label>
+            <input
+                v-model="this.confirmPassword"
+                type="password"
+                name="password"
+                class="form-control input-sm"
+                placeholder="Enter password again"
             >
             <error-message
                 :err="this.err"
@@ -50,27 +66,30 @@ export default {
             err: '',
             email: '',
             password: '',
+            confirmPassword: '',
+            name: '',
             regUrl: '/reg_form/registration'
         }
     },
 
+
     methods: {
-        registration() {
-                axios.post(this.regUrl, {
+       async registration() {
+                const response = await axios.post(this.regUrl, {
                     email: this.email,
                     password: this.password,
+                    name: this.name,
+                    confirm: this.confirmPassword
                 })
-                    .then(function (response) {
+                    .then((response) => {
                         alert('Registration successful !')
-                        console.log(response)
                     })
                     .catch((error) => {
                         this.err = error.response.data.message
-                        console.log(error)
                     })
                     .finally(() => {
-                        this.email = ''
                         this.password = ''
+                        this.confirmPassword = ''
                         setTimeout(() => {
                             this.err = ''
                         }, 3000)

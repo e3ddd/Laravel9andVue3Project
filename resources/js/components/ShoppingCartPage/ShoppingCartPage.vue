@@ -15,16 +15,17 @@
                     </div>
                     <div class="col-2 amount">
                         <div class="row">
-                            <div class="col amount_item">
-                                <span class="minus" :id="key" @click="decrementCount">-</span>
-                                <input type="text" v-model="product.count">
-                                <span class="plus" :id="key" @click="incrementCount">+</span></div>
+                                <div class="col amount_item">
+                                    <span class="minus" :id="product.id" @click="decrementCount">-</span>
+                                    <input type="text" v-model="this.quantity[product.id].quantity">
+                                    <span class="plus" :id="product.id" @click="incrementCount">+</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
                     <div class="col-3 price mt-2">
                         <div class="row">
                             <div class="col-8">
-                                {{product.price}} UAH
+                                {{(product.price * this.quantity[product.id].quantity).toFixed(2)}} UAH
                             </div>
                             <div class="col-4 cross" :id="product.id" @click="del">
                                 &times;
@@ -48,33 +49,55 @@ export default {
     data() {
         return {
             products: [],
+            quantity: {}
         }
     },
 
     created() {
-      this.getProducts()
+        this.getProducts()
+        this.getUserShoppingCart()
     },
 
     methods: {
         decrementCount(event) {
-                if(this.products[event.target.id].count != 0){
-                    --this.products[event.target.id].count
+                if(this.quantity[event.target.id].quantity != 1){
+                    --this.quantity[event.target.id].quantity
                 }else{
-                    this.products[event.target.id].count = 0
+                    this.quantity[event.target.id].quantity = 1
                 }
+                this.updateQuantity(this.quantity[event.target.id].productId, this.quantity[event.target.id].quantity, event.target.id)
         },
 
         incrementCount(event) {
-            ++this.products[event.target.id].count
+            ++this.quantity[event.target.id].quantity
+            this.updateQuantity(this.quantity[event.target.id].productId, this.quantity[event.target.id].quantity, event.target.id)
+        },
+
+        async updateQuantity(productId, quantity, id) {
+            const response = await axios.post('/update_product_quantity', {
+                productId: productId,
+                quantity: quantity,
+            })
+        },
+
+        async getUserShoppingCart() {
+            const response = axios.get('/get_user_shopping_cart', {})
+                .then((response) => {
+                    for (const key in response.data) {
+                        this.quantity[response.data[key][0].product_id] = {
+                            productId: response.data[key][0].product_id,
+                            quantity:  response.data[key][0].quantity
+                        }
+                    }
+                })
+                .catch(err => console.log(err))
         },
 
         async getProducts() {
             const response = await axios.get('/get_user_products_from_shopping_cart')
                 .then((response) => {
+                    console.log(response)
                     this.products = response.data
-                    this.products.forEach((item) => {
-                        item.count = 0
-                    })
                 })
                 .catch(err => console.log(err))
         },
@@ -88,9 +111,6 @@ export default {
             const response = await axios.post('/delete_from_shopping_cart', {
                     shoppingCartProductId: event.target.id
             })
-                .then((response) => {
-                    this.products = this.products.filter((item,key) => item.id === event.target.id)
-                })
                 .catch(err => console.log(err))
         }
 

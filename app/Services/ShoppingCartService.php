@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\ShoppingCart;
 use App\Repositories\ShoppingCartRepository;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class ShoppingCartService
@@ -18,43 +18,62 @@ class ShoppingCartService
     public function storeToShoppingCart($productId)
     {
         if(Auth::check()){
-            $userId = Auth::user()->getAuthIdentifier();
-            if(session()->has('productIds')){
-                foreach (session()->get('productIds') as $prodId){
-                    $this->shoppingCartRepository->storeToShoppingCart($userId, $prodId);
-                }
-                session()->forget('productIds');
-            }
-            $this->shoppingCartRepository->storeToShoppingCart($userId, $productId);
+            $userId = Auth::user()->id;
+            $this->shoppingCartRepository->storeToShoppingCart($userId, $productId, 1);
         }else{
-            if(session()->has('productIds')){
-                foreach (session()->get('productIds') as $prodId){
-                    if($prodId == $productId){
-                        throw new Exception('Product exist in your shopping cart !');
+            $shoppingCartModel = new ShoppingCart();
+            if(session()->has('products.' . $productId)){
+                    foreach (session()->get('products.' . $productId) as $key => $product) {
+                            $product->quantity += 1;
+                            break;
                     }
-                }
+            }else{
+                $shoppingCartModel->user_id = null;
+                $shoppingCartModel->product_id = $productId;
+                $shoppingCartModel->quantity = 1;
+                session()->push('products.' . $productId, $shoppingCartModel);
             }
-            session()->push('productIds', $productId);
+
         }
     }
 
     public function getNumberOfProductsInShoppingCart($userId)
     {
-            return $this->shoppingCartRepository->countProductsInShoppingCart($userId);
+        return $this->shoppingCartRepository->countProductsInShoppingCart($userId);
     }
 
     public function deleteFromShoppingCart($shoppingCartProductId)
     {
         if(!Auth::check()){
-
-            $newSession = array_filter(session()->get('productIds'), function($item) use ($shoppingCartProductId) {
-                return $item === $shoppingCartProductId;
-            });
-
-            session()->forget('productIds');
-            session()->put($newSession);
+            foreach (session()->get('products') as $key => $product){
+                if($product[0]->product_id == $shoppingCartProductId){
+                    session()->forget('products.' . $shoppingCartProductId);
+                }
+            }
         }else{
             $this->shoppingCartRepository->deleteFromShoppingCart($shoppingCartProductId);
+        }
+    }
+
+    public function updateProductQuantity($productId, $quantity)
+    {
+        if(Auth::check()){
+            $this->shoppingCartRepository->updateProductQuantity(Auth::user()->id, $productId, $quantity);
+        }else{
+            foreach (session()->get('products') as $product) {
+                if($productId == $product[0]->product_id){
+                    $product[0]->quantity = $quantity;
+                }
+            }
+        }
+    }
+
+    public function getUserShoppingCart()
+    {
+        if(Auth::check()){
+            return $this->shoppingCartRepository->getUserShoppingCart();
+        }else{
+            return session()->get('products');
         }
     }
 }

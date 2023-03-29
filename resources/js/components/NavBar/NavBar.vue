@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-6 reg_log">
                         <reg-and-log-links
-                            :user-email="this.userEmail"
+                            :user-name="this.userName"
                         />
                     </div>
                     <div class="col-6 search">
@@ -18,7 +18,7 @@
             </div>
 
             <div class="col-1 shopping_cart">
-                <a :href="'/' + this.userEmail + '/shopping_cart'">
+                <a :href="'/' + this.userName + '/shopping_cart'">
                     <shopping-cart
                         :count="this.count"
                     />
@@ -44,7 +44,7 @@ export default {
     data() {
         return {
             showSelectMenu: false,
-            userEmail: '',
+            userName: '',
             search: '',
             count: 0
         }
@@ -59,12 +59,8 @@ export default {
         async getUser(){
             const response = await axios.get('/get_user')
                 .then((response) => {
-                    this.userEmail = response.data.email
+                    this.userName = response.data.name
                 })
-        },
-
-        showSelectMenuFunc() {
-            this.showSelectMenu = !this.showSelectMenu;
         },
 
         getNumberOfProductsInShoppingCart() {

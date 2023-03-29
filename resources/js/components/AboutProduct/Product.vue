@@ -43,7 +43,7 @@ export default {
 
     data() {
         return {
-            user: ''
+            user: '',
         }
     },
 
@@ -55,14 +55,14 @@ export default {
         async getUser() {
             const response = await axios.get('/get_user')
                 .then((response) => {
-                    this.user = response.data.email
+                    this.user = response.data.name
                 })
         },
 
         async buyProduct() {
             const response = await axios.get('/buy_product', {
                 params: {
-                    productId: this.product.id
+                    productId: this.product.id,
                 }
             })
                 .then((response) => {
