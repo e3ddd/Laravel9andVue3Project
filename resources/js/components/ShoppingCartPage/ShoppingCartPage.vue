@@ -53,6 +53,16 @@ export default {
         }
     },
 
+    watch: {
+        quantity: {
+            quantity(newValue, oldValue){
+                console.log(newValue)
+                console.log(oldValue)
+            }
+        },
+        deep: true
+    },
+
     created() {
         this.getProducts()
         this.getUserShoppingCart()
@@ -96,7 +106,6 @@ export default {
         async getProducts() {
             const response = await axios.get('/get_user_products_from_shopping_cart')
                 .then((response) => {
-                    console.log(response)
                     this.products = response.data
                 })
                 .catch(err => console.log(err))

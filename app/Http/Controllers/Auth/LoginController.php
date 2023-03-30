@@ -11,14 +11,8 @@ class LoginController extends Controller
 {
     public function auth(LoginRequest $request)
     {
-
         $loginService = app(LoginService::class);
-        if($loginService->auth($request->email, $request->password, $request->remember)){
-            $request->session()->regenerate();
-
-           return redirect()->intended('home');
-        }
-
-
+        $loginService->auth($request->email, $request->password, $request->remember);
+        return 1;
     }
 }

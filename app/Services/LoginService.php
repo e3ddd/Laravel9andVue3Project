@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Repositories\LoginRepository;
 use App\Repositories\ShoppingCartRepository;
 use App\Repositories\UserRepository;
+use function Symfony\Component\String\s;
 
 class LoginService
 {
@@ -30,7 +31,7 @@ class LoginService
                     $this->shoppingCartRepository->storeToShoppingCart($user->id, $product[0]->product_id, $product[0]->quantity);
                 }
             }
-            return true;
+            session()->regenerate();
         }
     }
 }

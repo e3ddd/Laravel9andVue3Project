@@ -9,7 +9,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ShoppingCartController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\CategoriesNavController;
 use App\Http\Controllers\IndexRoutesController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +27,7 @@ Route::get('/test', [\App\Http\Controllers\Test::class, 'index']);
 Route::get('/test/show', [\App\Http\Controllers\Test::class, 'show']);
 
 Route::controller(IndexRoutesController::class)->group(function () {
-    Route::get('/home', 'index')->name('home');
+    Route::get('/home', 'index')->name('home')->middleware('redirectTo');
     Route::get('/registration', 'registration');
     Route::get('/login', 'login')->name('login');
     Route::get('/users_products', 'userProducts')->middleware('auth');
@@ -74,7 +73,7 @@ Route::controller(ProductsController::class)->group(function() {
 });
 
 Route::controller(ShoppingCartController::class)->group(function() {
-    Route::get('/{user}/shopping_cart', 'show');
+    Route::get('/shopping_cart', 'show');
     Route::get('/buy_product', 'storeToShoppingCart');
     Route::post('/update_product_quantity', 'updateProductQuantity');
     Route::get('/get_user_shopping_cart', 'getUserShoppingCart');
@@ -98,6 +97,5 @@ Route::post('/reg_form/registration', [RegisterController::class, "store"]);
 Route::post('/login/log', [LoginController::class, 'auth']);
 Route::get('/logout', [LogoutController::class, 'logout'])->middleware(['auth', 'verified']);
 
-Route::resource('users', UserController::class);
 
 

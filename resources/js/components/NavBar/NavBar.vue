@@ -18,7 +18,7 @@
             </div>
 
             <div class="col-1 shopping_cart">
-                <a :href="'/' + this.userName + '/shopping_cart'">
+                <a :href="'/shopping_cart'">
                     <shopping-cart
                         :count="this.count"
                     />

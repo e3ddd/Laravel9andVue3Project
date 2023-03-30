@@ -78,14 +78,12 @@ export default {
         },
 
         async getProducts(page) {
-            console.log(this.subcategory)
             const response = await axios.get('/get_all_products_by_subcategory_name?page=' + page, {
                 params: {
                     subcategoryName: this.subcategory
                 }
             })
                 .then((response) => {
-                    console.log(response)
                     this.products = response.data.data
                     this.total = Math.ceil(response.data.total / response.data.per_page)
                 })

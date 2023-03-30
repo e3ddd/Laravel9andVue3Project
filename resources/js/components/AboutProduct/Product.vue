@@ -10,7 +10,7 @@
                     <div class="col-6 mt-3"><h5>/ a peace</h5></div>
                 </div>
                 <div class="row">
-                    <a :href="'/' + this.user + '/' + 'shopping_cart'" class="buyBtn" @click="buyProduct">Buy</a>
+                    <a :href="'/' + 'shopping_cart'" class="buyBtn" @click="buyProduct">Buy</a>
                 </div>
             </div>
         </div>

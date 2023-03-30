@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class AuthenticateCheckout
+class RedirectTo
 {
     /**
      * Handle an incoming request.
@@ -15,13 +14,11 @@ class AuthenticateCheckout
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
+
     public function handle(Request $request, Closure $next)
     {
-        if(!Auth::check()){
-            if(session()->missing('redirectUrl')){
-                session()->put('redirectUrl', '/shopping_cart');
-            }
-            return redirect()->route('login');
+        if(session()->has('redirectUrl')){
+            return redirect(session()->pull('redirectUrl'));
         }
 
         return $next($request);

@@ -28,17 +28,12 @@ class Test extends Controller
 //            }
 //        }
 
-//        dump(session()->all());
+        dump(session()->all());
+//        $redirectTo = session()->get('shoppingCartUrl');
+//        return redirect($redirectTo);
+//        dump(session()->pull('shoppingCartUrl'));
+//        dump($_SERVER['REQUEST_URI']);
 
-        $test = [];
-        $shoppingCart = ShoppingCart::where('user_id', 8)->get(['product_id', 'quantity']);
-        foreach ($shoppingCart as $item){
-            $test[$item->product_id][0] = [
-              'product_id' => $item->product_id,
-              'quantity' => $item->quantity
-            ];
-        }
-        dump($test);
     }
 }
 

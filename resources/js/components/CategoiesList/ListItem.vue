@@ -11,7 +11,7 @@
                 </a>
                 <div class="row">
                     <div class="col button">
-                        <a @click="buyProduct" :href="'/' + this.user + '/' + 'shopping_cart'">Buy</a>
+                        <a @click="buyProduct" :href="'/shopping_cart'">Buy</a>
                     </div>
                 </div>
             </div>
@@ -32,6 +32,8 @@ export default {
         product: Array,
         user: String
    },
+
+
 
     methods: {
         async buyProduct() {

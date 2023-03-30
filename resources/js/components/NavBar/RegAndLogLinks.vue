@@ -19,7 +19,7 @@
                 <div class="col-7 arrow"> &#9660;</div>
                 <div class="row selectMenu" v-if="this.show == true" @click="this.showNavMenu">
                     <a href="/personal_account">Personal Account</a>
-                    <a :href="'/' + this.userName + '/shopping_cart'">Shopping Cart</a>
+                    <a :href="'/shopping_cart'">Shopping Cart</a>
                     <a href="/logout">Log Out</a>
                 </div>
             </div>
