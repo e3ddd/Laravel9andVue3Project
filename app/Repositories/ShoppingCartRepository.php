@@ -42,7 +42,7 @@ class ShoppingCartRepository
         $shoppingCart = ShoppingCart::where('user_id', Auth::user()->id)->get(['product_id', 'quantity']);
 
         foreach ($shoppingCart as $item){
-            $responseShoppingCart[$item->product_id][0] = [
+            $responseShoppingCart[$item->product_id] = [
                 'product_id' => $item->product_id,
                 'quantity' => $item->quantity
             ];

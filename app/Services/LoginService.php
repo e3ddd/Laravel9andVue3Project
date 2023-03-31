@@ -28,7 +28,7 @@ class LoginService
         if($this->loginRepository->authentication($userEmail, $userPassword, $remember)){
             if(session()->has('products')){
                 foreach (session()->pull('products') as $product){
-                    $this->shoppingCartRepository->storeToShoppingCart($user->id, $product[0]->product_id, $product[0]->quantity);
+                    $this->shoppingCartRepository->storeToShoppingCart($user->id, $product->product_id, $product->quantity);
                 }
             }
             session()->regenerate();

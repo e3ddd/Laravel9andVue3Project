@@ -22,17 +22,6 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-//        foreach (session()->get('products') as $product){
-//            if($product[0]->contains(1)){
-//                dump($product[0]->product_id);
-//            }
-//        }
-
-        dump(session()->all());
-//        $redirectTo = session()->get('shoppingCartUrl');
-//        return redirect($redirectTo);
-//        dump(session()->pull('shoppingCartUrl'));
-//        dump($_SERVER['REQUEST_URI']);
 
     }
 }

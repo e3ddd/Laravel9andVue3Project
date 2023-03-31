@@ -23,7 +23,7 @@ class ShoppingCartService
         }else{
             $shoppingCartModel = new ShoppingCart();
             if(session()->has('products.' . $productId)){
-                    foreach (session()->get('products.' . $productId) as $key => $product) {
+                    foreach (session()->get('products.' . $productId) as $product) {
                             $product->quantity += 1;
                             break;
                     }
@@ -31,7 +31,7 @@ class ShoppingCartService
                 $shoppingCartModel->user_id = null;
                 $shoppingCartModel->product_id = $productId;
                 $shoppingCartModel->quantity = 1;
-                session()->push('products.' . $productId, $shoppingCartModel);
+                session()->put('products.' . $productId, $shoppingCartModel);
             }
 
         }
@@ -46,7 +46,7 @@ class ShoppingCartService
     {
         if(!Auth::check()){
             foreach (session()->get('products') as $key => $product){
-                if($product[0]->product_id == $shoppingCartProductId){
+                if($product->product_id == $shoppingCartProductId){
                     session()->forget('products.' . $shoppingCartProductId);
                 }
             }
@@ -61,8 +61,8 @@ class ShoppingCartService
             $this->shoppingCartRepository->updateProductQuantity(Auth::user()->id, $productId, $quantity);
         }else{
             foreach (session()->get('products') as $product) {
-                if($productId == $product[0]->product_id){
-                    $product[0]->quantity = $quantity;
+                if($productId == $product->product_id){
+                    $product->quantity = $quantity;
                 }
             }
         }
@@ -75,5 +75,10 @@ class ShoppingCartService
         }else{
             return session()->get('products');
         }
+    }
+
+    public function checkout()
+    {
+
     }
 }

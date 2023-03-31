@@ -16,16 +16,16 @@
                     <div class="col-2 amount">
                         <div class="row">
                                 <div class="col amount_item">
-                                    <span class="minus" :id="product.id" @click="decrementCount">-</span>
-                                    <input type="text" v-model="this.quantity[product.id].quantity">
-                                    <span class="plus" :id="product.id" @click="incrementCount">+</span>
+                                    <span class="minus" :id="key" @click="decrementCount">-</span>
+                                    <input type="text" @input="countProductTotalPrice" :id="key" v-model="product.quantity">
+                                    <span class="plus" :id="key" @click="incrementCount">+</span>
                                 </div>
                             </div>
                         </div>
                     <div class="col-3 price mt-2">
                         <div class="row">
                             <div class="col-8">
-                                {{(product.price * this.quantity[product.id].quantity).toFixed(2)}} UAH
+                                {{product.total_price}} UAH
                             </div>
                             <div class="col-4 cross" :id="product.id" @click="del">
                                 &times;
@@ -33,6 +33,14 @@
                         </div>
                     </div>
                 </div>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-5"></div>
+                <div class="col-2 mt-2">Total price:</div>
+                <div class="col-3 mt-2">
+                     {{this.products.sum}} UAH
+                </div>
+            </div>
             <form action="/checkout" v-if="this.products.length !== 0">
                 <div class="row checkoutBtn">
                     <div class="col">
@@ -48,19 +56,12 @@
 export default {
     data() {
         return {
-            products: [],
-            quantity: {}
+            products: {},
         }
     },
 
-    watch: {
-        quantity: {
-            quantity(newValue, oldValue){
-                console.log(newValue)
-                console.log(oldValue)
-            }
-        },
-        deep: true
+    computed: {
+        products() {}
     },
 
     created() {
@@ -68,22 +69,52 @@ export default {
         this.getUserShoppingCart()
     },
 
+
     methods: {
+        countTotalPrice() {
+            let tmpSum = 0
+            this.products.map((item) => {
+                tmpSum += Number(item.total_price)
+            })
+            this.products.sum = (tmpSum).toFixed(2)
+        },
+
+
+        countProductTotalPrice(event) {
+            this.products[event.target.id].total_price = (this.products[event.target.id].price * this.products[event.target.id].quantity).toFixed(2)
+            if(!Number.isInteger(this.products[event.target.id].quantity)){
+                this.products[event.target.id].quantity = Number(this.products[event.target.id].quantity)
+            }
+
+            if(this.products[event.target.id].quantity <= 0){
+                this.products[event.target.id].total_price = this.products[event.target.id].price
+                this.products[event.target.id].quantity = 1
+            }
+
+            this.countTotalPrice()
+        },
+
         decrementCount(event) {
-                if(this.quantity[event.target.id].quantity != 1){
-                    --this.quantity[event.target.id].quantity
+                if(this.products[event.target.id].quantity != 1){
+                    --this.products[event.target.id].quantity
+                    this.products[event.target.id].total_price = (this.products[event.target.id].total_price - this.products[event.target.id].price).toFixed(2)
                 }else{
-                    this.quantity[event.target.id].quantity = 1
+                    this.products[event.target.id].quantity = 1
                 }
-                this.updateQuantity(this.quantity[event.target.id].productId, this.quantity[event.target.id].quantity, event.target.id)
+            this.updateQuantity(this.products[event.target.id].id, this.products[event.target.id].quantity)
+            this.countTotalPrice()
         },
 
         incrementCount(event) {
-            ++this.quantity[event.target.id].quantity
-            this.updateQuantity(this.quantity[event.target.id].productId, this.quantity[event.target.id].quantity, event.target.id)
+            ++this.products[event.target.id].quantity
+            this.updateQuantity(this.products[event.target.id].id, this.products[event.target.id].quantity)
+
+            this.products[event.target.id].total_price = (this.products[event.target.id].price * this.products[event.target.id].quantity).toFixed(2)
+
+            this.countTotalPrice()
         },
 
-        async updateQuantity(productId, quantity, id) {
+        async updateQuantity(productId, quantity) {
             const response = await axios.post('/update_product_quantity', {
                 productId: productId,
                 quantity: quantity,
@@ -93,12 +124,14 @@ export default {
         async getUserShoppingCart() {
             const response = axios.get('/get_user_shopping_cart', {})
                 .then((response) => {
-                    for (const key in response.data) {
-                        this.quantity[response.data[key][0].product_id] = {
-                            productId: response.data[key][0].product_id,
-                            quantity:  response.data[key][0].quantity
+                    this.products.map((item, key) => {
+                        if(response.data[item.id]){
+                            this.products[key].quantity = response.data[item.id].quantity
+                            this.products[key].total_price = (this.products[key].price * response.data[item.id].quantity).toFixed(2)
                         }
-                    }
+                    })
+                    this.products.sum = 0.00
+                    this.countTotalPrice()
                 })
                 .catch(err => console.log(err))
         },

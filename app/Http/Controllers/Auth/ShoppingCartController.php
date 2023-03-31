@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Services\ShoppingCartService;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,6 +53,6 @@ class ShoppingCartController extends Controller
 
     public function checkout()
     {
-        return 1;
+        $shoppingCartService = app(ShoppingCartService::class);
     }
 }
