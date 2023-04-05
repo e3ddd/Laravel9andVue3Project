@@ -17,6 +17,9 @@ import AllProductsByCategory    from "./components/CategoiesList/ByCategory/AllP
 import AllProductsBySubcategory from "./components/CategoiesList/ByCategory/BySubcategory/AllProductsBySubcategory.vue";
 import AboutProduct             from "./components/AboutProduct/AboutProduct.vue";
 import ShoppingCartPage         from "./components/ShoppingCartPage/ShoppingCartPage.vue";
+import Cancel                   from './components/Checkout/Cancel.vue';
+import Success                  from "./components/Checkout/Success.vue";
+
 
 createApp(AdminPanel).mount('#admin-panel')
 createApp(AdminNavbar).mount('#admin-navbar')
@@ -32,4 +35,6 @@ createApp(AllProductsByCategory).mount('#all-products-by-category')
 createApp(AllProductsBySubcategory).mount('#all-products-by-subcategory')
 createApp(AboutProduct).mount('#about-product')
 createApp(ShoppingCartPage).mount('#shopping-cart')
+createApp(Cancel).mount('#cancel')
+createApp(Success).mount('#success');
 

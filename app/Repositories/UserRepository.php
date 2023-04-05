@@ -30,12 +30,14 @@ class UserRepository
         return User::with('productsInShoppingCart')->find(Auth::user()->getAuthIdentifier());
     }
 
-    public function createUser($userEmail, $userPassword, $userName)
+    public function createUser($userEmail, $userPassword, $userName, $userSurname, $userPhoneNumber)
     {
        $user = User::create([
             'email' => $userEmail,
             'password' => Hash::make($userPassword),
-            'name' => $userName
+            'name' => $userName,
+            'surname' => $userSurname,
+            'phone_number' => $userPhoneNumber
         ]);
 
        Auth::login($user);

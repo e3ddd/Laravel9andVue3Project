@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\RedirectTo;
 use App\Http\Middleware\RememberUser;
 use App\Http\Middleware\AuthenticateCheckout;
+use App\Http\Middleware\SaveRedirectUrl;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -68,6 +69,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'remember' => RememberUser::class,
-        'redirectTo' => RedirectTo::class
+        'redirectTo' => RedirectTo::class,
+        'saveRedirectUrl' => SaveRedirectUrl::class,
     ];
 }

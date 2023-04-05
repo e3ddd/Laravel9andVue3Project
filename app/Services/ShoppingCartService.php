@@ -2,17 +2,22 @@
 
 namespace App\Services;
 
+use App\Http\StripePaymentClass;
 use App\Models\ShoppingCart;
+use App\Repositories\AdminPanel\ProductRepository;
 use App\Repositories\ShoppingCartRepository;
+use App\Services\AdminPanel\ProductService;
 use Illuminate\Support\Facades\Auth;
 
 class ShoppingCartService
 {
-    public ShoppingCartRepository $shoppingCartRepository;
+    private ShoppingCartRepository $shoppingCartRepository;
+    private ProductRepository $productRepository;
 
-    public function __construct(ShoppingCartRepository $shoppingCartRepository)
+    public function __construct(ShoppingCartRepository $shoppingCartRepository, ProductRepository $productRepository)
     {
         $this->shoppingCartRepository = $shoppingCartRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function storeToShoppingCart($productId)
@@ -40,6 +45,13 @@ class ShoppingCartService
     public function getNumberOfProductsInShoppingCart($userId)
     {
         return $this->shoppingCartRepository->countProductsInShoppingCart($userId);
+    }
+
+    public function clearShoppingCart()
+    {
+        foreach (session()->pull('products') as $product){
+            $this->deleteFromShoppingCart($product['product_id']);
+        }
     }
 
     public function deleteFromShoppingCart($shoppingCartProductId)
@@ -79,6 +91,20 @@ class ShoppingCartService
 
     public function checkout()
     {
+        $shopping_cart = $this->shoppingCartRepository->getUserShoppingCart();
+        $products = [];
 
+        foreach ($shopping_cart as $item){
+            session()->push('products', $item);
+            $products[] = [
+                [
+                    'product' => $this->productRepository->getProductById($item['product_id']),
+                    'quantity' => $item['quantity']
+                ]
+            ];
+        }
+        $stripe = new StripePaymentClass($products);
+
+        return $stripe->createCheckoutSession();
     }
 }

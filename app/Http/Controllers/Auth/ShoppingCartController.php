@@ -51,8 +51,9 @@ class ShoppingCartController extends Controller
         return $shoppingCartService->getUserShoppingCart();
     }
 
-    public function checkout()
+    public function clearShoppingCart()
     {
         $shoppingCartService = app(ShoppingCartService::class);
+        return $shoppingCartService->clearShoppingCart();
     }
 }

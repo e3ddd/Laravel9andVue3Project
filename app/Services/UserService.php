@@ -27,13 +27,13 @@ class UserService
         return $this->userRepository->getUser($userId);
     }
 
-    public function create($userEmail, $userPassword, $userName, $confirm)
+    public function create($userEmail, $userPassword, $userName, $userSurname, $userPhoneNumber, $confirm)
     {
         if($userPassword !== $confirm) {
             throw new \Exception('Password mismatch !');
         }
 
-        $this->userRepository->createUser($userEmail, $userPassword, $userName);
+        $this->userRepository->createUser($userEmail, $userPassword, $userName, $userSurname, $userPhoneNumber,);
 
         $user = $this->userRepository->getUserByEmail($userEmail);
 

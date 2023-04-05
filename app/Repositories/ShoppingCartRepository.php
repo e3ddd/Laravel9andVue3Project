@@ -47,9 +47,8 @@ class ShoppingCartRepository
                 'quantity' => $item->quantity
             ];
         }
-
         return $responseShoppingCart;
-
     }
+
 }
 

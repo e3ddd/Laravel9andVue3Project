@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Cashier\Billable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -13,11 +14,15 @@ class User extends Authenticatable implements MustVerifyEmail
 
     use HasFactory;
 
+    use Billable;
+
     protected $table = 'users';
     protected $fillable = [
         'email',
         'password',
         'name',
+        'surname',
+        'phone_number'
     ];
 
     public function productsInShoppingCart()

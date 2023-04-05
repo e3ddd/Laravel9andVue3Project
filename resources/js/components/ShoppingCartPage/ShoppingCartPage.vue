@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-            <div class="row">
+            <div class="row total_price"  v-if="this.products.length !== 0">
                 <div class="col-2"></div>
                 <div class="col-5"></div>
                 <div class="col-2 mt-2">Total price:</div>
@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import Vue from "lodash";
+
 export default {
     data() {
         return {
@@ -76,7 +78,7 @@ export default {
             this.products.map((item) => {
                 tmpSum += Number(item.total_price)
             })
-            this.products.sum = (tmpSum).toFixed(2)
+            Vue.set(this.products, 'sum', (tmpSum).toFixed(2))
         },
 
 
@@ -126,11 +128,10 @@ export default {
                 .then((response) => {
                     this.products.map((item, key) => {
                         if(response.data[item.id]){
-                            this.products[key].quantity = response.data[item.id].quantity
-                            this.products[key].total_price = (this.products[key].price * response.data[item.id].quantity).toFixed(2)
+                            Vue.set(this.products[key], 'total_price', (this.products[key].price * response.data[item.id].quantity).toFixed(2))
+                            Vue.set(this.products[key], 'quantity', response.data[item.id].quantity)
                         }
                     })
-                    this.products.sum = 0.00
                     this.countTotalPrice()
                 })
                 .catch(err => console.log(err))
@@ -150,6 +151,7 @@ export default {
         },
 
        async del(event) {
+            // this.products = this.products.filter(item => item.id == event.target.id)
             const response = await axios.post('/delete_from_shopping_cart', {
                     shoppingCartProductId: event.target.id
             })

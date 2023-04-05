@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ShoppingCartController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\IndexRoutesController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,11 +27,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', [\App\Http\Controllers\Test::class, 'index']);
 Route::get('/test/show', [\App\Http\Controllers\Test::class, 'show']);
 
+//Route::post();
+
 Route::controller(IndexRoutesController::class)->group(function () {
     Route::get('/home', 'index')->name('home')->middleware('redirectTo');
     Route::get('/registration', 'registration');
     Route::get('/login', 'login')->name('login');
-    Route::get('/users_products', 'userProducts')->middleware('auth');
     Route::get('/admin', 'adminPanel');
 });
 
@@ -79,7 +81,13 @@ Route::controller(ShoppingCartController::class)->group(function() {
     Route::get('/get_user_shopping_cart', 'getUserShoppingCart');
     Route::get('/get_number_of_products_in_shopping_cart', 'getNumberOfProductsInShoppingCart');
     Route::post('/delete_from_shopping_cart', 'deleteFromShoppingCart');
+    Route::post('/clear_shopping_cart', 'clearShoppingCart');
+});
+
+Route::controller(CheckoutController::class)->group(function() {
     Route::get('/checkout', 'checkout')->middleware('auth.checkout');
+    Route::get('/success', 'success');
+    Route::get('/cancel', 'cancel');
 });
 
 Route::controller(UserController::class)->group(function() {

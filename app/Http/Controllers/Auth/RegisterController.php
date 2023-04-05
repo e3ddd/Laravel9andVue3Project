@@ -12,6 +12,6 @@ class RegisterController extends Controller
     public function store(RegUserRequest $request)
     {
         $userService = app(UserService::class);
-        $userService->create($request->email, $request->password, $request->name, $request->confirm);
+        $userService->create($request->email, $request->password, $request->name, $request->surname, $request->phoneNumber, $request->confirm);
     }
 }

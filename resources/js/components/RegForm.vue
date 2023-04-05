@@ -24,6 +24,26 @@
                 placeholder="Enter name"
             >
         </div>
+        <div class="row-justify-content-center email">
+            <label class="p-1">Your Surname</label>
+            <input
+                v-model="this.surname"
+                type="text"
+                name="surname"
+                class="form-control input-sm"
+                placeholder="Enter surname"
+            >
+        </div>
+        <div class="row-justify-content-center email">
+            <label class="p-1">Your Phone Number</label>
+            <input
+                v-model="this.phone_number"
+                type="text"
+                name="phone_number"
+                class="form-control input-sm"
+                placeholder="+380"
+            >
+        </div>
         <div class="row-justify-content-center password">
             <label class="p-1">Your Password</label>
             <input
@@ -68,7 +88,17 @@ export default {
             password: '',
             confirmPassword: '',
             name: '',
+            surname: '',
+            phone_number: '',
             regUrl: '/reg_form/registration'
+        }
+    },
+
+    watch: {
+        phone_number(newValue, oldValue){
+            if(oldValue == ''){
+                this.phone_number = '+380' + newValue
+            }
         }
     },
 
@@ -79,7 +109,9 @@ export default {
                     email: this.email,
                     password: this.password,
                     name: this.name,
-                    confirm: this.confirmPassword
+                    confirm: this.confirmPassword,
+                    surname: this.surname,
+                    phoneNumber: this.phone_number
                 })
                     .then((response) => {
                         alert('Registration successful !')
