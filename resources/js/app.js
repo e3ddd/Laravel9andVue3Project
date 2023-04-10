@@ -20,7 +20,6 @@ import ShoppingCartPage         from "./components/ShoppingCartPage/ShoppingCart
 import Cancel                   from './components/Checkout/Cancel.vue';
 import Success                  from "./components/Checkout/Success.vue";
 
-
 createApp(AdminPanel).mount('#admin-panel')
 createApp(AdminNavbar).mount('#admin-navbar')
 createApp(ProductsPage).mount('#product-page')
@@ -37,4 +36,3 @@ createApp(AboutProduct).mount('#about-product')
 createApp(ShoppingCartPage).mount('#shopping-cart')
 createApp(Cancel).mount('#cancel')
 createApp(Success).mount('#success');
-

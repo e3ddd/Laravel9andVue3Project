@@ -10,6 +10,7 @@
 <div id="nav-bar"></div>
 <div id="shopping-cart"></div>
 @vite('resources/js/app.js')
+<script src="https://js.stripe.com/v3/"></script>
 </body>
 </html>
 

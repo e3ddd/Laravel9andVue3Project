@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\IndexRoutesController;
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -94,6 +95,10 @@ Route::controller(UserController::class)->group(function() {
     Route::get('/get_user', 'get');
     Route::post('/delete_user', 'destroy');
     Route::get('/edit_user', 'edit');
+});
+
+Route::controller(StripeController::class)->group(function() {
+    Route::post('/webhook', 'webhook');
 });
 
 Route::controller(VerificationController::class)->group(function (){

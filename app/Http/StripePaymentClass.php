@@ -2,47 +2,77 @@
 
 namespace App\Http;
 
-use App\Models\User;
-use Laravel\Cashier\Cashier;
-use Stripe\StripeClient;
+use App\Models\Order;
+use App\Repositories\AdminPanel\ProductRepository;
+use App\Services\ShoppingCartService;
+use Illuminate\Support\Facades\Auth;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
+
 
 class StripePaymentClass
 {
     private const DOMAIN = "http://127.0.0.1:8000";
 
-    private array $products;
-
-    public function __construct(array $products)
+    public function createCharge()
     {
-        $this->products = $products;
+        $productRepository = new ProductRepository();
+        $shoppingCartService = app(ShoppingCartService::class);
+        $shoppingCart = $shoppingCartService->getUserShoppingCart();
+        $products = [];
+
+        foreach ($shoppingCart as $item){
+            $product = $productRepository->getProductById($item['product_id']);
+            $products[] = [
+                'price_data' => [
+                    'currency' => 'uah',
+                    'product_data' => [
+                        'name' => $product->name,
+                    ],
+                    'unit_amount' => $product->price,
+                ],
+                'quantity' => $item['quantity'],
+            ];
+        }
+        return $products;
+    }
+
+    public function createOrder($session_id, $products)
+    {
+        $user_id = Auth::user()->id;
+        if(!Order::where('session_id', $session_id)->exists()){
+            foreach ($products as $product){
+                    Order::create([
+                        'session_id' => $session_id,
+                        'status' => 'unpaid',
+                        'product_name' => $product['price_data']['product_data']['name'],
+                        'product_quantity' => $product['quantity'],
+                        'product_price' => $product['price_data']['unit_amount'],
+                        'user_id' => $user_id,
+                    ]);
+            }
+        }
+
+
     }
 
     public function createCheckoutSession()
     {
-        $stripe = new StripeClient(env('STRIPE_SECRET'));
 
-        $checkout_products = [];
 
-        foreach ($this->products as $product){
-            $checkout_products[] = [
-                'price_data' => [
-                    'currency' => env('CASHIER_CURRENCY'),
-                    'product_data' => [
-                        'name' => $product[0]['product']['name'],
-                    ],
-                    'unit_amount' => $product[0]['product']['price']
-                ],
-                'quantity' => $product[0]['quantity']
-            ];
-        }
-
-        $checkout_session = $stripe->checkout->sessions->create([
-            'line_items' => $checkout_products,
+        $products = $this->createCharge();
+        Stripe::setApiKey(env("STRIPE_SECRET"));
+        $session = Session::create([
+            'line_items' => [
+                $products
+            ],
             'mode' => 'payment',
-            'success_url' =>  self::DOMAIN . '/success',
-            'cancel_url' =>   self::DOMAIN . '/cancel'
+            'success_url' => 'http://127.0.0.1:8000/success',
+            'cancel_url' => 'http://127.0.0.1:8000/cancel',
         ]);
 
-        return redirect($checkout_session->url);
+        $this->createOrder($session->id, $products);
+
+        return redirect($session->url);
     }
 }

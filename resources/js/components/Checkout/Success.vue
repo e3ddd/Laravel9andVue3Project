@@ -11,7 +11,7 @@
                     <h3>Thanks for your order !</h3>
                 </div>
                 <div class="row back_link">
-                    <a href="/home">Back to shop</a>
+                    <a href="/home">Back to homepage</a>
                 </div>
             </div>
         </div>

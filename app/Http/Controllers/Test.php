@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 
 use App\Http\StripePaymentClass;
+use App\Listeners\StripeEventListener;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ShoppingCart;
 use App\Models\User;
+use App\Repositories\AdminPanel\ProductRepository;
 use App\Services\AdminPanel\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Events\WebhookReceived;
+use PHPUnit\Exception;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 use Stripe\StripeClient;
@@ -29,48 +34,19 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-        dump(session()->all());
-
-//        $YOUR_DOMAIN = 'http://127.0.0.1:8000';
-////        Stripe::setApiKey(env('STRIPE_SECRET'));
+//        $test = new StripePaymentClass();
 //
-//
-//       $stripe = new StripeClient(env('STRIPE_SECRET'));
-//
-//      $checkout = $stripe->checkout->sessions->create([
-//           'line_items' => [
-//               [
-//                   'price_data' => [
-//                       'currency' => 'uah',
-//                       'product_data' => [
-//                           'name' => 'Test_product_1',
-//                       ],
-//                       'unit_amount' => 1000
-//                   ],
-//                   'quantity' => 1
-//               ],
-//               [
-//                   'price_data' => [
-//                       'currency' => 'uah',
-//                       'product_data' => [
-//                           'name' => 'Test_product_2',
-//
-//                       ],
-//                       'unit_amount' => 2000
-//                   ],
-//                   'quantity' => 1
-//               ],
-//           ],
-//           'mode' => 'payment',
-//           'success_url' =>  $YOUR_DOMAIN . '/home',
-//           'cancel_url' =>   $YOUR_DOMAIN,
-//       ]);
-
-//       return redirect($checkout->url);
-
-
-//        dump($stripe->prices->all());
-//       return redirect($checkout_session->url);
+//        foreach ($test->createCharge() as $item){
+//            dump($item);
+//        }
+//        $test = new ProductRepository();
+//        dump($test->getProductById(4));
+//        $order = Order::where('session_id', "cs_test_b1czdzfpNuf1yQkgljUGTPGJ6WeLEM1oSGyXsNDHW4Ibb4x4Jj0r9p4dJf")->get();
+//        foreach ($order as $item){
+//            if($item['status'] === 'unpaid'){
+//                Order::where('session_id', "cs_test_b1czdzfpNuf1yQkgljUGTPGJ6WeLEM1oSGyXsNDHW4Ibb4x4Jj0r9p4dJf")->where('status', 'unpaid')->update(['status' => 'paid']);
+//            }
+//        }
     }
 }
 

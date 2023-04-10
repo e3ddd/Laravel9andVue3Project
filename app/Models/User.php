@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use function Illuminate\Events\queueable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 
@@ -22,8 +23,18 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'name',
         'surname',
-        'phone_number'
+        'phone_number',
+        'pm_type'
     ];
+
+    protected static function booted(): void
+    {
+        static::updated(queueable(function (User $customer) {
+            if ($customer->hasStripeId()) {
+                $customer->syncStripeCustomerDetails();
+            }
+        }));
+    }
 
     public function productsInShoppingCart()
     {
