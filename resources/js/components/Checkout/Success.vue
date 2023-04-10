@@ -3,15 +3,23 @@
         <div class="row">
             <div class="col window">
                 <div class="row item">
-                    <div class="done_icon">
+                    <div class="loader" v-if="this.loading === true"></div>
+                    <div class="done_icon" v-if="this.loading === false">
                         <img src="../../free-icon-check-390973.png" alt="DONE">
                     </div>
                 </div>
-                <div class="row item">
-                    <h3>Thanks for your order !</h3>
+                <div class="col" v-if="this.loading === false">
+                    <div class="row item">
+                        <h3>Thanks for your order !</h3>
+                    </div>
+                    <div class="row back_link">
+                        <a href="/home">Back to homepage</a>
+                    </div>
                 </div>
-                <div class="row back_link">
-                    <a href="/home">Back to shop</a>
+                <div class="col" v-else>
+                    <div class="row loading">
+                        <h3>Checking order status...</h3>
+                    </div>
                 </div>
             </div>
         </div>
@@ -20,20 +28,60 @@
 
 <script>
 export default {
+    data() {
+      return {
+          loading: true
+      }
+    },
 
     mounted() {
-        this.deleteFromShoppingCart()
+        setInterval(() => {
+            axios.post('/check_order_status')
+                .then((response) => {
+                    console.log(response)
+                    if(response.data === 'paid'){
+                        this.loading = false
+                    }
+                })
+        }, 5000)
+    },
+
+    watch: {
+      loading(newValue, oldValue){
+          if(newValue === false){
+              this.clearShoppingCart()
+          }
+      }
     },
 
     methods: {
-        async deleteFromShoppingCart() {
-            const response = await axios.post('/clear_shopping_cart')
+        async clearShoppingCart() {
+            const response = await axios.post('/clear_shopping_cart',)
         }
     }
 }
 </script>
 
 <style scoped>
+.loader {
+    margin-left: 195px;
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #df4949; /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 2s linear infinite;
+}
+
+.loading {
+    margin-top: 50px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .success {
     position: fixed;
     width: 500px;

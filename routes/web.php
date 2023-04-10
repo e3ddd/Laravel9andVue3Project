@@ -5,12 +5,14 @@ use App\Http\Controllers\Auth\Admin\CategoriesController;
 use App\Http\Controllers\Auth\Admin\ProductsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\PersonalAccountController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ShoppingCartController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\IndexRoutesController;
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +36,7 @@ Route::controller(IndexRoutesController::class)->group(function () {
     Route::get('/registration', 'registration');
     Route::get('/login', 'login')->name('login');
     Route::get('/admin', 'adminPanel');
+    Route::get('/personal_account', 'personalAccount');
 });
 
 Route::controller(CategoriesController::class)->group(function() {
@@ -88,12 +91,22 @@ Route::controller(CheckoutController::class)->group(function() {
     Route::get('/checkout', 'checkout')->middleware('auth.checkout');
     Route::get('/success', 'success');
     Route::get('/cancel', 'cancel');
+    Route::post('/check_order_status', 'checkOrderStatus');
+    Route::post('/delete_order', 'deleteOrder');
 });
 
 Route::controller(UserController::class)->group(function() {
     Route::get('/get_user', 'get');
     Route::post('/delete_user', 'destroy');
     Route::get('/edit_user', 'edit');
+});
+
+Route::controller(PersonalAccountController::class)->group(function() {
+    Route::get('/get_user_orders', 'getUserOrders');
+});
+
+Route::controller(StripeController::class)->group(function() {
+    Route::post('/stripe/webhook', 'webhook');
 });
 
 Route::controller(VerificationController::class)->group(function (){

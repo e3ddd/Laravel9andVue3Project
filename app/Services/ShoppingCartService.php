@@ -4,20 +4,21 @@ namespace App\Services;
 
 use App\Http\StripePaymentClass;
 use App\Models\ShoppingCart;
+use App\Models\User;
 use App\Repositories\AdminPanel\ProductRepository;
 use App\Repositories\ShoppingCartRepository;
 use App\Services\AdminPanel\ProductService;
 use Illuminate\Support\Facades\Auth;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 
 class ShoppingCartService
 {
     private ShoppingCartRepository $shoppingCartRepository;
-    private ProductRepository $productRepository;
 
-    public function __construct(ShoppingCartRepository $shoppingCartRepository, ProductRepository $productRepository)
+    public function __construct(ShoppingCartRepository $shoppingCartRepository)
     {
         $this->shoppingCartRepository = $shoppingCartRepository;
-        $this->productRepository = $productRepository;
     }
 
     public function storeToShoppingCart($productId)
@@ -49,9 +50,10 @@ class ShoppingCartService
 
     public function clearShoppingCart()
     {
-        foreach (session()->pull('products') as $product){
-            $this->deleteFromShoppingCart($product['product_id']);
-        }
+        $shoppingCart = $this->getUserShoppingCart();
+            foreach ($shoppingCart as $item){
+                $this->deleteFromShoppingCart($item['product_id']);
+            }
     }
 
     public function deleteFromShoppingCart($shoppingCartProductId)
@@ -91,20 +93,8 @@ class ShoppingCartService
 
     public function checkout()
     {
-        $shopping_cart = $this->shoppingCartRepository->getUserShoppingCart();
-        $products = [];
+        $checkout = new StripePaymentClass();
 
-        foreach ($shopping_cart as $item){
-            session()->push('products', $item);
-            $products[] = [
-                [
-                    'product' => $this->productRepository->getProductById($item['product_id']),
-                    'quantity' => $item['quantity']
-                ]
-            ];
-        }
-        $stripe = new StripePaymentClass($products);
-
-        return $stripe->createCheckoutSession();
+        return $checkout->createCheckoutSession();
     }
 }

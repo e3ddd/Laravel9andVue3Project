@@ -22,4 +22,9 @@ class IndexRoutesController extends Controller
     {
         return view('AdminPanel.CategoriesAndAttributes.layout');
     }
+
+    public function personalAccount()
+    {
+        return view('PersonalAccount.layout');
+    }
 }

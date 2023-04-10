@@ -8,7 +8,7 @@
 </head>
 <body>
 <div id="nav-bar"></div>
-<div id="personal-account"></div>
+<div id="personal-account-page"></div>
 @vite('resources/js/app.js')
 </body>
 </html>

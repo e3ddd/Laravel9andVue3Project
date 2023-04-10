@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 
 class PersonalAccountController extends Controller
 {
-    public function show()
+    public function getUserOrders()
     {
-        return view('PersonalAccount.layout');
+        return Order::where('user_id', Auth::user()->id)->get();
     }
 }

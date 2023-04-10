@@ -33,6 +33,12 @@ class ShoppingCartController extends Controller
         }
     }
 
+    public function clearShoppingCart()
+    {
+        $shoppingCartService = app(ShoppingCartService::class);
+        $shoppingCartService->clearShoppingCart();
+    }
+
     public function deleteFromShoppingCart(Request $request)
     {
         $shoppingCartService = app(ShoppingCartService::class);
@@ -49,11 +55,5 @@ class ShoppingCartController extends Controller
     {
         $shoppingCartService = app(ShoppingCartService::class);
         return $shoppingCartService->getUserShoppingCart();
-    }
-
-    public function clearShoppingCart()
-    {
-        $shoppingCartService = app(ShoppingCartService::class);
-        return $shoppingCartService->clearShoppingCart();
     }
 }

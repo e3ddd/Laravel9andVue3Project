@@ -14,11 +14,13 @@
                         {{product.name}}
                     </div>
                     <div class="col-2 amount">
-                        <div class="row">
-                                <div class="col amount_item">
+                        <div class="row amount_item">
+                                <div class="col">
+                                    <span class="minus_10" :id="key" @click="decrementTenCount">-10</span>
                                     <span class="minus" :id="key" @click="decrementCount">-</span>
-                                    <input type="text" @input="countProductTotalPrice" :id="key" v-model="product.quantity">
+                                    <input type="text" @input="countProductTotalPrice" :id="key" v-model="product.quantity" readonly>
                                     <span class="plus" :id="key" @click="incrementCount">+</span>
+                                    <span class="plus_10" :id="key" @click="incrementTenCount">+10</span>
                                 </div>
                             </div>
                         </div>
@@ -54,16 +56,11 @@
 
 <script>
 import Vue from "lodash";
-
 export default {
     data() {
         return {
-            products: {},
+            products: [],
         }
-    },
-
-    computed: {
-        products() {}
     },
 
     created() {
@@ -107,8 +104,28 @@ export default {
             this.countTotalPrice()
         },
 
+        decrementTenCount(event) {
+            if(this.products[event.target.id].quantity >= 10 && this.products[event.target.id].quantity != 1){
+                this.products[event.target.id].quantity = this.products[event.target.id].quantity - 10
+                this.products[event.target.id].total_price = (this.products[event.target.id].total_price - (this.products[event.target.id].price * 10)).toFixed(2)
+            }else{
+                this.products[event.target.id].quantity = 1
+            }
+            this.updateQuantity(this.products[event.target.id].id, this.products[event.target.id].quantity)
+            this.countTotalPrice()
+        },
+
         incrementCount(event) {
             ++this.products[event.target.id].quantity
+            this.updateQuantity(this.products[event.target.id].id, this.products[event.target.id].quantity)
+
+            this.products[event.target.id].total_price = (this.products[event.target.id].price * this.products[event.target.id].quantity).toFixed(2)
+
+            this.countTotalPrice()
+        },
+
+        incrementTenCount(event) {
+            this.products[event.target.id].quantity = this.products[event.target.id].quantity + 10
             this.updateQuantity(this.products[event.target.id].id, this.products[event.target.id].quantity)
 
             this.products[event.target.id].total_price = (this.products[event.target.id].price * this.products[event.target.id].quantity).toFixed(2)
@@ -151,12 +168,14 @@ export default {
         },
 
        async del(event) {
-            // this.products = this.products.filter(item => item.id == event.target.id)
             const response = await axios.post('/delete_from_shopping_cart', {
                     shoppingCartProductId: event.target.id
             })
                 .catch(err => console.log(err))
-        }
+           this.products = this.products.filter((item) => {
+               item.id == event.target.id
+           })
+       }
 
 
     }
@@ -170,6 +189,10 @@ export default {
     justify-content: center;
 }
 
+.amount_item {
+    margin-top: 10px;
+}
+
 .amount_item input{
     width: 40px;
     text-align: center;
@@ -179,14 +202,28 @@ export default {
 
 .minus {
     cursor: pointer;
-    font-size: 22px;
+    font-size: 16px;
+    margin-right: 10px;
+    user-select: none;
+}
+
+.minus_10 {
+    cursor: pointer;
+    font-size: 16px;
     margin-right: 10px;
     user-select: none;
 }
 
 .plus {
     cursor: pointer;
-    font-size: 22px;
+    font-size: 16px;
+    margin-left: 10px;
+    user-select: none;
+}
+
+.plus_10 {
+    cursor: pointer;
+    font-size: 16px;
     margin-left: 10px;
     user-select: none;
 }
