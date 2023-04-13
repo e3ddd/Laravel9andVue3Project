@@ -11,7 +11,7 @@
                             <img :src="'/storage/images/SMALL_' + product.image[0].product_id + '_' + product.image[0].hash_id"/>
                         </div>
                         <div class="col-8">
-                            <a :href="'/products/' + product.name + '/about'">{{product.name}}</a>
+                            <a :href="'/about_product/' + product.id">{{product.name}}</a>
                         </div>
                     </div>
                 </div>

@@ -25,6 +25,12 @@ class CategoriesController extends Controller
         return $categoriesService->getAllCategories();
     }
 
+    public function getCategoryById(Request $request)
+    {
+        $categoriesService = app(CategoriesService::class);
+        return $categoriesService->getCategoryById($request->category_id);
+    }
+
     public function getAllCategoriesWithPagination()
     {
         $categoriesService = app(CategoriesService::class);

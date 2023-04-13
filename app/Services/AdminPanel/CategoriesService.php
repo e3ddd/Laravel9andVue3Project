@@ -22,6 +22,11 @@ class CategoriesService
         return $this->categoriesRepository->getAllCategoriesWithPagination();
     }
 
+    public function getCategoryById($subcategoryId)
+    {
+        return $this->categoriesRepository->getCategoryById($subcategoryId);
+    }
+
     public function getSubcategoriesByParentCategoryName($categoryName)
     {
         return $this->categoriesRepository->getSubcategoriesByParentCategoryName($categoryName);

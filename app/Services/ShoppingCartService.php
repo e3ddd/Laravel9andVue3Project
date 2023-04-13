@@ -94,7 +94,6 @@ class ShoppingCartService
     public function checkout()
     {
         $checkout = new StripePaymentClass();
-
         return $checkout->createCheckoutSession();
     }
 }

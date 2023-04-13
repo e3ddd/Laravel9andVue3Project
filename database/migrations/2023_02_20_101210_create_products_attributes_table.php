@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('value')->nullable();
             $table->integer('order')->nullable();
+            $table->integer('default');
             $table->timestamps();
 
             $table->foreignId('subcategory_id')

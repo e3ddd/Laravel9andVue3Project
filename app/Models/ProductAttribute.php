@@ -14,6 +14,6 @@ class ProductAttribute extends Model
         'name',
         'value',
         'subcategory_id',
-        'default'
+        'default',
     ];
 }

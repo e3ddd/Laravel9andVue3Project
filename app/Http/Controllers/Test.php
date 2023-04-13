@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\ShoppingCart;
 use App\Models\User;
+use App\Repositories\AdminPanel\OrderRepository;
 use App\Repositories\AdminPanel\ProductRepository;
 use App\Services\AdminPanel\ProductService;
 use Illuminate\Http\Request;
@@ -36,17 +37,27 @@ class Test extends Controller
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-
-//        $shoppingCartService = app(ShoppingCartService::class);
-//        $user_id = Auth::user()->id;
-//        $shoppingCart = ShoppingCart::where('user_id', $user_id)->get();
-//        try {
-//            foreach ($shoppingCart as $item){
-//                $shoppingCartService->deleteFromShoppingCart($item['product_id']);
-//            }
-//        }catch (\Exception $e){
-//            return response($e, 500);
-//        }
+//        $order = new OrderRepository();
+//
+////        $order->createOrder('test');
+//        $order->storeOrderProducts('test', [
+//            [
+//            'price_data' => [
+//                'product_data' => [
+//                    'name' => 'test'
+//                ],
+//                'unit_amount' => 100
+//            ],
+//            'quantity' => 2,
+//        ]
+//
+//        ]);
+//
+//        $order->session_id = 'test';
+//        $order->status = 'unpaid';
+//        $order->user_id = Auth::user()->id;
+//        $order->amount = 0;
+//        $order->save();
     }
 }
 

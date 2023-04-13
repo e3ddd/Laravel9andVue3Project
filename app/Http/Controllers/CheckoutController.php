@@ -23,7 +23,7 @@ class CheckoutController extends Controller
     public function checkOrderStatus()
     {
         if(session()->has('session_id')){
-             $order = Order::where('session_id', session()->pull('session_id'))->get();
+             $order = Order::where('session_id', session()->get('session_id'))->get();
              $count = 0;
              foreach ($order as $item){
                  if($item['status'] == 'paid'){
@@ -32,6 +32,7 @@ class CheckoutController extends Controller
              }
 
              if($count == $order->count()){
+                 session()->forget('session_id');
                  return 'paid';
              }
         }

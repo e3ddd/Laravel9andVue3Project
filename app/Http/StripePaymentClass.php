@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Models\Order;
 use App\Repositories\AdminPanel\ProductRepository;
+use App\Services\AdminPanel\OrderService;
 use App\Services\ShoppingCartService;
 use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
@@ -19,6 +20,7 @@ class StripePaymentClass
         $productRepository = new ProductRepository();
         $shoppingCartService = app(ShoppingCartService::class);
         $shoppingCart = $shoppingCartService->getUserShoppingCart();
+
         $products = [];
 
         foreach ($shoppingCart as $item){
@@ -34,42 +36,52 @@ class StripePaymentClass
                 'quantity' => $item['quantity'],
             ];
         }
+
+        try {
+            $shoppingCartService->clearShoppingCart();
+        }catch (\Exception $e){
+            throw new $e;
+        }
+
         return $products;
     }
 
-    public function createOrder($session_id, $products)
+    public function createOrder($session_id)
     {
-        $user_id = Auth::user()->id;
-        if(!Order::where('session_id', $session_id)->exists()){
-            foreach ($products as $product){
-                    Order::create([
-                        'session_id' => $session_id,
-                        'status' => 'unpaid',
-                        'product_name' => $product['price_data']['product_data']['name'],
-                        'product_quantity' => $product['quantity'],
-                        'product_price' => $product['price_data']['unit_amount'],
-                        'user_id' => $user_id,
-                    ]);
-            }
-        }
+        $orderService = app(OrderService::class);
+        $orderService->createOrder($session_id);
     }
+
+    public function storeOrderProducts($session_id, $products)
+    {
+        $orderService = app(OrderService::class);
+        $orderService->storeOrderProducts($session_id, $products);
+    }
+
 
     public function createCheckoutSession()
     {
         $products = $this->createCharge();
         Stripe::setApiKey(env("STRIPE_SECRET"));
-        $session = Session::create([
-            'line_items' => [
-                $products
-            ],
-            'mode' => 'payment',
-            'success_url' => 'http://127.0.0.1:8000/success',
-            'cancel_url' => 'http://127.0.0.1:8000/cancel',
-        ]);
+        try {
+            $session = Session::create([
+                'line_items' => [
+                    $products
+                ],
+                'mode' => 'payment',
+                'success_url' => 'http://127.0.0.1:8000/success',
+                'cancel_url' => 'http://127.0.0.1:8000/cancel',
+            ]);
 
-        session()->put('session_id', $session->id);
+            $this->createOrder($session->id);
+            $this->storeOrderProducts($session->id, $products);
 
-        $this->createOrder($session->id, $products);
+            session()->put('session_id', $session->id);
+
+        }catch (\Exception $e){
+            throw new $e;
+        }
+
 
         return redirect($session->url);
     }

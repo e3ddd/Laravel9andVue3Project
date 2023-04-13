@@ -10,6 +10,6 @@ class PersonalAccountController extends Controller
 {
     public function getUserOrders()
     {
-        return Order::where('user_id', Auth::user()->id)->get();
+        return Order::where('user_id', Auth::user()->id)->with('products')->get();
     }
 }

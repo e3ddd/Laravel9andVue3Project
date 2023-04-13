@@ -29,20 +29,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', [\App\Http\Controllers\Test::class, 'index']);
 Route::get('/test/show', [\App\Http\Controllers\Test::class, 'show']);
 
-//Route::post();
 
 Route::controller(IndexRoutesController::class)->group(function () {
     Route::get('/home', 'index')->name('home')->middleware('redirectTo');
     Route::get('/registration', 'registration');
     Route::get('/login', 'login')->name('login');
     Route::get('/admin', 'adminPanel');
-    Route::get('/personal_account', 'personalAccount');
+    Route::get('/personal_account', 'personalAccount')->middleware('auth');
 });
 
 Route::controller(CategoriesController::class)->group(function() {
     Route::get('/get_all_categories_with_pagination', 'getAllCategoriesWithPagination');
     Route::get('/get_all_categories', 'getAllCategories');
     Route::get('/get_subcategories_by_parent_category_name', 'getSubcategoriesByParentCategoryName');
+    Route::get('/get_category_name_by_id', 'getCategoryById');
     Route::get('/admin/create_category', 'createCategory');
     Route::get('/admin/edit_category', 'editCategory');
     Route::post('/admin/delete_category', 'deleteCategory');

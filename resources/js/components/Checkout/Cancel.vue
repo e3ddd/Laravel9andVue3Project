@@ -20,15 +20,6 @@
 
 <script>
 export default {
-    mounted() {
-        this.deleteOrder()
-    },
-
-    methods: {
-        async deleteOrder() {
-            const response = await axios.post('/delete_order')
-        }
-    }
 
 }
 </script>

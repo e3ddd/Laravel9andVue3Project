@@ -38,12 +38,10 @@ class UserService
         $user = $this->userRepository->getUserByEmail($userEmail);
 
         if(session()->has('products')){
-            foreach (session()->get('products') as $product){
-                $this->shoppingCartRepository->storeToShoppingCart($user->id, $product[0]->product_id, $product[0]->quantity);
+            foreach (session()->pull('products') as $product){
+                $this->shoppingCartRepository->storeToShoppingCart($user->id, $product->product_id, $product->quantity);
             }
-            session()->forget('products');
         }
-
     }
 
     public function update($userId, $userEmail)

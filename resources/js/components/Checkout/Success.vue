@@ -29,35 +29,25 @@
 <script>
 export default {
     data() {
-      return {
-          loading: true
-      }
+        return {
+            loading: true,
+            count: 0,
+        }
     },
 
     mounted() {
         setInterval(() => {
             axios.post('/check_order_status')
                 .then((response) => {
-                    console.log(response)
-                    if(response.data === 'paid'){
+                    if (this.count === 5) {
+                        window.location.replace('/cancel')
+                    }
+                    ++this.count
+                    if (response.data === 'paid') {
                         this.loading = false
                     }
                 })
         }, 5000)
-    },
-
-    watch: {
-      loading(newValue, oldValue){
-          if(newValue === false){
-              this.clearShoppingCart()
-          }
-      }
-    },
-
-    methods: {
-        async clearShoppingCart() {
-            const response = await axios.post('/clear_shopping_cart',)
-        }
     }
 }
 </script>

@@ -93,16 +93,6 @@ export default {
             regUrl: '/reg_form/registration'
         }
     },
-
-    watch: {
-        phone_number(newValue, oldValue){
-            if(oldValue == ''){
-                this.phone_number = '+380' + newValue
-            }
-        }
-    },
-
-
     methods: {
        async registration() {
                 const response = await axios.post(this.regUrl, {

@@ -15,8 +15,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     use HasFactory;
 
-    use Billable;
-
     protected $table = 'users';
     protected $fillable = [
         'email',
@@ -24,17 +22,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'surname',
         'phone_number',
-        'pm_type'
     ];
 
-    protected static function booted(): void
-    {
-        static::updated(queueable(function (User $customer) {
-            if ($customer->hasStripeId()) {
-                $customer->syncStripeCustomerDetails();
-            }
-        }));
-    }
 
     public function productsInShoppingCart()
     {
