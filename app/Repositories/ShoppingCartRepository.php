@@ -39,7 +39,9 @@ class ShoppingCartRepository
     public function getUserShoppingCart()
     {
         $responseShoppingCart = [];
+
         $shoppingCart = ShoppingCart::where('user_id', Auth::user()->id)->get(['product_id', 'quantity']);
+
 
         foreach ($shoppingCart as $item){
             $responseShoppingCart[$item->product_id] = [

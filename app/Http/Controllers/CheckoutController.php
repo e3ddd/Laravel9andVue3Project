@@ -22,20 +22,17 @@ class CheckoutController extends Controller
 
     public function checkOrderStatus()
     {
-        if(session()->has('session_id')){
-             $order = Order::where('session_id', session()->get('session_id'))->get();
-             $count = 0;
-             foreach ($order as $item){
-                 if($item['status'] == 'paid'){
-                     $count++;
-                 }
-             }
+        if(Auth::check()){
+            $order = Order::where('user_id', Auth::user()->id)->get('status')->toArray();
 
-             if($count == $order->count()){
-                 session()->forget('session_id');
-                 return 'paid';
-             }
+            $lastOrder = array_pop($order);
+
+            if($lastOrder['status'] == 'paid'){
+                return 'paid';
+            }
         }
+
+
     }
 
     public function deleteOrder()

@@ -4,40 +4,52 @@ namespace App\Repositories\AdminPanel;
 
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class OrderRepository
 {
-    public function createOrder($session_id)
+    public function createOrder($user_id)
     {
-        $order = new Order();
-        $order->session_id = $session_id;
-        $order->status = 'unpaid';
-        $order->user_id = Auth::user()->id;
-        $order->amount = 0;
-        $order->save();
+
+        try {
+            if(User::find($user_id)){
+                    Order::create([
+                        'status' => 'unpaid',
+                        'user_id' => $user_id
+                    ]);
+                }
+        }catch (\Exception $e){
+            throw new $e;
+        }
     }
 
-    public function storeOrderProducts($session_id, $products)
+    public function storeOrderProducts($user_id, $products)
     {
-        $order = Order::where('session_id', $session_id)->first();
-        $amount = 0;
-        foreach ($products as $product){
+        $orders = Order::where('user_id', $user_id)->get('id')->toArray();
 
-            $amount += ($product['price_data']['unit_amount'] * $product['quantity']);
+        $lastOrder = array_pop($orders);
+
+        foreach ($products as $product){
             OrderProduct::create([
                 'product_name' => $product['price_data']['product_data']['name'],
                 'quantity' => $product['quantity'],
                 'product_price' => $product['price_data']['unit_amount'],
-                'order_id' => $order->id
+                'order_id' => $lastOrder['id']
             ]);
         }
-        $order->update(['amount' => $amount]);
     }
-    public function updatePayStatus($session_id)
+    public function updateOrderStatus($user_id)
     {
-        if(Order::where('session_id', $session_id)->exists()){
-            Order::where('session_id', $session_id)->update(['status' => 'paid']);
-        }
+        $orders = Order::where('user_id', $user_id)->get('id')->toArray();
+
+        $lastOrder = array_pop($orders);
+
+        Order::find($lastOrder['id'])->update(['status' => 'paid']);
+    }
+
+    public function getUserOrders($user_id)
+    {
+        return Order::where('user_id', $user_id)->with('products')->get();
     }
 }

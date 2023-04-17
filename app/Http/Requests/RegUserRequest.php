@@ -25,7 +25,9 @@ class RegUserRequest extends FormRequest
     {
         return [
             'email' => 'required|unique:users,email',
-            'password' => 'required|min:6|max:30'
+            'password' => 'required|min:6|max:30',
+            'name' => 'required',
+            'surname' => 'required',
         ];
     }
 }

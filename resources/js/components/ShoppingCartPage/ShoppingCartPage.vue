@@ -43,7 +43,6 @@
                      {{this.products.sum}} UAH
                 </div>
             </div>
-<!--            <CardInfoField/>-->
             <form action="/checkout" v-if="this.products.length !== 0">
                 <div class="row checkoutBtn">
                     <div class="col">
@@ -56,13 +55,8 @@
 </template>
 
 <script>
-import CardInfoField from "./CardInfoField.vue";
 import Vue from "lodash";
 export default {
-    components: {
-        CardInfoField
-    },
-
     data() {
         return {
             products: [],

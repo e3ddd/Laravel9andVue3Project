@@ -89,7 +89,7 @@ Route::controller(ShoppingCartController::class)->group(function() {
 
 Route::controller(CheckoutController::class)->group(function() {
     Route::get('/checkout', 'checkout')->middleware('auth.checkout');
-    Route::get('/success', 'success');
+    Route::get('/success', 'success')->middleware('saveOrderProducts');
     Route::get('/cancel', 'cancel');
     Route::post('/check_order_status', 'checkOrderStatus');
     Route::post('/delete_order', 'deleteOrder');
@@ -103,6 +103,7 @@ Route::controller(UserController::class)->group(function() {
 
 Route::controller(PersonalAccountController::class)->group(function() {
     Route::get('/get_user_orders', 'getUserOrders');
+    Route::get('/get_user_order_products', 'getUserOrderProducts');
 });
 
 Route::controller(StripeController::class)->group(function() {

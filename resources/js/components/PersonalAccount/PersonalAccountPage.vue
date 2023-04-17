@@ -9,22 +9,9 @@
                 <PersonalAccountItem
                     :label="'Contacts'"
                 />
-                <div class="row">
-                    <div class="col">
-                        <div class="row" v-for="order in this.orders">
-                            <div class="row">
-                                <div class="col">
-                                  {{order.session_id}}
-                                </div>
-                                <div class="col">
-                                    <div class="row" v-for="product in order.products">
-                                        {{product}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Orders
+                    :orders="this.orders"
+                />
             </div>
             <div class="col"></div>
         </div>
@@ -33,9 +20,11 @@
 
 <script>
 import PersonalAccountItem from "./PersonalAccountItem.vue";
+import Orders from "./Orders.vue";
 export default {
     components: {
-        PersonalAccountItem
+        PersonalAccountItem,
+        Orders
     },
 
     data() {
@@ -52,6 +41,7 @@ export default {
         async getUserOrders() {
             const response = await axios.get('/get_user_orders')
                 .then((response) => {
+                    console.log(response)
                     this.orders = response.data
                 })
         }
@@ -62,5 +52,13 @@ export default {
 <style scoped>
 .items {
     margin-top: 50px;
+}
+
+.orders #item {
+}
+
+.orders label {
+    font-size: 12px;
+    color: grey;
 }
 </style>

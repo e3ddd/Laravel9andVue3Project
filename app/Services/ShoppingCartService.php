@@ -82,8 +82,12 @@ class ShoppingCartService
         }
     }
 
-    public function getUserShoppingCart()
+    public function getUserShoppingCart($user_id = null)
     {
+        if($user_id !== null){
+            return $this->shoppingCartRepository->getUserShoppingCart($user_id);
+        }
+
         if(Auth::check()){
             return $this->shoppingCartRepository->getUserShoppingCart();
         }else{

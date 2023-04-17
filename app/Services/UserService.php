@@ -33,7 +33,11 @@ class UserService
             throw new \Exception('Password mismatch !');
         }
 
-        $this->userRepository->createUser($userEmail, $userPassword, $userName, $userSurname, $userPhoneNumber,);
+        try {
+            $this->userRepository->createUser($userEmail, $userPassword, $userName, $userSurname, $userPhoneNumber);
+        }catch (\Exception $e){
+            return response($e, 500);
+        }
 
         $user = $this->userRepository->getUserByEmail($userEmail);
 
@@ -42,6 +46,7 @@ class UserService
                 $this->shoppingCartRepository->storeToShoppingCart($user->id, $product->product_id, $product->quantity);
             }
         }
+
     }
 
     public function update($userId, $userEmail)

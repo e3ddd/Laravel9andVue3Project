@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\RedirectTo;
 use App\Http\Middleware\RememberUser;
 use App\Http\Middleware\AuthenticateCheckout;
+use App\Http\Middleware\SaveOrderProducts;
 use App\Http\Middleware\SaveRedirectUrl;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -71,5 +72,6 @@ class Kernel extends HttpKernel
         'remember' => RememberUser::class,
         'redirectTo' => RedirectTo::class,
         'saveRedirectUrl' => SaveRedirectUrl::class,
+        'saveOrderProducts' => SaveOrderProducts::class
     ];
 }

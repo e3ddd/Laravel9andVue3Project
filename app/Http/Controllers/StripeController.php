@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
-use App\Models\ShoppingCart;
+use App\Repositories\AdminPanel\OrderRepository;
+use App\Repositories\AdminPanel\ProductRepository;
 use App\Services\AdminPanel\OrderService;
 use App\Services\ShoppingCartService;
-use Illuminate\Support\Facades\Auth;
 
 class StripeController extends Controller
 {
-    public function updatePayStatus($session_id)
+
+    public function updateOrderStatus($user_id)
     {
         $orderService = app(OrderService::class);
-        $orderService->updatePayStatus($session_id);
+        $orderService->updateOrderStatus($user_id);
     }
-
 
     public function webhook()
     {
@@ -41,15 +40,23 @@ class StripeController extends Controller
 
 // Handle the event
         switch ($event->type) {
-
             case 'payment_intent.created':
                 $session = $event->data->object;
+                $orderService = app(OrderService::class);
+
+                $orderService->createOrder($session->metadata->customer_id);
+
+            case 'payment_intent.succeeded':
+                $session = $event->data->object;
+
+                $this->updateOrderStatus($session->metadata->customer_id);
+
 
 
             case 'checkout.session.completed':
                 $session = $event->data->object;
 
-                $this->updatePayStatus($session->id);
+
             default:
                 echo 'Received unknown event type ' . $event->type;
         }

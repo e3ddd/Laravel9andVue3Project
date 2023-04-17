@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="container">
         <div class="row links">
             <div :class="category.name" class="col link" v-for="category in categories">
                 <a :href="'products/' + category.name">{{category.name}}</a>
@@ -13,21 +13,16 @@
 
 <script>
 export default {
-
     props: {
         categories: Array,
         subcategories: Array,
     },
-
-    methods: {
-
-    }
 }
 </script>
 
 <style scoped>
-
 .links {
+    padding-left: 30px;
     margin: 20px;
     border: 2px solid silver;
     box-shadow: 3px 3px 3px lightgray;
