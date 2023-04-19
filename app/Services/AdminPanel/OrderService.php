@@ -4,9 +4,16 @@ namespace App\Services\AdminPanel;
 
 use App\Http\Enums\MagnitudeEnums\PriceEnum;
 use App\Http\Factories\Convert\ConvertValueManager;
+use App\Http\StripePaymentClass;
 use App\Models\Order;
 use App\Repositories\AdminPanel\OrderRepository;
+use App\Repositories\AdminPanel\ProductRepository;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 
 class OrderService
 {
@@ -27,16 +34,17 @@ class OrderService
         $this->orderRepository->storeOrderProducts($user_id, $products);
     }
 
-    public function updateOrderStatus($user_id)
+    public function updateOrderStatus($user_id, $status, $order_id = null)
     {
-        $this->orderRepository->updateOrderStatus($user_id);
+        $this->orderRepository->updateOrderStatus($user_id, $status, $order_id);
     }
 
     public function getUserOrders($user_id)
     {
-        $orders = Order::where('user_id', Auth::user()->id)->with('products')->get()->toArray();
+        $orders = Order::where('user_id', $user_id)->with('products')->get()->toArray();
+
         $convertValueManager = new ConvertValueManager();
-        $newOrders =[];
+        $newOrders = [];
 
         foreach ($orders as $order){
             $amount = 0;
@@ -44,12 +52,40 @@ class OrderService
                 $amount += ($product['quantity'] * $product['product_price']);
             }
             $amount = $convertValueManager->for(PriceEnum::coin, $amount)->convertTo(PriceEnum::banknote);
-
             $order['amount'] = $amount;
-
             $newOrders[] = $order;
         }
 
-        return $newOrders;
+        return $this->paginate($newOrders);
+    }
+
+    public function checkUnpaidOrders($user_id)
+    {
+       return $this->orderRepository->checkUnpaidOrders($user_id);
+    }
+
+    public function checkoutByExistingOrder($order_id)
+    {
+        $orderProducts = $this->orderRepository->getOrderProducts($order_id);
+
+        $checkout = new StripePaymentClass();
+
+        return $checkout->startCheckoutSession($checkout->createLineItems($orderProducts)['products'], 90);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function deleteOrder($order_id)
+    {
+        $this->orderRepository->deleteOrderProducts($order_id);
+        $this->orderRepository->deleteOrder($order_id);
+    }
+
+    public function paginate($items, $perPage = 7, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }

@@ -1,7 +1,7 @@
 <template>
         <div class="row">
             <div class="col">
-                 <a :href="'/about_product/' + product.id">
+                 <a :href="'/about_product/' + product.name">
                     <div class="row">
                         <img :src="'/storage/images/' + product.image[0].product_id + '_' + product.image[0].hash_id"/>
                     </div>
@@ -33,8 +33,6 @@ export default {
         user: String
    },
 
-
-
     methods: {
         async buyProduct() {
             const response = await axios.get('/buy_product', {
@@ -42,9 +40,6 @@ export default {
                     productId: this.product.id,
                 }
             })
-                .then((response) => {
-
-                })
                 .catch(err => console.log(err))
         }
     }

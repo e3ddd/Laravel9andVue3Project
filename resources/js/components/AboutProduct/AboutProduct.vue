@@ -40,7 +40,8 @@ export default {
 
     data() {
         return {
-            productId: window.location.href,
+            productName: window.location.href,
+            productId: '',
             product: [],
             categoryId: '',
             categoryName: '',
@@ -51,7 +52,7 @@ export default {
     },
 
     created() {
-        this.rightId()
+        this.rightName()
         this.getProduct()
     },
 
@@ -61,8 +62,11 @@ export default {
     },
 
     methods: {
-        rightId(){
-            this.productId = this.productId.split('/')[4]
+        rightName(){
+            let productName = this.productName.split('/')[4]
+            let tmp = productName.split('%20')
+            this.productName = tmp.join(' ')
+
         },
 
         async getSubcategoryName() {
@@ -92,13 +96,13 @@ export default {
         },
 
         async getProduct() {
-            const response = await axios.get('/admin/get_product_by_id', {
+            const response = await axios.get('/admin/get_product_by_name', {
                 params: {
-                    productId: this.productId
+                    productName: this.productName
                 }
             })
                 .then((response) => {
-                    console.log(response)
+                        this.productId = response.data.id
                         this.product = response.data
                         this.subcategoryId = response.data.subcategory_id
                     }

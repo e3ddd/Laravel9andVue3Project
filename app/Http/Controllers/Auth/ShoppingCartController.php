@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\AdminPanel\OrderService;
 use App\Services\ShoppingCartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,4 +57,5 @@ class ShoppingCartController extends Controller
         $shoppingCartService = app(ShoppingCartService::class);
         return $shoppingCartService->getUserShoppingCart();
     }
+
 }

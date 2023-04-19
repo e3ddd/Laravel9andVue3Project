@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Services\AdminPanel\ProductService;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
 {
@@ -33,6 +32,12 @@ class ProductsController extends Controller
         foreach ($request->images as $image){
             $imageService->saveImage($image, $imageService->storeImage($request->productId, $image));
         }
+    }
+
+    public function getProductByName(Request $request)
+    {
+        $productService = app(ProductService::class);
+        return $productService->getProductByName($request->productName);
     }
 
     public function getProductById(Request $request)
@@ -78,7 +83,7 @@ class ProductsController extends Controller
         return $productService->deleteProduct($request->productId);
     }
 
-    public function getAuthUserProductsFromShoppingCart(Request $request)
+    public function getAuthUserProductsFromShoppingCart()
     {
         $productService = app(ProductService::class);
         return $productService->getAuthUserProductsFromShoppingCart();

@@ -39,11 +39,12 @@ export default {
         setInterval(() => {
             axios.post('/check_order_status')
                 .then((response) => {
-                    if (this.count === 5) {
+                    console.log(response)
+                    if (this.count === 7) {
                         window.location.replace('/cancel')
                     }
                     ++this.count
-                    if (response.data === 'paid') {
+                    if (response.data == 1) {
                         this.loading = false
                     }
                 })

@@ -6,14 +6,15 @@ use App\Repositories\AdminPanel\OrderRepository;
 use App\Repositories\AdminPanel\ProductRepository;
 use App\Services\AdminPanel\OrderService;
 use App\Services\ShoppingCartService;
+use Illuminate\Support\Facades\DB;
 
 class StripeController extends Controller
 {
 
-    public function updateOrderStatus($user_id)
+    public function updateOrderStatus($user_id, $status, $order_id = null)
     {
         $orderService = app(OrderService::class);
-        $orderService->updateOrderStatus($user_id);
+        $orderService->updateOrderStatus($user_id, $status, $order_id);
     }
 
     public function webhook()
@@ -42,19 +43,36 @@ class StripeController extends Controller
         switch ($event->type) {
             case 'payment_intent.created':
                 $session = $event->data->object;
-                $orderService = app(OrderService::class);
+                if($session->metadata->order_id == null){
+                    $this->updateOrderStatus($session->metadata->customer_id, 'created');
+                }else{
+                    $this->updateOrderStatus($session->metadata->customer_id, 'created', $session->metadata->order_id);
+                }
 
-                $orderService->createOrder($session->metadata->customer_id);
+            case 'payment_intent.canceled':
+                $session = $event->data->object;
+                if($session->metadata->order_id == null){
+                    $this->updateOrderStatus($session->metadata->customer_id, 'canceled');
+                }else{
+                    $this->updateOrderStatus($session->metadata->customer_id, 'canceled', $session->metadata->order_id);
+                }
 
             case 'payment_intent.succeeded':
                 $session = $event->data->object;
-
-                $this->updateOrderStatus($session->metadata->customer_id);
-
-
+                if($session->metadata->order_id == null){
+                    $this->updateOrderStatus($session->metadata->customer_id, 'paid');
+                }else{
+                    $this->updateOrderStatus($session->metadata->customer_id, 'paid', $session->metadata->order_id);
+                }
 
             case 'checkout.session.completed':
                 $session = $event->data->object;
+                if($session->metadata->order_id == null){
+                    $this->updateOrderStatus($session->metadata->customer_id, 'completed');
+                }else{
+                    $this->updateOrderStatus($session->metadata->customer_id, 'completed', $session->metadata->order_id);
+                }
+                break;
 
 
             default:

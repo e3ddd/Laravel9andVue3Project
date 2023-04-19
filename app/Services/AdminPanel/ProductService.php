@@ -27,7 +27,17 @@ class ProductService
 
     public function getProductByName($productName)
     {
-        return $this->productRepository->getProductByName($productName);
+        $product = [];
+        $convertValueManager = new ConvertValueManager();
+        foreach ($this->productRepository->getProductByName($productName)->toArray() as $key => $item){
+            if($key == 'price'){
+                $product[$key] = sprintf("%.2f", $convertValueManager->for(PriceEnum::coin, $item)->convertTo(PriceEnum::banknote)) ;
+            }else{
+                $product[$key] = $item;
+            }
+        }
+
+        return $product;
     }
 
     public function getProductById($productId)

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Services\AdminPanel\OrderService;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,4 +15,5 @@ class PersonalAccountController extends Controller
             return $orderService->getUserOrders(Auth::user()->id);
         }
     }
+
 }

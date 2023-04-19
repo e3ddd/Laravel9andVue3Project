@@ -9,9 +9,7 @@
                 <PersonalAccountItem
                     :label="'Contacts'"
                 />
-                <Orders
-                    :orders="this.orders"
-                />
+                <Orders/>
             </div>
             <div class="col"></div>
         </div>
@@ -27,34 +25,12 @@ export default {
         Orders
     },
 
-    data() {
-        return {
-            orders: []
-        }
-    },
-
-    mounted() {
-        this.getUserOrders()
-    },
-
-    methods: {
-        async getUserOrders() {
-            const response = await axios.get('/get_user_orders')
-                .then((response) => {
-                    console.log(response)
-                    this.orders = response.data
-                })
-        }
-    }
 }
 </script>
 
 <style scoped>
 .items {
     margin-top: 50px;
-}
-
-.orders #item {
 }
 
 .orders label {

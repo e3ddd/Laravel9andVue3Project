@@ -64,6 +64,7 @@ Route::controller(AttributesController::class)->group(function() {
 Route::controller(ProductsController::class)->group(function() {
     Route::get('/admin/products', 'show');
     Route::get('/admin/get_product_by_id', 'getProductById');
+    Route::get('/admin/get_product_by_name', 'getProductByName');
     Route::get('/admin/create_product', 'storeProduct');
     Route::post('/admin/store_product_images', 'storeProductImages');
     Route::get('/admin/search_product_by_subcategory', 'searchProductBySubcategory');
@@ -71,7 +72,7 @@ Route::controller(ProductsController::class)->group(function() {
     Route::get('/get_all_products_by_subcategory_id', 'getAllProductBySubcategoryIdWithPaginate');
     Route::get('/get_all_products_by_category_name', 'getAllProductsByCategoryName');
     Route::get('/get_all_products_by_subcategory_name', 'getAllProductBySubcategoryNameWithPaginate');
-    Route::get('/about_product/{id}', 'showAboutProduct');
+    Route::get('/about_product/{name}', 'showAboutProduct');
     Route::get('/search_product', 'searchProduct');
     Route::get('/add_product_to_shopping_cart', 'addProductToShoppingCart');
     Route::get('/get_user_products_from_shopping_cart', 'getAuthUserProductsFromShoppingCart');
@@ -89,10 +90,11 @@ Route::controller(ShoppingCartController::class)->group(function() {
 
 Route::controller(CheckoutController::class)->group(function() {
     Route::get('/checkout', 'checkout')->middleware('auth.checkout');
-    Route::get('/success', 'success')->middleware('saveOrderProducts');
+    Route::get('/success', 'success');
     Route::get('/cancel', 'cancel');
     Route::post('/check_order_status', 'checkOrderStatus');
     Route::post('/delete_order', 'deleteOrder');
+    Route::post('/checkout_exists_order', 'checkoutByExistingOrder');
 });
 
 Route::controller(UserController::class)->group(function() {
@@ -103,7 +105,7 @@ Route::controller(UserController::class)->group(function() {
 
 Route::controller(PersonalAccountController::class)->group(function() {
     Route::get('/get_user_orders', 'getUserOrders');
-    Route::get('/get_user_order_products', 'getUserOrderProducts');
+    Route::post('/get_user_order_products', 'getUserOrderProducts');
 });
 
 Route::controller(StripeController::class)->group(function() {

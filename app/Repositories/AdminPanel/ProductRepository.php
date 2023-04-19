@@ -11,7 +11,7 @@ class ProductRepository
 {
     public function getProductByName($productName)
     {
-        return Product::where('name', $productName)->first();
+        return Product::where('name', $productName)->with('image')->first();
     }
 
     public function getProductById($productId)

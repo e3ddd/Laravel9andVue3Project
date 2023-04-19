@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\StripePaymentClass;
 use App\Models\Order;
 use App\Models\ShoppingCart;
+use App\Services\AdminPanel\OrderService;
 use App\Services\ShoppingCartService;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
 
@@ -27,22 +31,24 @@ class CheckoutController extends Controller
 
             $lastOrder = array_pop($order);
 
-            if($lastOrder['status'] == 'paid'){
-                return 'paid';
+            if($lastOrder['status'] == 'completed'){
+                return true;
             }
         }
 
 
     }
 
-    public function deleteOrder()
+    public function deleteOrder(Request $request)
     {
-        if(session()->has('session_id')){
-            $orders = Order::where('session_id', session()->pull('session_id'))->get();
-            foreach ($orders as $order){
-                Order::destroy($order['id']);
-            }
-        }
+        $orderService = app(OrderService::class);
+        $orderService->deleteOrder($request->order_id);
+    }
+
+    public function checkoutByExistingOrder(Request $request)
+    {
+        $orderService = app(OrderService::class);
+        return $orderService->checkoutByExistingOrder($request->order_id);
     }
 
     public function checkout()

@@ -5,7 +5,6 @@ namespace App\Repositories\AdminPanel;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 class OrderRepository
 {
@@ -39,17 +38,56 @@ class OrderRepository
             ]);
         }
     }
-    public function updateOrderStatus($user_id)
+    public function updateOrderStatus($user_id, $status, $order_id = null)
     {
-        $orders = Order::where('user_id', $user_id)->get('id')->toArray();
+        if($order_id == null){
+            $orders = Order::where('user_id', $user_id)->get('id')->toArray();
+            $lastOrder = array_pop($orders);
+            Order::find($lastOrder['id'])->update(['status' => $status]);
+        }else {
+            Order::find($order_id)->update(['status' => $status]);
+        }
 
-        $lastOrder = array_pop($orders);
+    }
 
-        Order::find($lastOrder['id'])->update(['status' => 'paid']);
+    public function deleteOrder($order_id)
+    {
+        try {
+            Order::destroy($order_id);
+        }catch (\Exception $e){
+            throw new $e;
+        }
+    }
+
+    public function deleteOrderProducts($order_id)
+    {
+        $products = OrderProduct::where('order_id', $order_id)->get('id');
+
+        OrderProduct::destroy(...$products);
     }
 
     public function getUserOrders($user_id)
     {
         return Order::where('user_id', $user_id)->with('products')->get();
     }
+
+    public function checkUnpaidOrders($user_id)
+    {
+        $response = false;
+        if(Order::where('user_id', $user_id)->where('status', 'unpaid')->exists()){
+            $response = true;
+        }
+        return $response;
+    }
+
+    public function getOrderById($order_id)
+    {
+        return Order::find($order_id);
+    }
+
+    public function getOrderProducts($order_id)
+    {
+        return OrderProduct::where('order_id', $order_id)->get();
+    }
+
 }

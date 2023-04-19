@@ -1,10 +1,8 @@
 <template>
     <div class="container shopping_cart_page">
-        <div class="row" v-if="this.products.length == 0">
-            <div class="col d-flex justify-content-center align-content-center">
-                <h1>Shopping cart is empty !</h1>
-            </div>
-        </div>
+        <EmptyCart
+            :length="this.products.length"
+        />
         <div class="row">
                 <div class="row product" v-for="(product,key) in this.products">
                     <div class="col-2 image">
@@ -55,15 +53,23 @@
 </template>
 
 <script>
+import EmptyCart from "./EmptyCart.vue";
 import Vue from "lodash";
 export default {
+    components: {
+        EmptyCart,
+    },
+
     data() {
         return {
             products: [],
+            unpaidOrders: false
         }
     },
 
     created() {
+        this.checkUnpaidOrders()
+
         this.getProducts()
         this.getUserShoppingCart()
     },
@@ -131,6 +137,16 @@ export default {
             this.products[event.target.id].total_price = (this.products[event.target.id].price * this.products[event.target.id].quantity).toFixed(2)
 
             this.countTotalPrice()
+        },
+
+        async checkUnpaidOrders() {
+            const response = await axios.post('/check_unpaid_orders')
+                .then((response) => {
+                    if(response.data === 1){
+                        this.unpaidOrders = true
+                    }
+                })
+                .catch(err => console.log(err))
         },
 
         async updateQuantity(productId, quantity) {

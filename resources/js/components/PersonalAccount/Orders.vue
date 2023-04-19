@@ -2,11 +2,12 @@
     <div class="row main">
         <div class="col">
             <div class="row orders" v-for="order in this.orders">
-                <div class="col-4">
+                <div class="col-6">
                     <div class="row">
                         <div class="col-2 order_status">
-                            <div class="status_indicator_paid" v-if="order.status === 'paid'"></div>
-                            <div class="status_indicator_unpaid" v-else></div>
+                            <StatusIndicator
+                                :order_status="order.status"
+                            />
                         </div>
                         <div class="col-10 about_status">
                             <div class="row title">№ {{order.id}}, {{order.created_at}}</div>
@@ -14,7 +15,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <div class="row title">
                         ORDER AMOUNT
                     </div>
@@ -22,18 +23,82 @@
                         {{(order.amount.toFixed(2))}} UAH
                     </div>
                 </div>
-                <div class="col-4">
-                    PRODIMG
+                <div class="col-2 about_order" v-if="order.status === 'completed'">
+                    <OrderModal/>
+                </div>
+                <div class="col-3 unpaid_order_btns" v-else>
+                    <div class="row">
+                        <div class="col-6 item pay" @click="this.payByOrder(order.id)">
+                            Pay
+                        </div>
+                        <div class="col-6 item cancel" @click="this.deleteOrder(order.id)">
+                            Cancel
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row">
+        <paginator
+            v-model:total="this.total"
+            :get="getUserOrders"
+            @update="onUpdate"
+        />
+    </div>
 </template>
 
 <script>
+import OrderModal from "./OrderModal.vue";
+import StatusIndicator from "./StatusIndicator.vue";
+import Paginator from "../UserList/Paginator.vue";
+import Math from "lodash";
 export default {
-    props: {
-        orders: Array
+    components: {
+        Paginator,
+        OrderModal,
+        StatusIndicator
+    },
+
+    data() {
+        return {
+            total: '',
+            page: 1,
+            orders: []
+        }
+    },
+
+    mounted() {
+        this.getUserOrders(this.page)
+    },
+
+    methods: {
+        onUpdate() {
+            this.orders = []
+        },
+
+        async payByOrder(order_id) {
+            const response = await axios.post('/checkout_exists_order', {
+                order_id: order_id
+            }).then(response => window.location.replace(response.data))
+        },
+
+        async deleteOrder(order_id) {
+            const response = await axios.post('/delete_order', {
+                order_id: order_id
+            })
+                .catch(err => console.log(err))
+        },
+
+        async getUserOrders(page) {
+            const response = await axios.get('/get_user_orders?page=' + page)
+                .then((response) => {
+                    this.orders = response.data.data
+                    this.total = Math.ceil(response.data.total / response.data.per_page)
+                })
+        },
+
+
     }
 }
 </script>
@@ -48,20 +113,8 @@ export default {
     margin-top: 20px;
 }
 
-.status_indicator_paid {
-    position: relative;
-    width: 2px;
-    height: 35px;
-    border-radius: 5px;
-    border: 3px solid green;
-}
-
-.status_indicator_unpaid {
-    position: relative;
-    width: 2px;
-    height: 35px;
-    border-radius: 5px;
-    border: 3px solid red;
+.about_order {
+    cursor: pointer;
 }
 
 .title {
@@ -71,5 +124,28 @@ export default {
 .about_status .status_value {
     font-size: small;
     text-transform: uppercase;
+}
+
+.unpaid_order_btns {
+    margin-bottom: 10px;
+}
+
+.pay {
+    color: green;
+    margin-right: 10px;
+    border: 2px solid green;
+    border-radius: 100px;
+    width: 53px;
+}
+
+.item {
+    cursor: pointer;
+}
+
+.cancel {
+    color: red;
+    border: 2px solid red;
+    border-radius: 100px;
+    width: 75px;
 }
 </style>

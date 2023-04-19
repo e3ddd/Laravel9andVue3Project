@@ -72,6 +72,5 @@ class Kernel extends HttpKernel
         'remember' => RememberUser::class,
         'redirectTo' => RedirectTo::class,
         'saveRedirectUrl' => SaveRedirectUrl::class,
-        'saveOrderProducts' => SaveOrderProducts::class
     ];
 }

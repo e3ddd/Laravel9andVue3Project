@@ -98,6 +98,10 @@ class ShoppingCartService
     public function checkout()
     {
         $checkout = new StripePaymentClass();
-        return $checkout->createCheckoutSession();
+        $shoppingCartService = app(ShoppingCartService::class);
+
+        $shoppingCart = $shoppingCartService->getUserShoppingCart();
+
+        return $checkout->startCheckoutSession($checkout->createLineItems($shoppingCart)['products']);
     }
 }
