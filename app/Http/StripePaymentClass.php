@@ -3,6 +3,7 @@
 namespace App\Http;
 
 
+use App\Models\Order;
 use App\Repositories\AdminPanel\ProductRepository;
 use App\Services\AdminPanel\OrderService;
 use App\Services\ShoppingCartService;
@@ -45,7 +46,7 @@ class StripePaymentClass
         return $responseProducts;
     }
 
-    public function createCheckoutSession($lineItems, $order_id = null)
+    public function createCheckoutSession($lineItems, $order_id)
     {
         Stripe::setApiKey(env("STRIPE_SECRET"));
         $session = Session::create([
@@ -64,7 +65,7 @@ class StripePaymentClass
                 ]
             ],
             'success_url' => self::DOMAIN . '/success',
-            'cancel_url' =>  self::DOMAIN . '/cancel',
+            'cancel_url' =>  self::DOMAIN . '/personal_account',
         ]);
 
         return $session;
@@ -76,7 +77,6 @@ class StripePaymentClass
             $orderService = app(OrderService::class);
             $orderService->createOrder(Auth::user()->id);
             $orderService->storeOrderProducts(Auth::user()->id, $products);
-
         }catch (\Exception $e){
             return response("Can't create order !", 500);
         }
@@ -94,10 +94,10 @@ class StripePaymentClass
     }
 
 
-    public function startCheckoutSession($products, $order_id = null)
+    public function startCheckoutSession($products, $order_id)
     {
         try {
-            $session = $this->createCheckoutSession($products);
+            $session = $this->createCheckoutSession($products, $order_id);
         }catch (\Exception $e){
             return response("Can't create checkout session !", 500);
         }
@@ -105,6 +105,13 @@ class StripePaymentClass
         if($order_id === null){
             $this->createOrder($products);
             $this->clearShoppingCart();
+
+            $createdOrder = Order::where('user_id', Auth::user()->id)->get()->toArray();
+
+            $lastOrder = array_pop($createdOrder);
+
+            \session()->put('paid_order', $lastOrder);
+
             return redirect($session->url);
         }else{
             return $session->url;

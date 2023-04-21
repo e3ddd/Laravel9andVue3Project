@@ -3,11 +3,15 @@
         <div class="row">
             <div class="col-6">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-5">
                         <h1>{{product.price}}</h1>
                     </div>
-                    <div class="col-2 mt-3"><h5>UAH</h5></div>
-                    <div class="col-6 mt-3"><h5>/ a peace</h5></div>
+                    <div class="col-7">
+                        <div class="row">
+                            <div style="margin-right: 5px" class="col-2 mt-4"><h6>UAH</h6></div>
+                            <div class="col-9 mt-4"><h6>/ a peace</h6></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <a :href="'/' + 'shopping_cart'" class="buyBtn" @click="buyProduct">Buy</a>

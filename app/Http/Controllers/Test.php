@@ -29,14 +29,7 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-        $checkout = new StripePaymentClass();
-        $shoppingCartService = app(ShoppingCartService::class);
-
-        $shoppingCart = $shoppingCartService->getUserShoppingCart();
-
-        return $checkout->startCheckoutSession($checkout->createLineItems($shoppingCart)['products']);
-//        return $checkout->startCheckoutSession($orderProducts, 89);
-
+        dump(\session()->get('paid_order.id'));
     }
 }
 

@@ -5,9 +5,13 @@
             <div class="col-6">
                 <PersonalAccountItem
                     :label="'Personal data'"
+                    :src="'user'"
+                    :user="this.user"
                 />
                 <PersonalAccountItem
                     :label="'Contacts'"
+                    :src="'contacts'"
+                    :user="this.user"
                 />
                 <Orders/>
             </div>
@@ -25,6 +29,21 @@ export default {
         Orders
     },
 
+    data() {
+        return {
+            user: []
+        }
+    },
+
+    mounted() {
+            this.getUser()
+        },
+
+    methods: {
+        async getUser() {
+            const response = await axios.get('/get_user').then(response => this.user = response.data)
+        }
+    }
 }
 </script>
 

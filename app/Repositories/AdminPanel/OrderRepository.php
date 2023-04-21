@@ -38,13 +38,13 @@ class OrderRepository
             ]);
         }
     }
-    public function updateOrderStatus($user_id, $status, $order_id = null)
+    public function updateOrderStatus($user_id, $status, $order_id)
     {
-        if($order_id == null){
+        if(!isset($order_id)){
             $orders = Order::where('user_id', $user_id)->get('id')->toArray();
             $lastOrder = array_pop($orders);
             Order::find($lastOrder['id'])->update(['status' => $status]);
-        }else {
+        }else{
             Order::find($order_id)->update(['status' => $status]);
         }
 
@@ -63,7 +63,7 @@ class OrderRepository
     {
         $products = OrderProduct::where('order_id', $order_id)->get('id');
 
-        OrderProduct::destroy(...$products);
+        OrderProduct::destroy($products);
     }
 
     public function getUserOrders($user_id)

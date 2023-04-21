@@ -10,6 +10,7 @@
 <div id="admin-navbar"></div>
 <div id="product-page"></div>
 
+
 @vite('resources/js/app.js')
 </body>
 </html>

@@ -67,6 +67,7 @@ export default {
 
 .selectMenu {
     position: relative;
+    z-index: 2;
     background: #f8f7f7;
     border-radius: 10px;
 }

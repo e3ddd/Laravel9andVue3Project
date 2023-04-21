@@ -33,10 +33,13 @@ class UserService
             throw new \Exception('Password mismatch !');
         }
 
-        try {
-            $this->userRepository->createUser($userEmail, $userPassword, $userName, $userSurname, $userPhoneNumber);
-        }catch (\Exception $e){
-            return response($e, 500);
+
+        if(is_string($userEmail) && is_string($userPassword) && is_string($userName) && is_string($userSurname) && strlen($userPhoneNumber) === 13){
+            try {
+                $this->userRepository->createUser($userEmail, $userPassword, $userName, $userSurname, $userPhoneNumber);
+            }catch (\Exception $e){
+                return response($e, 500);
+            }
         }
 
         $user = $this->userRepository->getUserByEmail($userEmail);

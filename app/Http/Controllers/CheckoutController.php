@@ -27,12 +27,24 @@ class CheckoutController extends Controller
     public function checkOrderStatus()
     {
         if(Auth::check()){
-            $order = Order::where('user_id', Auth::user()->id)->get('status')->toArray();
+            if(\session()->has('order_id')){
+                $order_status = Order::find(\session()->pull('order_id'))->status;
 
-            $lastOrder = array_pop($order);
+                if($order_status == 'completed'){
+                    if(\session()->has('paid_order')){
+                        \session()->forget('paid_order');
+                    }
 
-            if($lastOrder['status'] == 'completed'){
-                return true;
+                    return true;
+                }
+            }else{
+                $order = Order::where('user_id', Auth::user()->id)->get('status')->toArray();
+
+                $lastOrder = array_pop($order);
+
+                if($lastOrder['status'] == 'completed'){
+                    return true;
+                }
             }
         }
 
@@ -47,6 +59,7 @@ class CheckoutController extends Controller
 
     public function checkoutByExistingOrder(Request $request)
     {
+
         $orderService = app(OrderService::class);
         return $orderService->checkoutByExistingOrder($request->order_id);
     }

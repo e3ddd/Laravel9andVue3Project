@@ -31,9 +31,10 @@
                         <div class="col-6 item pay" @click="this.payByOrder(order.id)">
                             Pay
                         </div>
-                        <div class="col-6 item cancel" @click="this.deleteOrder(order.id)">
-                            Cancel
-                        </div>
+                        <AttentionModal
+                            :delete-order="this.deleteOrder"
+                            :order_id="order.id"
+                        />
                     </div>
                 </div>
             </div>
@@ -41,6 +42,7 @@
     </div>
     <div class="row">
         <paginator
+            v-if="this.total"
             v-model:total="this.total"
             :get="getUserOrders"
             @update="onUpdate"
@@ -49,6 +51,7 @@
 </template>
 
 <script>
+import AttentionModal from "./AttentionModal.vue";
 import OrderModal from "./OrderModal.vue";
 import StatusIndicator from "./StatusIndicator.vue";
 import Paginator from "../UserList/Paginator.vue";
@@ -57,12 +60,13 @@ export default {
     components: {
         Paginator,
         OrderModal,
-        StatusIndicator
+        StatusIndicator,
+        AttentionModal
     },
 
     data() {
         return {
-            total: '',
+            total: 0,
             page: 1,
             orders: []
         }
@@ -80,13 +84,19 @@ export default {
         async payByOrder(order_id) {
             const response = await axios.post('/checkout_exists_order', {
                 order_id: order_id
-            }).then(response => window.location.replace(response.data))
+            })
+                .then((response) => {
+                    window.location.replace(response.data)
+                })
         },
 
         async deleteOrder(order_id) {
             const response = await axios.post('/delete_order', {
                 order_id: order_id
             })
+                .then((response) => {
+                    alert('You can\'t cancel order which is in the process of payment !')
+                })
                 .catch(err => console.log(err))
         },
 

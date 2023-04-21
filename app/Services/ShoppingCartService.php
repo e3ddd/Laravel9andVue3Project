@@ -102,6 +102,6 @@ class ShoppingCartService
 
         $shoppingCart = $shoppingCartService->getUserShoppingCart();
 
-        return $checkout->startCheckoutSession($checkout->createLineItems($shoppingCart)['products']);
+        return $checkout->startCheckoutSession($checkout->createLineItems($shoppingCart)['products'], null);
     }
 }

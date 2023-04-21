@@ -8,6 +8,7 @@ use App\Http\StripePaymentClass;
 use App\Models\Order;
 use App\Repositories\AdminPanel\OrderRepository;
 use App\Repositories\AdminPanel\ProductRepository;
+use http\Env\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
@@ -66,11 +67,15 @@ class OrderService
 
     public function checkoutByExistingOrder($order_id)
     {
-        $orderProducts = $this->orderRepository->getOrderProducts($order_id);
+        \session()->put('order_id', $order_id);
+
+        $orderProducts = $this->orderRepository->getOrderProducts($order_id)->toArray();
 
         $checkout = new StripePaymentClass();
 
-        return $checkout->startCheckoutSession($checkout->createLineItems($orderProducts)['products'], 90);
+        $lineItems = $checkout->createLineItems($orderProducts);
+
+        return $checkout->startCheckoutSession($lineItems['products'], $order_id);
     }
 
     /**
@@ -78,8 +83,13 @@ class OrderService
      */
     public function deleteOrder($order_id)
     {
-        $this->orderRepository->deleteOrderProducts($order_id);
-        $this->orderRepository->deleteOrder($order_id);
+        if($order_id !== \session()->get('paid_order.id'))
+        {
+            $this->orderRepository->deleteOrderProducts($order_id);
+            $this->orderRepository->deleteOrder($order_id);
+        }else{
+            return response("You can't cancel order which is in the process of payment !");
+        }
     }
 
     public function paginate($items, $perPage = 7, $page = null, $options = [])

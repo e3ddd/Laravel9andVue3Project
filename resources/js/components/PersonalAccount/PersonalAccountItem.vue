@@ -1,16 +1,40 @@
 <template>
     <div class="row item">
-        <div class="col image">
-            <img alt="icon" :src="src"/>
+        <div class="col-5 image" v-if="src === 'user'">
+            <img alt="icon" src="../../user.png" width="30" height="30"/>
         </div>
-        <div class="col label">
+
+        <div class="col-5 image" v-if="src === 'contacts'">
+            <img alt="icon" src="../../contact-mail.png" width="30" height="30"/>
+        </div>
+        <div class="col-6 label">
             <span>{{label}}</span>
         </div>
         <div class="col-1 arrow" @click="showContent">
             <span>&#9660;</span>
         </div>
-        <div class="row" v-if="this.show == true">
-            TEST
+        <div class="row pt-4" v-if="this.show === true">
+            <div class="row" v-if="src === 'user'">
+                <div class="col">
+                    <div class="row">Name:</div>
+                    <div class="row">{{user.name}}</div>
+                </div>
+                <div class="col">
+                    <div class="row">Surname:</div>
+                    <div class="row">{{user.surname}}</div>
+                </div>
+            </div>
+
+            <div class="row" v-if="src === 'contacts'">
+                <div class="col">
+                    <div class="row">Email:</div>
+                    <div class="row">{{user.email}}</div>
+                </div>
+                <div class="col">
+                    <div class="row">Phone number:</div>
+                    <div class="row">{{user.phone_number}}</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -20,7 +44,8 @@
 export default {
     props: {
         src: String,
-        label: String
+        label: String,
+        user: [Object, Array]
     },
 
     data() {

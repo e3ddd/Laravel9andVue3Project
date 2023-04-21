@@ -9,6 +9,8 @@
 <body>
 <div id="admin-navbar"></div>
 <div id="admin-panel"></div>
+
+
 @vite('resources/js/app.js')
 </body>
 </html>
