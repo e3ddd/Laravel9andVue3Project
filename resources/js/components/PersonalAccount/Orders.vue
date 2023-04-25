@@ -23,18 +23,22 @@
                         {{(order.amount.toFixed(2))}} UAH
                     </div>
                 </div>
-                <div class="col-2 about_order" v-if="order.status === 'completed'">
-                    <OrderModal/>
-                </div>
-                <div class="col-3 unpaid_order_btns" v-else>
+                <div class="col-2 about_order">
                     <div class="row">
-                        <div class="col-6 item pay" @click="this.payByOrder(order.id)">
-                            Pay
-                        </div>
-                        <AttentionModal
-                            :delete-order="this.deleteOrder"
-                            :order_id="order.id"
-                        />
+                            <OrderModal
+                                :order="order"
+                            />
+                    </div>
+                    <div class="row unpaid_order_btns" v-if="order.status === 'unpaid'">
+                                <div class="col-6 item pay" @click="this.payByOrder(order.id)">
+                                    Pay
+                                </div>
+                                <div class="col-6">
+                                    <AttentionModal
+                                        :delete-order="this.deleteOrder"
+                                        :order_id="order.id"
+                                    />
+                                </div>
                     </div>
                 </div>
             </div>
@@ -95,14 +99,15 @@ export default {
                 order_id: order_id
             })
                 .then((response) => {
-                    alert('You can\'t cancel order which is in the process of payment !')
+                    console.log(response)
                 })
-                .catch(err => console.log(err))
+                .catch(err => alert('You can\'t cancel order which is in the process of payment !'))
         },
 
         async getUserOrders(page) {
             const response = await axios.get('/get_user_orders?page=' + page)
                 .then((response) => {
+                    console.log(response)
                     this.orders = response.data.data
                     this.total = Math.ceil(response.data.total / response.data.per_page)
                 })
@@ -152,10 +157,4 @@ export default {
     cursor: pointer;
 }
 
-.cancel {
-    color: red;
-    border: 2px solid red;
-    border-radius: 100px;
-    width: 75px;
-}
 </style>

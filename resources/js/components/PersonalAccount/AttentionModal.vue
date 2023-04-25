@@ -18,8 +18,8 @@
             </div>
         </div>
     </div>
-    <div class="col-6 item cancel" @click="this.showDialog">
-        Cancel
+    <div class="cancel" @click="this.showDialog">
+        <span>Cancel</span>
     </div>
 </template>
 
@@ -70,6 +70,10 @@ export default {
     border: 2px solid red;
     border-radius: 100px;
     width: 75px;
+}
+
+.cancel span {
+    margin-left: 10px;
 }
 
 .btns {

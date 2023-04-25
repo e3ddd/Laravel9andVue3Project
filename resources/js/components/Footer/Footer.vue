@@ -23,7 +23,7 @@ export default {
 <style scoped>
 .footer-basic {
     margin-top: 30%;
-    padding:40px 0;
+    padding:10px 0;
     background-color: #f8f7f7;
     color:#4b4c4d;
 }

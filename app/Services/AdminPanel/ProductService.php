@@ -130,4 +130,33 @@ class ProductService
         }
         return $products;
     }
+
+    public function saveToFavorite($product_id)
+    {
+        if(Auth::check()){
+            try {
+                $result = $this->productRepository->saveToFavorite(Auth::user()->id, $product_id);
+            }catch (\Exception $e){
+                return throw new $e;
+            }
+
+            if($result){
+                $this->productRepository->countFavorite(Auth::user()->id,$product_id);
+            }
+
+            return $result;
+        }
+    }
+
+    public function checkFavorite($product_id)
+    {
+        if(Auth::check()){
+            return $this->productRepository->checkFavorite(Auth::user()->id, $product_id);
+        }
+    }
+
+    public function getFavoriteCount($product_id)
+    {
+        return $this->productRepository->getFavoriteCount($product_id);
+    }
 }

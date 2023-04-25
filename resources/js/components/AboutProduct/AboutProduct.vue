@@ -2,10 +2,16 @@
     <div class="container product">
         <div class="row back_link">
             <h6>
-                <span>Back to
-                <a :href="'/products/' + this.categoryName">{{this.categoryName}}</a> >>
-                <a :href="'/products/' + this.categoryName + '/' + this.subcategoryName">{{this.subcategoryName}}</a>
-            </span>
+                <span>
+                    Back to
+                    <a :href="'/products/' + this.categoryName">
+                        {{this.categoryName}}
+                    </a>
+                    >>
+                    <a :href="'/products/' + this.categoryName + '/' + this.subcategoryName">
+                        {{this.subcategoryName}}
+                    </a>
+                </span>
             </h6>
         </div>
         <div class="row">

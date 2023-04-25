@@ -1,22 +1,27 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-6">
+            <div class="col-8">
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col">
                         <h1>{{product.price}}</h1>
                     </div>
-                    <div class="col-7">
+                    <div class="col">
                         <div class="row">
-                            <div style="margin-right: 5px" class="col-2 mt-4"><h6>UAH</h6></div>
+                            <div class="col-3 mt-4"><h6>UAH</h6></div>
                             <div class="col-9 mt-4"><h6>/ a peace</h6></div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <a :href="'/' + 'shopping_cart'" class="buyBtn" @click="buyProduct">Buy</a>
+                    <div class="col">
+                        <FavoriteMark
+                        :product_id="product.id"
+                        />
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
+                <a :href="'/' + 'shopping_cart'" class="buyBtn" @click="buyProduct">Buy</a>
         </div>
 
         <label class="attributesLabel" for="attributes">
@@ -34,12 +39,29 @@
                 </span>
             </div>
         </div>
+        <div class="description">
+            <div class="row">
+                <div class="col">
+                    <h5>Description:</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{product.description}}
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+import FavoriteMark from "./FavoriteMark.vue";
 
 export default {
+    components: {
+        FavoriteMark
+    },
+
     props: {
         product: Array,
         attributes: Array,
@@ -80,9 +102,10 @@ export default {
 
 <style scoped>
 .buyBtn {
+    width: 20%;
     text-decoration: none;
     cursor: pointer;
-    padding-top: 7px;
+    padding: 7px;
     text-align: center;
     font-size: 24px;
     height: 50px;
@@ -91,7 +114,6 @@ export default {
     background: #ff3838;
     color: white;
     box-shadow: 2px 2px 5px grey;
-    margin: 5px;
 }
 
 .buyBtn:hover {
@@ -106,5 +128,9 @@ export default {
 
 .name:first-letter {
     text-transform: uppercase;
+}
+
+.description {
+    margin-top: 20px;
 }
 </style>

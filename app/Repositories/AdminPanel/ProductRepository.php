@@ -3,6 +3,7 @@
 namespace App\Repositories\AdminPanel;
 
 use App\Models\Category;
+use App\Models\FavoriteProduct;
 use App\Models\Product;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
@@ -72,5 +73,53 @@ class ProductRepository
                 'subcategory_id' => $subcategoryId
             ]);
         }
+    }
+
+    public function countFavorite($product_id)
+    {
+        $product = Product::find($product_id);
+        $count = FavoriteProduct::where('product_id', $product_id)->count();
+
+        $product->update(['favorite_count' => $count]);
+    }
+
+    public function saveToFavorite($user_id, $product_id)
+    {
+        $favProd = FavoriteProduct::where('user_id', $user_id)->where('product_id', $product_id);
+
+        if($favProd->exists()){
+
+            $favProd->delete();
+
+            $this->countFavorite($product_id);
+
+            return false;
+        }else{
+
+            FavoriteProduct::create([
+                'user_id' => $user_id,
+                'product_id' => $product_id
+            ]);
+
+            $this->countFavorite($product_id);
+
+            return true;
+        }
+    }
+
+    public function checkFavorite($user_id, $product_id)
+    {
+        $favProd = FavoriteProduct::where('user_id', $user_id)->where('product_id', $product_id);
+        $result = false;
+
+        if($favProd->exists()){
+            $result = true;
+        }
+        return $result;
+    }
+
+    public function getFavoriteCount($product_id)
+    {
+        return FavoriteProduct::where('product_id', $product_id)->count();
     }
 }

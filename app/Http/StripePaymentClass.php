@@ -65,7 +65,7 @@ class StripePaymentClass
                 ]
             ],
             'success_url' => self::DOMAIN . '/success',
-            'cancel_url' =>  self::DOMAIN . '/personal_account',
+            'cancel_url' =>  self::DOMAIN . '/cancel',
         ]);
 
         return $session;
@@ -106,11 +106,11 @@ class StripePaymentClass
             $this->createOrder($products);
             $this->clearShoppingCart();
 
-            $createdOrder = Order::where('user_id', Auth::user()->id)->get()->toArray();
+//            $createdOrder = Order::where('user_id', Auth::user()->id)->get()->toArray();
 
-            $lastOrder = array_pop($createdOrder);
+//            $lastOrder = array_pop($createdOrder);
 
-            \session()->put('paid_order', $lastOrder);
+//            \session()->put('paid_order', $lastOrder);
 
             return redirect($session->url);
         }else{

@@ -35,7 +35,7 @@ Route::controller(IndexRoutesController::class)->group(function () {
     Route::get('/registration', 'registration');
     Route::get('/login', 'login')->name('login');
     Route::get('/admin', 'adminPanel');
-    Route::get('/personal_account', 'personalAccount')->middleware('auth');
+    Route::get('/personal_account', 'personalAccount')->middleware('auth')->name('personal_account');
 });
 
 Route::controller(CategoriesController::class)->group(function() {
@@ -76,6 +76,9 @@ Route::controller(ProductsController::class)->group(function() {
     Route::get('/search_product', 'searchProduct');
     Route::get('/add_product_to_shopping_cart', 'addProductToShoppingCart');
     Route::get('/get_user_products_from_shopping_cart', 'getAuthUserProductsFromShoppingCart');
+    Route::post('/save_to_favorite', 'saveToFavorite');
+    Route::post('/check_favorite', 'checkFavorite');
+    Route::post('/get_favorite_count', 'getFavoriteCount');
 });
 
 Route::controller(ShoppingCartController::class)->group(function() {

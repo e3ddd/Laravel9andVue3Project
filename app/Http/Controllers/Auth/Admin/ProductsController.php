@@ -88,4 +88,22 @@ class ProductsController extends Controller
         $productService = app(ProductService::class);
         return $productService->getAuthUserProductsFromShoppingCart();
     }
+
+    public function saveToFavorite(Request $request)
+    {
+        $productService = app(ProductService::class);
+        return $productService->saveToFavorite($request->product_id);
+    }
+
+    public function checkFavorite(Request $request)
+    {
+        $productService = app(ProductService::class);
+        return $productService->checkFavorite($request->product_id);
+    }
+
+    public function getFavoriteCount(Request $request)
+    {
+        $productService = app(ProductService::class);
+        return $productService->getFavoriteCount($request->product_id);
+    }
 }

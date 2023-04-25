@@ -1,8 +1,25 @@
 <template>
     <div class="order_modal" v-if="show" @click="show = false">
         <div @click.stop class="order_modal_item">
-
-
+            <h4>About ORDER № {{order.id}}</h4>
+            <div class="row" v-for="item in order.products">
+                <div class="col name">
+                    Name: <a :href="'/about_product/' + item.product_name">{{item.product_name}}</a>
+                </div>
+                <div class="col">
+                    Quantity: {{item.quantity}} pcs
+                </div>
+                <div class="col">
+                    Price: {{(item.product_price * item.quantity) / 100}} UAH
+                </div>
+            </div>
+            <div class="row total_price">
+                <div class="col"></div>
+                <div class="col">Status: {{order.status}}</div>
+                <div class="col">
+                    Total price: {{(order.amount).toFixed(2)}} UAH
+                </div>
+            </div>
         </div>
     </div>
     <small class="button"  @click="this.showDialog">
@@ -13,10 +30,6 @@
 <script>
 
 export default {
-    components: {
-
-    },
-
     data() {
         return {
             show: false,
@@ -26,12 +39,10 @@ export default {
         order: Array
     },
 
-
     methods: {
         showDialog() {
             this.show = true
         },
-
     }
 }
 </script>

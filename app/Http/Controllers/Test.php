@@ -6,9 +6,11 @@ namespace App\Http\Controllers;
 use App\Http\Enums\MagnitudeEnums\PriceEnum;
 use App\Http\Factories\Convert\ConvertValueManager;
 use App\Http\StripePaymentClass;
+use App\Models\FavoriteProduct;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Repositories\AdminPanel\OrderRepository;
+use App\Repositories\AdminPanel\ProductRepository;
 use App\Services\AdminPanel\OrderService;
 use App\Services\ShoppingCartService;
 use Illuminate\Http\Request;
@@ -29,7 +31,7 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-        dump(\session()->get('paid_order.id'));
+        dump(FavoriteProduct::where('product_id', 3)->count());
     }
 }
 

@@ -83,13 +83,13 @@ class OrderService
      */
     public function deleteOrder($order_id)
     {
-        if($order_id !== \session()->get('paid_order.id'))
-        {
+//        if($order_id !== \session()->get('paid_order.id'))
+//        {
             $this->orderRepository->deleteOrderProducts($order_id);
             $this->orderRepository->deleteOrder($order_id);
-        }else{
-            return response("You can't cancel order which is in the process of payment !");
-        }
+//        }else{
+//            throw new \Exception("You can't cancel order which is in the process of payment !", 403);
+//        }
     }
 
     public function paginate($items, $perPage = 7, $page = null, $options = [])

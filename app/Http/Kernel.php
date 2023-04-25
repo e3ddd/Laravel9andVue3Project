@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ClearPaidOrder;
 use App\Http\Middleware\RedirectTo;
 use App\Http\Middleware\RememberUser;
 use App\Http\Middleware\AuthenticateCheckout;
