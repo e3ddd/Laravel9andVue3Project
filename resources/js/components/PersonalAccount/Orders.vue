@@ -107,7 +107,6 @@ export default {
         async getUserOrders(page) {
             const response = await axios.get('/get_user_orders?page=' + page)
                 .then((response) => {
-                    console.log(response)
                     this.orders = response.data.data
                     this.total = Math.ceil(response.data.total / response.data.per_page)
                 })

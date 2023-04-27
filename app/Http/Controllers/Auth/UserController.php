@@ -20,6 +20,12 @@ class UserController extends Controller
         return Auth::user();
     }
 
+    public function getUser()
+    {
+        $userService = app(UserService::class);
+        return $userService->getUser(Auth::user()->id);
+    }
+
     public function edit(EditUserRequest $request)
     {
         $userService = app(UserService::class);

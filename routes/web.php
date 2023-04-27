@@ -63,8 +63,8 @@ Route::controller(AttributesController::class)->group(function() {
 
 Route::controller(ProductsController::class)->group(function() {
     Route::get('/admin/products', 'show');
-    Route::get('/admin/get_product_by_id', 'getProductById');
-    Route::get('/admin/get_product_by_name', 'getProductByName');
+    Route::get('/get_product_by_id', 'getProductById');
+    Route::get('/get_product_by_name', 'getProductByName');
     Route::get('/admin/create_product', 'storeProduct');
     Route::post('/admin/store_product_images', 'storeProductImages');
     Route::get('/admin/search_product_by_subcategory', 'searchProductBySubcategory');
@@ -79,6 +79,7 @@ Route::controller(ProductsController::class)->group(function() {
     Route::post('/save_to_favorite', 'saveToFavorite');
     Route::post('/check_favorite', 'checkFavorite');
     Route::post('/get_favorite_count', 'getFavoriteCount');
+    Route::post('/delete_from_favorite', 'deleteFromfavorite');
 });
 
 Route::controller(ShoppingCartController::class)->group(function() {
@@ -102,6 +103,7 @@ Route::controller(CheckoutController::class)->group(function() {
 
 Route::controller(UserController::class)->group(function() {
     Route::get('/get_user', 'get');
+    Route::get('/get_user_by_id', 'getUser');
     Route::post('/delete_user', 'destroy');
     Route::get('/edit_user', 'edit');
 });

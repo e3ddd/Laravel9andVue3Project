@@ -102,7 +102,7 @@ export default {
         },
 
         async getProduct() {
-            const response = await axios.get('/admin/get_product_by_name', {
+            const response = await axios.get('/get_product_by_name', {
                 params: {
                     productName: this.productName
                 }

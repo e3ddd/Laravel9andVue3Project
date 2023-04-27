@@ -7,6 +7,10 @@
         <div class="col-5 image" v-if="src === 'contacts'">
             <img alt="icon" src="../../contact-mail.png" width="30" height="30"/>
         </div>
+
+        <div class="col-5 image" v-if="src === 'favorites'">
+            <img alt="icon" src="" width="30" height="30"/>
+        </div>
         <div class="col-6 label">
             <span>{{label}}</span>
         </div>
@@ -35,6 +39,28 @@
                     <div class="row">{{user.phone_number}}</div>
                 </div>
             </div>
+
+            <div class="row" v-if="src === 'favorites'">
+                <div class="col">
+                    <div class="row" v-for="(item, key) in favorites">
+                        <div class="col-2">
+                            <img :src="'/storage/images/SMALL_' + item.image[0].product_id + '_' + item.image[0].hash_id" alt="prodImg">
+                        </div>
+                        <div class="col-5">
+                            <a :href="'/about_product/' + item.name">{{item.name}}</a>
+                        </div>
+                        <div class="col-2">
+                            {{item.price}}
+                        </div>
+                        <div class="col-2">
+                            UAH / per peace
+                        </div>
+                        <div class="col-1 cross" :id="key" @click="this.deleteFromFavorite(key)">
+                            &#10005;
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -45,7 +71,8 @@ export default {
     props: {
         src: String,
         label: String,
-        user: [Object, Array]
+        user: [Object, Array],
+        favorites: Object
     },
 
     data() {
@@ -57,6 +84,16 @@ export default {
     methods: {
         showContent() {
             this.show = !this.show
+        },
+
+        async deleteFromFavorite(event, favorite_id) {
+
+            const response = await axios.post('/delete_from_favorite', {
+                favorite_id: favorite_id
+            })
+                .catch(err => console.log(err))
+
+            this.$event('update', event.target.id)
         }
     }
 }
@@ -74,6 +111,10 @@ export default {
 }
 
 .arrow span {
+    cursor: pointer;
+}
+
+.cross:hover {
     cursor: pointer;
 }
 

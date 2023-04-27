@@ -13,6 +13,13 @@
                     :src="'contacts'"
                     :user="this.user"
                 />
+
+                <PersonalAccountItem
+                    :label="'Favorites'"
+                    :src="'favorites'"
+                    :user="this.user"
+                    :favorites="this.favProds"
+                />
                 <Orders/>
             </div>
             <div class="col"></div>
@@ -31,17 +38,44 @@ export default {
 
     data() {
         return {
-            user: []
+            user: [],
+            favProds: {}
         }
     },
 
-    mounted() {
-            this.getUser()
-        },
+    created() {
+        this.getUser()
+
+
+    },
+
+
+
 
     methods: {
         async getUser() {
-            const response = await axios.get('/get_user').then(response => this.user = response.data)
+            const response = await axios.get('/get_user_by_id').then((response) => {
+                this.user = response.data
+            })
+                .then((response) => {
+                    for (const key in this.user.favorite_products) {
+                        this.getFavProds(this.user.favorite_products[key].product_id, this.user.favorite_products[key].id)
+                    }
+                    console.log(this.favProds)
+                })
+        },
+
+        async getFavProds(productId, favId) {
+            const response = await axios.get('/get_product_by_id', {
+                    params: {
+                        productId: productId
+                    }
+                }
+            )
+                .then((response) => {
+                    this.favProds[favId] = response.data
+                })
+                .catch(err => console.log(err))
         }
     }
 }

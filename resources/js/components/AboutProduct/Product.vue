@@ -14,7 +14,7 @@
                     </div>
                     <div class="col">
                         <FavoriteMark
-                        :product_id="product.id"
+                            :product_id="product.id"
                         />
                     </div>
                 </div>

@@ -73,11 +73,11 @@ export default {
                 product_id: this.product_id
             })
                 .then((response) => {
-
                     if(response.data === 1){
                         this.favorite = true
                     }else{
                         this.favorite = false
+                        window.location.replace(response.data)
                     }
                 })
                 .catch(err => console.log(err))

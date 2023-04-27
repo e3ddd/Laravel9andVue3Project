@@ -135,16 +135,23 @@ class ProductService
     {
         if(Auth::check()){
             try {
-                $result = $this->productRepository->saveToFavorite(Auth::user()->id, $product_id);
+                return $this->productRepository->saveToFavorite(Auth::user()->id, $product_id);
             }catch (\Exception $e){
                 return throw new $e;
             }
+        }else{
+            return '/login';
+        }
+    }
 
-            if($result){
-                $this->productRepository->countFavorite(Auth::user()->id,$product_id);
+    public function deleteFromFavorite($favorite_id)
+    {
+        if(Auth::check()){
+            try {
+                $this->productRepository->deleteFromFavorite($favorite_id);
+            }catch (\Exception $e){
+                return throw new $e;
             }
-
-            return $result;
         }
     }
 

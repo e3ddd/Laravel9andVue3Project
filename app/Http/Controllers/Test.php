@@ -31,7 +31,7 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-        dump(FavoriteProduct::where('product_id', 3)->count());
+
     }
 }
 

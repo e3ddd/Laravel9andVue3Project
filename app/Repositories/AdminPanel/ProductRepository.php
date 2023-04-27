@@ -75,13 +75,6 @@ class ProductRepository
         }
     }
 
-    public function countFavorite($product_id)
-    {
-        $product = Product::find($product_id);
-        $count = FavoriteProduct::where('product_id', $product_id)->count();
-
-        $product->update(['favorite_count' => $count]);
-    }
 
     public function saveToFavorite($user_id, $product_id)
     {
@@ -91,8 +84,6 @@ class ProductRepository
 
             $favProd->delete();
 
-            $this->countFavorite($product_id);
-
             return false;
         }else{
 
@@ -101,10 +92,13 @@ class ProductRepository
                 'product_id' => $product_id
             ]);
 
-            $this->countFavorite($product_id);
-
             return true;
         }
+    }
+
+    public function deleteFromFavorite($favorite_id)
+    {
+        FavoriteProduct::destroy($favorite_id);
     }
 
     public function checkFavorite($user_id, $product_id)

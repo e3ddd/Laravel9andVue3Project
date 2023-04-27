@@ -95,6 +95,12 @@ class ProductsController extends Controller
         return $productService->saveToFavorite($request->product_id);
     }
 
+    public function deleteFromFavorite(Request $request)
+    {
+        $productService = app(ProductService::class);
+        $productService->deleteFromFavorite($request->favorite_id);
+    }
+
     public function checkFavorite(Request $request)
     {
         $productService = app(ProductService::class);

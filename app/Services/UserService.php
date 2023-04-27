@@ -22,7 +22,7 @@ class UserService
         return $this->userRepository->getAllUsers();
     }
 
-    public function find($userId)
+    public function getUser($userId)
     {
         return $this->userRepository->getUser($userId);
     }

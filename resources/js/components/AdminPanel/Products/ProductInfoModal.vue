@@ -65,7 +65,7 @@ export default {
         },
 
         async getProductAttrs() {
-            const response = await axios.get('/admin/get_product_by_id', {
+            const response = await axios.get('/get_product_by_id', {
                     params: {
                         productId: this.productId
                     }

@@ -17,7 +17,7 @@ class UserRepository
 
     public function getUser($userId)
     {
-        return User::find($userId);
+        return User::with('favoriteProducts')->find($userId);
     }
 
     public function getUserByEmail($userEmail)
