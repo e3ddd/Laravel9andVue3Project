@@ -28,7 +28,7 @@
         }
      }
 
-     public function saveImageToStorage($file, $storeName,)
+     public function saveImageToStorage($file, $storeName)
      {
 
              if($file->storeAs('public/images', $storeName)){

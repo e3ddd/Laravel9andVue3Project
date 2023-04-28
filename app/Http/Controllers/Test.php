@@ -12,6 +12,7 @@ use App\Models\OrderProduct;
 use App\Repositories\AdminPanel\OrderRepository;
 use App\Repositories\AdminPanel\ProductRepository;
 use App\Services\AdminPanel\OrderService;
+use App\Services\CommentsService;
 use App\Services\ShoppingCartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,9 @@ class Test extends Controller
 
     public function index(Request $request)
     {
+        $commentService = app(CommentsService::class);
+        dump($commentService->getCommentByUserId(2)->id);
+
 
     }
 }

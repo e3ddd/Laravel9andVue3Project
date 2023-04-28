@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Product;
 use App\Repositories\ImageRepository;
 
 class ImageService
@@ -26,9 +25,8 @@ class ImageService
 
     public function storeImage($productId, $fileName)
     {
-        $prod = Product::find($productId);
         $imgHash =  $fileName->hashName();
-        $storeName = $prod->id . "_" . $imgHash;
+        $storeName = $productId . "_" . $imgHash;
         $this->imageRepository->createProductImage($imgHash, $productId);
 
         return $storeName;

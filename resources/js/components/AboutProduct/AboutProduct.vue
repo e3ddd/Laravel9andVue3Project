@@ -32,16 +32,23 @@
                 />
             </div>
         </div>
+        <div class="row comments">
+            <Comments
+            :product_id="this.product.id"
+            />
+        </div>
     </div>
 </template>
 
 <script>
 import Images from "./Images.vue";
 import Product from "./Product.vue";
+import Comments from "./Comments.vue";
 export default {
     components: {
         Images,
         Product,
+        Comments
     },
 
     data() {

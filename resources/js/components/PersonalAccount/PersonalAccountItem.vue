@@ -86,14 +86,13 @@ export default {
             this.show = !this.show
         },
 
-        async deleteFromFavorite(event, favorite_id) {
+        async deleteFromFavorite(favorite_id) {
 
             const response = await axios.post('/delete_from_favorite', {
                 favorite_id: favorite_id
             })
                 .catch(err => console.log(err))
 
-            this.$event('update', event.target.id)
         }
     }
 }
