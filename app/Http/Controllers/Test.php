@@ -9,6 +9,7 @@ use App\Http\StripePaymentClass;
 use App\Models\FavoriteProduct;
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Repositories\AdminPanel\CategoriesRepository;
 use App\Repositories\AdminPanel\OrderRepository;
 use App\Repositories\AdminPanel\ProductRepository;
 use App\Services\AdminPanel\OrderService;
@@ -32,9 +33,8 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-        $collection = collect([1,2,3]);
-
-        dump($collection->last());
+        $test = new CategoriesRepository();
+        dump($test->searchCategory('b'));
 
     }
 }

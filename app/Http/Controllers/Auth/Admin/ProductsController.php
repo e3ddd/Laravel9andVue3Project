@@ -10,6 +10,7 @@ use App\Http\Requests\ValidateProductName;
 use App\Http\Requests\ValidateSearchField;
 use App\Http\Requests\ValidateStoreProduct;
 use App\Http\Requests\ValidateSubcategoryId;
+use App\Http\Requests\ValidateSubcateryNameRequest;
 use App\Services\AdminPanel\ProductService;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
@@ -33,6 +34,7 @@ class ProductsController extends Controller
     {
         return view('AboutProduct.layout');
     }
+
 
     /**
      * Store product
@@ -113,7 +115,7 @@ class ProductsController extends Controller
      * @param ValidateCategoryName $request
      * @return mixed
      */
-    public function getAllProductBySubcategoryNameWithPaginate(ValidateCategoryName $request)
+    public function getAllProductBySubcategoryNameWithPaginate(ValidateSubcateryNameRequest $request)
     {
         /** @var ProductService $productService */
         $productService = app(ProductService::class);

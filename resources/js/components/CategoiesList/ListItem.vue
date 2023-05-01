@@ -57,15 +57,15 @@ a {
     float: right;
     padding: 5px;
     border-radius: 5px;
-    border: none;
-    background: #ff3838;
-    color: white;
+    border: 1px solid #025a70;
+    background: none;
+    color: #025a70;
     box-shadow: 2px 2px 5px grey;
     margin: 5px;
 }
 
 .button a:hover {
-    background: #661515;
+    background: #003542;
     transition: 0.4s;
     color: white;
 }

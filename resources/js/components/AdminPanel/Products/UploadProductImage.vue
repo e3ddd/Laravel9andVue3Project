@@ -63,8 +63,8 @@ export default {
 
 .upload_image_button {
     cursor: pointer;
-    color: #df4949;
-    border: 2px solid #df4949;
+    color: #025a70;
+    border: 2px solid #025a70;
     box-shadow: 2px 2px 1px silver;
     padding: 50px;
     margin-top: 10px;

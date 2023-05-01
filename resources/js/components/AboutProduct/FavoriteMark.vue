@@ -46,7 +46,7 @@ export default {
 
         async getFavoriteCount() {
             const response = await axios.post('/get_favorite_count', {
-                product_id: this.product_id
+                productId: this.product_id
             })
                 .then((response) => {
                     this.count = response.data
@@ -56,7 +56,7 @@ export default {
 
         async checkFavorite() {
             const response = await axios.post('/check_favorite', {
-                product_id: this.product_id
+                productId: this.product_id
             })
                 .then((response) => {
                     if(response.data === 1){
@@ -70,7 +70,7 @@ export default {
 
         async saveFavoriteProduct() {
             const response = await axios.post('/save_to_favorite', {
-                product_id: this.product_id
+                productId: this.product_id
             })
                 .then((response) => {
                     if(response.data === 1){

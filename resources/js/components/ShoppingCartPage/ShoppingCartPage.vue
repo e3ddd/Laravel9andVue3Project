@@ -267,16 +267,17 @@ export default {
 
 .checkoutBtn input{
     border-radius: 10px;
-    color: white;
-    border: 1px solid #df4949;
+    color: #028bad;
+    border: 1px solid #028bad;
     padding: 10px;
-    background: #df4949;
+    background: none;
 
 }
 
 .checkoutBtn input:hover {
     transition: 0.5s;
-    background: #661515;
+    background: #003542;
+    color: white;
 }
 
 </style>

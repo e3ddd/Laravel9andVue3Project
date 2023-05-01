@@ -9,7 +9,7 @@
         </div>
 
         <div class="col-5 image" v-if="src === 'favorites'">
-            <img alt="icon" src="" width="30" height="30"/>
+            <img alt="icon" src="../../favorites.png" width="30" height="30"/>
         </div>
         <div class="col-6 label">
             <span>{{label}}</span>
@@ -89,7 +89,7 @@ export default {
         async deleteFromFavorite(favorite_id) {
 
             const response = await axios.post('/delete_from_favorite', {
-                favorite_id: favorite_id
+                favoriteId: favorite_id
             })
                 .catch(err => console.log(err))
 

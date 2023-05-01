@@ -30,8 +30,8 @@ export default {
 .circle {
     top: 20px;
     position: relative;
-    background: #df4949;
-    border: 5px solid #df4949;
+    background: #007b9a;
+    border: 5px solid #0086a8;
     border-radius: 50%;
     height: 12px;
     width: 12px;

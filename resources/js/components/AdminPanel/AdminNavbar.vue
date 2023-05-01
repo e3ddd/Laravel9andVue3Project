@@ -34,13 +34,13 @@ export default {
 
 .nav__item a{
     text-decoration: none;
-    color: #df4949;
+    color: #025a70;
     font-size: 20px;
 }
 
 .nav__item a:hover{
     text-decoration: underline;
-    color: #661515;
+    color: #028bad;
     transition: 0.5s;
 }
 

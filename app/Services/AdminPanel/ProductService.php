@@ -218,11 +218,7 @@ class ProductService
     public function deleteFromFavorite($favorite_id)
     {
         if(Auth::check()){
-            try {
-                $this->productRepository->deleteFromFavorite($favorite_id);
-            }catch (\Exception $e){
-                return throw new $e;
-            }
+            $this->productRepository->deleteFromFavorite($favorite_id);
         }
     }
 

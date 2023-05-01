@@ -14,9 +14,18 @@ export default {
 <style scoped>
 button {
     margin-top: 10px;
-    background: #df4949;
-    border: none;
+    margin-bottom: 10px;
+
+    background: none;
+    color: #025a70;
+    border: 1px solid #025a70;
     border-radius: 5px;
-    color: white;
+}
+
+button:hover {
+    transition: 0.5s;
+    background: #025a70;
+    border: none;
+    color: #fff;
 }
 </style>

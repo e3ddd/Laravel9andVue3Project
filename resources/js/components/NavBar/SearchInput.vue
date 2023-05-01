@@ -57,6 +57,7 @@ export default {
 
 <style scoped>
 .products {
+    z-index: 2;
     position: relative;
     background: white;
 }

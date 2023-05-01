@@ -1,6 +1,8 @@
 <template>
-    <div class="col-4">
-        <a href="/home"><img src="" alt="Logo"></a>
+    <div class="col-4 mt-2">
+        <a href="/home" style="font-size: 20px">
+           LOGO
+        </a>
     </div>
 </template>
 

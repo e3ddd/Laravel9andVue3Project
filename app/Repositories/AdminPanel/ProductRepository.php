@@ -75,7 +75,7 @@ class ProductRepository
      */
     public function getAllProductBySubcategoryNameWithPaginate($subcategoryName)
     {
-        $subcategoryId = Category::whereFirst('name', $subcategoryName)?->id;
+        $subcategoryId = Category::firstWhere('name', $subcategoryName)?->id;
 
         if($subcategoryId === null){
             throw new \RuntimeException('Subcategory not found');

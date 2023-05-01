@@ -47,7 +47,7 @@ export default {
 button {
     margin-right: 3px;
     margin-top: 15px;
-    background: #df4949;
+    background: #025a70;
     border: none;
     border-radius: 5px;
     color: white;

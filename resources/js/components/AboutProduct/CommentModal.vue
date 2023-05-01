@@ -164,13 +164,13 @@ export default {
 
 .feedback_btn button {
     background: none;
-    border: 1px solid #df4949;
-    color: #df4949;
+    border: 1px solid #028bad;
+    color: #028bad;
 }
 
 .feedback_btn button:hover {
     color: white;
-    background: #df4949;
+    background: #003542;
     transition: 0.5s;
 }
 
@@ -180,11 +180,17 @@ export default {
 }
 
 .leave_btn {
-    background: #df4949;
-    color: white;
-    border: none;
+    background: none;
+    border: 1px solid #028bad;
+    color: #028bad;
     padding: 5px;
     border-radius: 5px;
     box-shadow: 2px 2px 2px black;
+}
+
+.leave_btn:hover {
+    transition: 0.5s;
+    background: #003542;
+    color: white;
 }
 </style>

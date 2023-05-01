@@ -145,7 +145,6 @@ export default {
 
 .back_link a:hover {
     transition: 0.5s;
-    color: #df4949;
     text-decoration: underline;
 }
 

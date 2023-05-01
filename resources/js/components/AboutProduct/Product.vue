@@ -110,15 +110,15 @@ export default {
     font-size: 24px;
     height: 50px;
     border-radius: 5px;
-    border: none;
-    background: #ff3838;
-    color: white;
+    border: 1px solid #028bad;
+    background: none;
+    color: #028bad;
     box-shadow: 2px 2px 5px grey;
 }
 
 .buyBtn:hover {
-    background: #661515;
-    transition: 0.4s;
+    background: #003542;
+    transition: 0.5s;
     color: white;
 }
 

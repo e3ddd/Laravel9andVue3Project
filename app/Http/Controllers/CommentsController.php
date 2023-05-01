@@ -18,6 +18,7 @@ class CommentsController extends Controller
 
     public function saveComment(CommentRequest $request)
     {
+        /** @var CommentsService $commentService */
         $commentService = app(CommentsService::class);
         try {
             $commentService->saveComment(Auth::user()->id, $request->productId, $request->rate, $request->comment);
@@ -25,12 +26,12 @@ class CommentsController extends Controller
             throw new $exception;
         }
 
-        $comment = $commentService->getCommentByUserId($request->productId)->toArray();
+        $commentId = $commentService->getCommentByUserId($request->productId)->last()->id;
 
-        $commentId = array_pop($comment);
+
 
         foreach ($request->images as $image){
-            $commentService->saveCommentImage($image, $commentId['id']);
+            $commentService->saveCommentImage($image, $commentId);
         }
     }
 }
