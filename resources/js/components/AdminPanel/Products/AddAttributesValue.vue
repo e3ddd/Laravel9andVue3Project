@@ -32,7 +32,7 @@
         </div>
         <div class="row">
             <div class="images" v-if="this.products.length !== 0">
-                <upload-product-image
+                <UploadProductImage
                     :product-id="this.productId"
                     :files="this.images"
                     @getImages="onImages"

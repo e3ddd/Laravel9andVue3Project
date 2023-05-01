@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Repositories\AdminPanel\ProductRepository;
 use App\Services\AdminPanel\OrderService;
 use App\Services\ShoppingCartService;
+use http\Exception\RuntimeException;
 use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
@@ -16,6 +17,11 @@ class StripePaymentClass
 {
     private const DOMAIN = "http://127.0.0.1:8000";
 
+    /**
+     * Formation of prodcuts for stripe checkout session
+     * @param array $products
+     * @return array
+     */
     public function createLineItems($products)
     {
         $productRepository = new ProductRepository();
@@ -46,8 +52,19 @@ class StripePaymentClass
         return $responseProducts;
     }
 
+    /**
+     * Create stripe checkout session
+     * @param array $lineItems
+     * @param integer|null $order_id
+     * @return Session
+     * @throws \Stripe\Exception\ApiErrorException
+     */
     public function createCheckoutSession($lineItems, $order_id)
     {
+        if($order_id === null){
+            throw new RuntimeException('Order not found');
+        }
+
         Stripe::setApiKey(env("STRIPE_SECRET"));
         $session = Session::create([
             'line_items' => [
@@ -71,46 +88,47 @@ class StripePaymentClass
         return $session;
     }
 
+    /**
+     * Create order
+     * @param array $products
+     * @return void
+     */
     public function createOrder($products)
     {
-        try {
+        /** @var OrderService $orderService */
             $orderService = app(OrderService::class);
             $orderService->createOrder(Auth::user()->id);
             $orderService->storeOrderProducts(Auth::user()->id, $products);
-        }catch (\Exception $e){
-            return response("Can't create order !", 500);
-        }
     }
 
+    /**
+     * Clear shopping cart after creating order
+     */
     public function clearShoppingCart()
     {
+        /** @var ShoppingCartService $shoppingCartService */
         $shoppingCartService = app(ShoppingCartService::class);
-
-        try {
-            $shoppingCartService->clearShoppingCart();
-        }catch (\Exception $e){
-            return response("Can't clear shopping cart !", 500);
-        }
+        $shoppingCartService->clearShoppingCart();
     }
 
-
+    /**
+     * Start stripe checkout session
+     * @param array $products
+     * @param integer|null $order_id
+     * @throws \Stripe\Exception\ApiErrorException
+     */
     public function startCheckoutSession($products, $order_id)
     {
+
         try {
             $session = $this->createCheckoutSession($products, $order_id);
-        }catch (\Exception $e){
-            return response("Can't create checkout session !", 500);
+        }catch (\RuntimeException $e){
+            throw new $e;
         }
 
         if($order_id === null){
             $this->createOrder($products);
             $this->clearShoppingCart();
-
-//            $createdOrder = Order::where('user_id', Auth::user()->id)->get()->toArray();
-
-//            $lastOrder = array_pop($createdOrder);
-
-//            \session()->put('paid_order', $lastOrder);
 
             return redirect($session->url);
         }else{

@@ -11,7 +11,7 @@
 <body>
 <div id="nav-bar"></div>
 <div id="shopping-cart"></div>
-<div id="footer"></div>
+
 @vite('resources/js/app.js')
 </body>
 </html>

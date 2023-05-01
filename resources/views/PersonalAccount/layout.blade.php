@@ -9,7 +9,6 @@
 <body>
 <div id="nav-bar"></div>
 <div id="personal-account-page"></div>
-<div id="footer"></div>
 
 @vite('resources/js/app.js')
 </body>

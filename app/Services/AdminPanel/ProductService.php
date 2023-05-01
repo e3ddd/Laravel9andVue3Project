@@ -24,7 +24,12 @@ class ProductService
         $this->userRepository = $userRepository;
     }
 
-
+    /**
+     * Get product by product name
+     * @param string|null $productName
+     * @return array
+     * @throws \Exception
+     */
     public function getProductByName($productName)
     {
         $product = [];
@@ -40,6 +45,12 @@ class ProductService
         return $product;
     }
 
+    /**
+     * Get product by product id
+     * @param integer|null $productId
+     * @return array
+     * @throws \Exception
+     */
     public function getProductById($productId)
     {
         $product = [];
@@ -55,41 +66,83 @@ class ProductService
         return $product;
     }
 
+    /**
+     * Get all product
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function getAllProducts()
     {
         return $this->productRepository->getAllProducts();
     }
 
+    /**
+     * Get all products by subcategory id
+     * @param integer|null $subcategoryId
+     * @return \Illuminate\Support\Collection
+     */
     public function getAllProductBySubcategoryIdWithPaginate($subcategoryId)
     {
         return $this->productRepository->getAllProductBySubcategoryIdWithPaginate($subcategoryId);
     }
 
+    /**
+     * Get all product by subcategory name
+     * @param string|null $subcategoryName
+     * @return mixed
+     */
     public function getAllProductBySubcategoryNameWithPaginate($subcategoryName)
     {
         return $this->productRepository->getAllProductBySubcategoryNameWithPaginate($subcategoryName);
     }
 
+    /**
+     * Get all products by category name
+     * @param string|null $categoryName
+     * @return \Illuminate\Support\Collection
+     */
     public function getAllProductsByCategoryName($categoryName)
     {
         return $this->productRepository->getAllProductsByCategoryName($categoryName);
     }
 
+    /**
+     * Delete product by id
+     * @param integer|null $productId
+     * @return void
+     */
     public function deleteProduct($productId)
     {
         $this->productRepository->deleteProduct($productId);
     }
 
+    /**
+     * Search product by name
+     * @param string|null $search
+     * @return mixed
+     */
     public function searchProduct($search)
     {
         return $this->productRepository->searchProduct($search);
     }
 
+    /**
+     * Search product by subcategory
+     * @param string|null $search
+     * @param integer|null $subcategoryId
+     * @return mixed
+     */
     public function searchProductBySubcategory($search, $subcategoryId)
     {
         return $this->productRepository->searchProductBySubcategory($search, $subcategoryId);
     }
 
+    /**
+     * Store product
+     * @param integer|null $subcategoryId
+     * @param array $productValues
+     * @return void
+     * @throws \Exception
+     */
     public function storeProduct($subcategoryId, $productValues)
     {
         $convertValueManager = new ConvertValueManager();
@@ -113,6 +166,12 @@ class ProductService
                                                                      $subcategoryId);
     }
 
+    /**
+     * Get user products from shopping cart
+     * @return array
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function getAuthUserProductsFromShoppingCart()
     {
         $products = [];
@@ -131,6 +190,12 @@ class ProductService
         return $products;
     }
 
+    /**
+     * Save product to favorites
+     * @param integer|null $product_id
+     * @return bool|string
+     * @throws \Exception
+     */
     public function saveToFavorite($product_id)
     {
         if(Auth::check()){
@@ -144,6 +209,12 @@ class ProductService
         }
     }
 
+    /**
+     * Delete product from favorites
+     * @param integer|null $favorite_id
+     * @return void
+     * @throws \Exception
+     */
     public function deleteFromFavorite($favorite_id)
     {
         if(Auth::check()){
@@ -155,6 +226,11 @@ class ProductService
         }
     }
 
+    /**
+     * Check if product is in favorites
+     * @param integer|null $product_id
+     * @return bool|void
+     */
     public function checkFavorite($product_id)
     {
         if(Auth::check()){
@@ -162,6 +238,11 @@ class ProductService
         }
     }
 
+    /**
+     * Get number of customers who added product to favorites
+     * @param integer|null $product_id
+     * @return int
+     */
     public function getFavoriteCount($product_id)
     {
         return $this->productRepository->getFavoriteCount($product_id);

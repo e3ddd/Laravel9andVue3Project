@@ -20,7 +20,7 @@
         "@vitejs/plugin-vue": "^4.0.0",
         "@vue-stripe/vue-stripe": "^4.5.0",
         "process": "^0.11.10",
-        "require": "^2.4.20",
+        "require": "^0.4.4",
         "vue-3-meta": "^2.4.0",
         "vue-cli": "^2.9.6",
         "vue-meta": "^2.4.0",

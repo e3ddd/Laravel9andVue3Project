@@ -12,7 +12,6 @@
 <body>
     <div id="nav-bar"></div>
     <div id="index"></div>
-    <div id="footer"></div>
     @vite('resources/js/app.js')
 </body>
 </html>

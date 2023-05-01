@@ -10,8 +10,7 @@
 </head>
 <body>
 <div id="nav-bar"></div>
-<div id="about-product">
-<div id="footer"></div>
+<div id="about-product"></div>
 @vite('resources/js/app.js')
 </body>
 </html>

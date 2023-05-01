@@ -32,9 +32,9 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-        $commentService = app(CommentsService::class);
-        dump($commentService->getCommentByUserId(2)->id);
+        $collection = collect([1,2,3]);
 
+        dump($collection->last());
 
     }
 }
