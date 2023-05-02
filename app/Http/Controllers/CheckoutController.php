@@ -14,16 +14,28 @@ use Stripe\Checkout\Session;
 
 class CheckoutController extends Controller
 {
+    /**
+     * Show success end-point
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function success()
     {
         return view('Checkout.success');
     }
 
+    /**
+     * Show cancel end-point
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function cancel()
     {
         return view('Checkout.cancel');
     }
 
+    /**
+     * Check order status
+     * @return bool|void
+     */
     public function checkOrderStatus()
     {
         if(Auth::check()){
@@ -38,34 +50,48 @@ class CheckoutController extends Controller
                     return true;
                 }
             }else{
-                $order = Order::where('user_id', Auth::user()->id)->get('status')->toArray();
+                $lastOrder = Order::where('user_id', Auth::user()->id)->last();
 
-                $lastOrder = array_pop($order);
 
-                if($lastOrder['status'] == 'completed'){
+
+                if($lastOrder->status == 'completed'){
                     return true;
                 }
             }
         }
-
-
     }
 
+    /**
+     * Delete order by order id
+     * @param Request $request
+     * @return void
+     */
     public function deleteOrder(Request $request)
     {
+        /** @var OrderService $orderService */
         $orderService = app(OrderService::class);
         $orderService->deleteOrder($request->order_id);
     }
 
+    /**
+     * Create Stripe checkout session by existing order
+     * @param Request $request
+     * @return mixed
+     */
     public function checkoutByExistingOrder(Request $request)
     {
-
+        /** @var OrderService $orderService */
         $orderService = app(OrderService::class);
         return $orderService->checkoutByExistingOrder($request->order_id);
     }
 
+    /**
+     * Create Stripe checkout session
+     * @return mixed
+     */
     public function checkout()
     {
+        /** @var ShoppingCartService $shoppingCartService */
         $shoppingCartService = app(ShoppingCartService::class);
         return $shoppingCartService->checkout();
     }

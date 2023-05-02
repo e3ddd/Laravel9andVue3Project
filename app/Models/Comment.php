@@ -21,11 +21,19 @@ class Comment extends Model
     ];
 
 
+    /**
+     * Comment images relation
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function images()
     {
         return $this->hasMany(CommentImage::class, 'comment_id');
     }
 
+    /**
+     * User comments relation
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

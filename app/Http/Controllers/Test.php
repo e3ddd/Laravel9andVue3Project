@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Controllers\Auth\Admin\ProductsController;
 use App\Http\Enums\MagnitudeEnums\PriceEnum;
 use App\Http\Factories\Convert\ConvertValueManager;
+use App\Http\Requests\ValidateSubcategoryId;
 use App\Http\StripePaymentClass;
 use App\Models\FavoriteProduct;
 use App\Models\Order;
@@ -33,8 +35,7 @@ class Test extends Controller
 
     public function index(Request $request)
     {
-        $test = new CategoriesRepository();
-        dump($test->searchCategory('b'));
+
 
     }
 }

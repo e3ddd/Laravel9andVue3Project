@@ -24,10 +24,11 @@ class RegUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|unique:users,email',
+            'email' => 'required|string|unique:users,email',
             'password' => 'required|min:6|max:30',
-            'name' => 'required',
-            'surname' => 'required',
+            'name' => 'required|string',
+            'surname' => 'required|string',
+            'phoneNumber' => 'required|string|starts_with:+380'
         ];
     }
 }

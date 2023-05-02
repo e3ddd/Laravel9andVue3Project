@@ -45,10 +45,12 @@
 <script>
 import AdminPanelBut from "../AdminPanelBut.vue";
 import MyInput from "../../MyInput.vue";
+
 export default {
     components: {
         AdminPanelBut,
-        MyInput
+        MyInput,
+
     },
 
     data() {
@@ -56,11 +58,20 @@ export default {
             categoryName: '',
             subcategoryName: '',
             subCheck: '',
+            images: []
         }
     },
 
 
     methods: {
+        onImages(imgs){
+            this.images = imgs
+        },
+
+        updateImages(id){
+            this.images = this.images.filter(item => item.id != id)
+        },
+
        onUpdateCategory(target){
            this.categoryName = target
        },

@@ -16,6 +16,10 @@ class Order extends Model
         'user_id',
     ];
 
+    /**
+     * Order products relation
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function products()
     {
         return $this->hasMany(OrderProduct::class, 'order_id');

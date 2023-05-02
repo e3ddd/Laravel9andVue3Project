@@ -16,20 +16,38 @@ class PriceEnumManager implements EnumManager
         $this->value = $value;
     }
 
+    /**
+     * Convert value in a given magnitude
+     * @param PriceEnum $to
+     * @return float|int
+     */
     public function convertTo(PriceEnum $to)
     {
         return $this->value * ($this->from->coefficient() / $to->coefficient());
     }
 
+    /**
+     * Convert value to smallest magnitude
+     * @return float|int
+     */
     public function convertToSmallest()
     {
         return $this->value * ($this->from->coefficient() / PriceEnum::coin->coefficient());
     }
 
+    /**
+     * Convert from smallest magnitude
+     * @return float|int
+     */
     public function convertFromSmallest()
     {
         return $this->value * (PriceEnum::coin->coefficient() / $this->from->coefficient());
     }
+
+    /**
+     * Format to string
+     * @return string
+     */
     public function toString(): string
     {
         return $this->value . " " . $this->from->value;

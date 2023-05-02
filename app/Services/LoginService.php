@@ -21,6 +21,13 @@ class LoginService
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * Authentication user and login
+     * @param string|null $userEmail
+     * @param string|null $userPassword
+     * @param string|null $remember
+     * @return void
+     */
     public function auth($userEmail, $userPassword, $remember)
     {
         $user = $this->userRepository->getUserByEmail($userEmail);

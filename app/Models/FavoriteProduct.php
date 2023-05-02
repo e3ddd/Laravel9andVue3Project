@@ -16,6 +16,10 @@ class FavoriteProduct extends Model
         'product_id'
     ];
 
+    /**
+     * Favorites products relation
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function products()
     {
         return $this->hasMany(Product::class, 'product_id');

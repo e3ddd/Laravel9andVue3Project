@@ -15,6 +15,10 @@ class Category extends Model
     ];
 
 
+    /**
+     * Attributes for categories relation
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function attributes()
     {
         return $this->hasMany(ProductAttribute::class, 'subcategory_id');

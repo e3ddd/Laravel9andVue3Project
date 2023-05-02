@@ -7,6 +7,11 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class VerificationController extends Controller
 {
+    /**
+     * Verification user email after registration
+     * @param EmailVerificationRequest $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function verify(EmailVerificationRequest $request)
     {
         $request->fulfill();

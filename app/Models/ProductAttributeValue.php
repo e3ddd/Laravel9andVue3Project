@@ -14,9 +14,14 @@ class ProductAttributeValue extends Model
     protected $fillable = [
         'name',
         'value',
-        'product_id'
+        'product_id',
+        'order'
     ];
 
+    /**
+     * Product attributes relation
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function product() {
         return $this->belongsTo(Product::class, 'product_id');
     }

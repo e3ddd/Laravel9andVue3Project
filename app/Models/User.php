@@ -26,12 +26,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone_number',
     ];
 
-
+    /**
+     * Auth user prodcuts in shopping cart relation
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function productsInShoppingCart()
     {
         return $this->hasMany(ShoppingCart::class, 'user_id');
     }
 
+    /**
+     * Auth user favorites products relation
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function favoriteProducts()
     {
         return $this->hasMany(FavoriteProduct::class, 'user_id');

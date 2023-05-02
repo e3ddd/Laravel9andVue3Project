@@ -16,20 +16,38 @@ class DimensionsEnumManager implements EnumManager
         $this->value = $value;
     }
 
+    /**
+     * Convert value in a given magnitude
+     * @param DimensionsEnum $to
+     * @return float|int
+     */
     public function convertTo(DimensionsEnum $to)
     {
         return $this->value * ($this->from->coefficient() / $to->coefficient());
     }
 
+    /**
+     * Convert value to smallest magnitude
+     * @return float|int
+     */
     public function convertToSmallest()
     {
         return $this->value * ($this->from->coefficient() / DimensionsEnum::millimeter->coefficient());
     }
 
+    /**
+     * Convert from smallest magnitude
+     * @return float|int
+     */
     public function convertFromSmallest()
     {
         return $this->value * (DimensionsEnum::millimeter->coefficient() / $this->from->coefficient());
     }
+
+    /**
+     * Format to string
+     * @return string
+     */
     public function toString(): string
     {
         return $this->value . " " . $this->from->value;

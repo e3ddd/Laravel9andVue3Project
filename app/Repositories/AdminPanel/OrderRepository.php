@@ -139,7 +139,7 @@ class OrderRepository
     public function checkUnpaidOrders($user_id)
     {
         if($user_id === null){
-            throw new RuntimeException('User not found');
+            throw new RuntimeException('User id required');
         }
 
         $response = false;
@@ -157,7 +157,7 @@ class OrderRepository
     public function getOrderById($order_id)
     {
         if($order_id === null){
-            throw new RuntimeException('Order not found');
+            throw new RuntimeException('Order id required');
         }
         return Order::find($order_id);
     }
@@ -170,7 +170,7 @@ class OrderRepository
     public function getOrderProducts($order_id)
     {
         if($order_id){
-            throw new RuntimeException('Order not found');
+            throw new RuntimeException('Order id required');
         }
         return OrderProduct::where('order_id', $order_id)->get();
     }

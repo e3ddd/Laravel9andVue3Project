@@ -39,7 +39,7 @@
                 />
             </div>
             <div class="row">
-                <UploadProductImage
+                <UploadImage
                     :product-id="product_id"
                     @get-images="this.onUpdateImages"
                 />
@@ -70,12 +70,12 @@
 </template>
 
 <script>
-import UploadProductImage from "../AdminPanel/Products/UploadProductImage.vue";
+import UploadImage from "../AdminPanel/Products/UploadImage.vue";
 import StarRate from "./StarRate.vue";
 export default {
     components: {
         StarRate,
-        UploadProductImage
+        UploadImage
     },
 
     data() {

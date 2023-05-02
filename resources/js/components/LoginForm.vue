@@ -99,7 +99,7 @@ export default {
 }
 
 .regLink a{
-    color: #ff3838;
+    color: #025a70;
 }
 
 .form {
@@ -111,13 +111,15 @@ export default {
 }
 
 .btn {
-    background: #ff3838;
-    color: white;
+    background: none;
+    color: #025a70;
+    border: 1px solid #025a70;
     box-shadow: 2px 2px 5px grey;
 }
 
 .btn:hover {
-    background: #661515;
+    background: #003542;
+    color: white;
     transition: 0.4s;
 }
 

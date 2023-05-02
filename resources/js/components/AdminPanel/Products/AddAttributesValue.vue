@@ -4,8 +4,8 @@
         <div class="row">
             <div class="col-4">
                 <div class="row"><label for="">Select category:</label></div>
-                <div class="row" v-if="this.categoryId !== ''"><label for="">Select subcategory:</label></div>
-                <div class="row" v-if="this.subcategoryId != ''"><label for="select">Select product:</label></div>
+                <div class="row" v-if="this.categoryId !== 0"><label for="">Select subcategory:</label></div>
+                <div class="row" v-if="this.subcategoryId !== 0"><label for="select">Select product:</label></div>
             </div>
             <div class="col-6">
                 <div class="row">
@@ -15,15 +15,14 @@
                         @onUpdate="onUpdateCategory"
                     />
                 </div>
-                <div class="row" v-if="this.categoryId !== ''">
+                <div class="row" v-if="this.categoryId !== 0">
                     <CategoriesSelect
                         :categories="this.categories"
                         :category-id="this.categoryId"
-                        @change="getProducts"
                         @onUpdate="onUpdateSubcategory"
                     />
                 </div>
-                <div class="row" v-if="this.subcategoryId != ''">
+                <div class="row" v-if="this.subcategoryId !== 0">
                     <select class="select" @change="getAttr" v-model="this.productName">
                         <option v-for="product in this.products">{{product.name}}</option>
                     </select>
@@ -32,7 +31,7 @@
         </div>
         <div class="row">
             <div class="images" v-if="this.products.length !== 0">
-                <UploadProductImage
+                <UploadImage
                     :product-id="this.productId"
                     :files="this.images"
                     @getImages="onImages"
@@ -86,22 +85,22 @@
 import MyInput from "../../MyInput.vue";
 import AdminPanelBut from "../AdminPanelBut.vue";
 import ChangeOrderButtons from "../ChangeOrderButtons.vue";
-import UploadProductImage from "./UploadProductImage.vue";
+import UploadImage from "./UploadImage.vue";
 import ErrorMessage from "../../ErrorMessage.vue";
 import CategoriesSelect from "./CategoriesSelect.vue";
 export default {
     components: {
         CategoriesSelect,
         ErrorMessage,
-        UploadProductImage,
+        UploadImage,
         MyInput,
         AdminPanelBut,
         ChangeOrderButtons
     },
     data() {
         return {
-            categoryId: '',
-            subcategoryId: '',
+            categoryId: 0,
+            subcategoryId: 0,
             productId: 0,
             categories: [],
             attributesValues: [],
@@ -121,6 +120,10 @@ export default {
             let products = this.products.filter(item => item.name == newName)
             this.productId = products[0].id
         },
+
+        subcategoryId(newValue, oldValue){
+            this.getProducts(newValue)
+        }
 
     },
 
@@ -170,10 +173,10 @@ export default {
                 })
         },
 
-        async getProducts() {
+        async getProducts(subcategoryId) {
             const response = await axios.get('/get_all_products_by_subcategory_id', {
                 params: {
-                    subcategoryId: this.subcategoryId
+                    subcategoryId: subcategoryId
                 }
             })
                 .then((response) => {
@@ -185,6 +188,7 @@ export default {
         },
 
         async submit() {
+            console.log(this.attributesValues)
             let response = await axios.post('/admin/store_product_attrs_values', {
                 productId: this.productId,
                 subcategoryId: this.subcategoryId,

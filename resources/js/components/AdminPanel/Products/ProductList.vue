@@ -19,7 +19,6 @@
                         v-if="this.categoryId !== ''"
                         :categories="this.categories"
                         :category-id="this.categoryId"
-                        @change="getProductsList"
                         @onUpdate="onUpdateSubcategory"
                     />
                 </div>
@@ -105,6 +104,12 @@ export default {
         this.getCategories()
     },
 
+    watch: {
+      subcategoryId(newValue, oldValue){
+          this.getProductsList(newValue)
+      }
+    },
+
 
     methods: {
         onUpdateCategory(categoryId) {
@@ -132,10 +137,10 @@ export default {
                 })
         },
 
-        async getProductsList() {
+        async getProductsList(subcategoryId) {
             const response = await axios.get('/get_all_products_by_subcategory_id', {
                 params: {
-                    subcategoryId: this.subcategoryId
+                    subcategoryId: subcategoryId
                 }
             })
                 .then((response) => {

@@ -19,6 +19,11 @@ class CommentsService
         return $this->commentsRepository->getCommentByUserId(Auth::user()->id, $product_id);
     }
 
+    /**
+     * Get comments by product id
+     * @param integer|null $product_id
+     * @return mixed
+     */
     public function getCommentsByProductId($product_id)
     {
         return $this->commentsRepository->getCommentsByProductId($product_id);

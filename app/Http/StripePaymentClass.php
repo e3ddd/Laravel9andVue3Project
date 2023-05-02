@@ -61,10 +61,6 @@ class StripePaymentClass
      */
     public function createCheckoutSession($lineItems, $order_id)
     {
-        if($order_id === null){
-            throw new RuntimeException('Order not found');
-        }
-
         Stripe::setApiKey(env("STRIPE_SECRET"));
         $session = Session::create([
             'line_items' => [
@@ -119,12 +115,7 @@ class StripePaymentClass
      */
     public function startCheckoutSession($products, $order_id)
     {
-
-        try {
-            $session = $this->createCheckoutSession($products, $order_id);
-        }catch (\RuntimeException $e){
-            throw new $e;
-        }
+        $session = $this->createCheckoutSession($products, $order_id);
 
         if($order_id === null){
             $this->createOrder($products);

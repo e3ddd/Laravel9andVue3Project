@@ -11,12 +11,24 @@ use Illuminate\Support\Facades\DB;
 class StripeController extends Controller
 {
 
+    /**
+     * Update order status
+     * @param $user_id
+     * @param $status
+     * @param $order_id
+     * @return void
+     */
     public function updateOrderStatus($user_id, $status, $order_id)
     {
+        /** @var OrderService $orderService */
         $orderService = app(OrderService::class);
         $orderService->updateOrderStatus($user_id, $status, $order_id);
     }
 
+    /**
+     * Stripe webhooks
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function webhook()
     {
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));

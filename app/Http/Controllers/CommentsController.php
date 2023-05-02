@@ -10,12 +10,24 @@ use Illuminate\Support\Facades\Auth;
 class CommentsController extends Controller
 {
 
+    /**
+     * Get comments by product id
+     * @param Request $request
+     * @return mixed
+     */
     public function getCommentsByProductId(Request $request)
     {
+        /** @var CommentsService $commentService */
         $commentService = app(CommentsService::class);
         return $commentService->getCommentsByProductId($request->productId);
     }
 
+    /**
+     * Save comment by prodcut id
+     * @param CommentRequest $request
+     * @return void
+     * @throws \Exception
+     */
     public function saveComment(CommentRequest $request)
     {
         /** @var CommentsService $commentService */
@@ -27,8 +39,6 @@ class CommentsController extends Controller
         }
 
         $commentId = $commentService->getCommentByUserId($request->productId)->last()->id;
-
-
 
         foreach ($request->images as $image){
             $commentService->saveCommentImage($image, $commentId);

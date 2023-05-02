@@ -116,6 +116,7 @@ export default {
                 .then((response) => {
                     this.categories = response.data
                 })
+                .catch(err => console.log(err))
         },
 
        async submit() {

@@ -1,5 +1,5 @@
 <template>
-    <select class="select" @change="updateCategory" v-model="categoryName">
+    <select class="select" v-model="categoryName">
         <option v-for="category in categories.filter(item => item.parent_id == categoryId)">{{category.name}}</option>
     </select>
 </template>
@@ -22,15 +22,10 @@ export default {
         categoryName(newName, oldName){
             let categories = this.categories.filter(item => item.name == newName)
             this.newCategoryId = categories[0].id
+            this.$emit('onUpdate', this.newCategoryId)
+
         },
     },
-
-    methods: {
-        updateCategory() {
-            this.$emit('onUpdate', this.newCategoryId)
-        }
-
-    }
 }
 </script>
 
