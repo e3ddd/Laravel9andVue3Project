@@ -38,7 +38,7 @@ class CommentsController extends Controller
             throw new $exception;
         }
 
-        $commentId = $commentService->getCommentByUserId($request->productId)->last()->id;
+        $commentId = $commentService->getCommentByUserId($request->productId, Auth::user()->id)->last()->id;
 
         foreach ($request->images as $image){
             $commentService->saveCommentImage($image, $commentId);

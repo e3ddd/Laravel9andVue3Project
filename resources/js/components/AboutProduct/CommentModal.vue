@@ -117,7 +117,7 @@ export default {
             fd.append('productId', this.product_id)
             fd.append('rate', this.rating)
             fd.append('comment', this.comment_text)
-            const response = await axios.post('/send_feedback', fd,
+            axios.post('/send_feedback', fd,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data'

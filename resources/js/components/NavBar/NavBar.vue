@@ -57,14 +57,14 @@ export default {
 
     methods: {
         async getUser(){
-            const response = await axios.get('/get_user')
+            axios.get('/get_user')
                 .then((response) => {
                     this.userName = response.data.name
                 })
         },
 
         getNumberOfProductsInShoppingCart() {
-            const response = axios.get('/get_number_of_products_in_shopping_cart')
+            axios.get('/get_number_of_products_in_shopping_cart')
                 .then((response) => {
                     this.count = response.data
                 })

@@ -87,7 +87,7 @@ export default {
 
 
        async edit() {
-            const response = await axios.get('/admin/edit_category', {
+            axios.get('/admin/edit_category', {
                 params: {
                     categoryId: this.id,
                     newCategoryName: this.newCategory,
@@ -104,7 +104,7 @@ export default {
         },
 
         async del(id) {
-            const response = await axios.post('/admin/delete_attribute', {
+            axios.post('/admin/delete_attribute', {
                 attributeId: id
             })
                 .then((response) => {

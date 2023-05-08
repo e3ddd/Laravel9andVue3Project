@@ -79,14 +79,14 @@ export default {
 
     methods: {
         async getUser() {
-            const response = await axios.get('/get_user')
+            axios.get('/get_user')
                 .then((response) => {
                     this.user = response.data.name
                 })
         },
 
         async buyProduct() {
-            const response = await axios.get('/buy_product', {
+            axios.get('/buy_product', {
                 params: {
                     productId: this.product.id,
                 }

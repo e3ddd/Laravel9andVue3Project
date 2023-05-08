@@ -244,3 +244,4 @@ class ProductService
         return $this->productRepository->getFavoriteCount($product_id);
     }
 }
+

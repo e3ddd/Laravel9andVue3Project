@@ -44,7 +44,7 @@ export default {
 
     methods: {
         async getUser() {
-            const response = await axios.get('/get_user')
+           axios.get('/get_user')
                 .then((response) => {
                     this.user = response.data.email
             })

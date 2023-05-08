@@ -54,7 +54,7 @@ export default {
 
     methods: {
         async getUser() {
-            const response = await axios.get('/get_user_by_id').then((response) => {
+            axios.get('/get_user_by_id').then((response) => {
                 this.user = response.data
             })
                 .then((response) => {
@@ -66,7 +66,7 @@ export default {
         },
 
         async getFavProds(productId, favId) {
-            const response = await axios.get('/get_product_by_id', {
+            axios.get('/get_product_by_id', {
                     params: {
                         productId: productId
                     }

@@ -112,7 +112,7 @@ export default {
         },
 
         async getCategories() {
-            const response = await axios.get('/get_all_categories')
+           axios.get('/get_all_categories')
                 .then((response) => {
                     this.categories = response.data
                 })
@@ -120,7 +120,7 @@ export default {
         },
 
        async submit() {
-            const response = await axios.get('/admin/create_product', {
+           axios.get('/admin/create_product', {
                 params: {
                     subcategoryId: this.subcategoryId,
                     subcategoryName: this.subcategoryName,
@@ -129,11 +129,9 @@ export default {
 
             })
                 .then((response) => {
-                    console.log(response)
-                    // alert('Product created !')
+                    alert('Product created !')
                 })
                 .catch((err) => {
-                    console.log(err)
                     this.err = err.response.data.message
                 })
                 .finally(() => {

@@ -140,7 +140,7 @@ export default {
         },
 
         async checkUnpaidOrders() {
-            const response = await axios.post('/check_unpaid_orders')
+            axios.post('/check_unpaid_orders')
                 .then((response) => {
                     if(response.data === 1){
                         this.unpaidOrders = true
@@ -150,14 +150,14 @@ export default {
         },
 
         async updateQuantity(productId, quantity) {
-            const response = await axios.post('/update_product_quantity', {
+            await axios.post('/update_product_quantity', {
                 productId: productId,
                 quantity: quantity,
             })
         },
 
         async getUserShoppingCart() {
-            const response = axios.get('/get_user_shopping_cart', {})
+            axios.get('/get_user_shopping_cart', {})
                 .then((response) => {
                     this.products.map((item, key) => {
                         if(response.data[item.id]){
@@ -171,7 +171,7 @@ export default {
         },
 
         async getProducts() {
-            const response = await axios.get('/get_user_products_from_shopping_cart')
+            axios.get('/get_user_products_from_shopping_cart')
                 .then((response) => {
                     this.products = response.data
                 })
@@ -179,12 +179,12 @@ export default {
         },
 
         async checkout() {
-            const response = await axios.get('/checkout')
+            axios.get('/checkout')
                 .then(response => console.log(response))
         },
 
        async del(event) {
-            const response = await axios.post('/delete_from_shopping_cart', {
+            axios.post('/delete_from_shopping_cart', {
                     shoppingCartProductId: event.target.id
             })
                 .catch(err => console.log(err))

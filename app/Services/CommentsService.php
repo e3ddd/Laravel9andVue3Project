@@ -14,9 +14,15 @@ class CommentsService
         $this->commentsRepository = $commentsRepository;
     }
 
-    public function getCommentByUserId($product_id)
+    /**
+     * Get all user comments
+     * @param integer|null $userId
+     * @param integer|null $product_id
+     * @return mixed
+     */
+    public function getCommentByUserId($product_id, $userId)
     {
-        return $this->commentsRepository->getCommentByUserId(Auth::user()->id, $product_id);
+        return $this->commentsRepository->getCommentByUserId($userId, $product_id);
     }
 
     /**
@@ -29,17 +35,32 @@ class CommentsService
         return $this->commentsRepository->getCommentsByProductId($product_id);
     }
 
+    /**
+     * Save comment in DB
+     * @param integer|null $user_id
+     * @param integer|null $productId
+     * @param integer|null $rate
+     * @param string|null $comment_text
+     * @return void
+     * @throws \Exception
+     */
     public function saveComment($user_id, $productId, $rate, $comment_text)
     {
-        try {
-            $this->commentsRepository->saveComment($user_id, $productId, $rate, $comment_text);
-        }catch (\Exception $exception){
-            throw new $exception;
-        }
+        $this->commentsRepository->saveComment($user_id, $productId, $rate, $comment_text);
     }
 
+    /**
+     * Save comment image in storage
+     * @param $file
+     * @param integer|null $commentId
+     * @return void
+     * @throws \ImagickException
+     */
     public function saveCommentImage($file, $commentId)
     {
+        if($commentId === null){
+            throw new \RuntimeException('Comment id required');
+        }
         $imgHash =  $file->hashName();
         $storeName = $commentId . "_" . $imgHash;
 

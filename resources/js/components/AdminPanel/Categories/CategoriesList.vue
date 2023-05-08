@@ -96,7 +96,7 @@ export default {
 
        async getCategoriesList(page) {
             this.showLoading = true
-            const response = await axios.get('/get_all_categories_with_pagination?page=' + page)
+            axios.get('/get_all_categories_with_pagination?page=' + page)
                 .then((response) => {
                     this.categoriesList = response.data.data
                     this.total = Math.ceil(response.data.total / response.data.per_page)

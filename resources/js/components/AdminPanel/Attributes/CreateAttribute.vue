@@ -148,7 +148,7 @@ export default {
 
         async getMagnitudeValues() {
             this.attributeValues = []
-            const response = await axios.get('/admin/get_magnitude_values', {
+            axios.get('/admin/get_magnitude_values', {
                 params: {
                     magnitudeName: this.magnitudeName
                 }
@@ -164,7 +164,7 @@ export default {
         async createAttr() {
             let attribute = [{name: this.attributeName, type: this.magnitudeValue}]
 
-            const response = await axios.get('/admin/create_attribute', {
+            axios.get('/admin/create_attribute', {
                 params: {
                     subcategoryId: this.subcategoryId,
                     attribute: attribute,

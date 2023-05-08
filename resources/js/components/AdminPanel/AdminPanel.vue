@@ -45,7 +45,7 @@ export default {
 
     methods: {
     async getCategories() {
-            const response = await axios.get('/get_all_categories')
+          axios.get('/get_all_categories')
                 .then((response) => {
                     this.categories = response.data
                 })

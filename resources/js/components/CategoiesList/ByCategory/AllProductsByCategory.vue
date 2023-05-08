@@ -66,7 +66,7 @@ export default {
 
         async getSubcategories()
         {
-            const response = await axios.get('/get_subcategories_by_parent_category_name', {
+            axios.get('/get_subcategories_by_parent_category_name', {
                 params: {
                     categoryName: this.category
                 }
@@ -84,7 +84,7 @@ export default {
         },
 
         async getProducts(page) {
-            const response = await axios.get('/get_all_products_by_category_name?page=' + page, {
+            axios.get('/get_all_products_by_category_name?page=' + page, {
                 params: {
                     categoryName: this.category
                 }

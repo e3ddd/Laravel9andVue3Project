@@ -35,7 +35,7 @@ export default {
 
     methods: {
         async buyProduct() {
-            const response = await axios.get('/buy_product', {
+           axios.get('/buy_product', {
                 params: {
                     productId: this.product.id,
                 }

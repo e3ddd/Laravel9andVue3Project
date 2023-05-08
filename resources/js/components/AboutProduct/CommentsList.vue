@@ -44,7 +44,7 @@ export default {
 
     methods: {
         async getComments() {
-            const response = await axios.get('/get_comments_by_product_id', {
+            axios.get('/get_comments_by_product_id', {
                 params: {
                     productId: this.product_id
                 }

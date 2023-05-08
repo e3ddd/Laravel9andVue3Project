@@ -16,13 +16,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
 </template>
 
 <script>
@@ -36,15 +29,6 @@ export default {
         ProductList,
         CreateProduct
     },
-
-    data() {
-        return {
-
-        }
-    },
-
-    methods: {
-    }
 }
 </script>
 

@@ -86,7 +86,7 @@ export default {
         },
 
         async payByOrder(order_id) {
-            const response = await axios.post('/checkout_exists_order', {
+            axios.post('/checkout_exists_order', {
                 order_id: order_id
             })
                 .then((response) => {
@@ -95,7 +95,7 @@ export default {
         },
 
         async deleteOrder(order_id) {
-            const response = await axios.post('/delete_order', {
+            axios.post('/delete_order', {
                 order_id: order_id
             })
                 .then((response) => {
@@ -105,7 +105,7 @@ export default {
         },
 
         async getUserOrders(page) {
-            const response = await axios.get('/get_user_orders?page=' + page)
+            axios.get('/get_user_orders?page=' + page)
                 .then((response) => {
                     this.orders = response.data.data
                     this.total = Math.ceil(response.data.total / response.data.per_page)

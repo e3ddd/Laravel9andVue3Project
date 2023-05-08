@@ -42,7 +42,7 @@ export default {
             if(this.products !== []){
                 this.products = []
             }
-            const response = axios.get('/search_product', {
+            axios.get('/search_product', {
                 params: {
                     search: this.search
                 }

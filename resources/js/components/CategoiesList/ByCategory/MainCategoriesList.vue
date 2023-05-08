@@ -17,12 +17,6 @@
                         </div>
                     </div>
                 </div>
-<!--                <div class="row">-->
-<!--                    <a :href="'products/' + category.name">{{category.name}}</a>-->
-<!--                </div>-->
-<!--                <div class="sub__links" v-for="subcategory in subcategories">-->
-<!--                    <a :href="'products/' + category.name + '/' + subcategory.name" v-if="subcategory.parent_id === category.id">{{subcategory.name}}</a>-->
-<!--                </div>-->
             </div>
         </div>
     </div>

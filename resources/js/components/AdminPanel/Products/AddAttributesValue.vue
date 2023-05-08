@@ -146,7 +146,7 @@ export default {
         },
 
         async getCategories() {
-            const response = await axios.get('/get_all_categories')
+            axios.get('/get_all_categories')
                 .then((response) => {
                     this.categories = response.data
                 })
@@ -157,7 +157,7 @@ export default {
 
         async getAttr() {
             this.attributesValues = []
-            const response = await axios.get('/admin/get_attributes_by_subcategory', {
+            axios.get('/admin/get_attributes_by_subcategory', {
                 params:{
                     subcategoryId: this.subcategoryId,
                     default: 0
@@ -174,7 +174,7 @@ export default {
         },
 
         async getProducts(subcategoryId) {
-            const response = await axios.get('/get_all_products_by_subcategory_id', {
+            axios.get('/get_all_products_by_subcategory_id', {
                 params: {
                     subcategoryId: subcategoryId
                 }
@@ -188,8 +188,7 @@ export default {
         },
 
         async submit() {
-            console.log(this.attributesValues)
-            let response = await axios.post('/admin/store_product_attrs_values', {
+            axios.post('/admin/store_product_attrs_values', {
                 productId: this.productId,
                 subcategoryId: this.subcategoryId,
                 attributesValues: this.attributesValues,
@@ -213,7 +212,7 @@ export default {
                 const fd = new FormData();
                 this.images.map(item => fd.append('images[]', item.file, item.file.name))
                 fd.append('productId', this.productId)
-                let response = await axios.post('/admin/store_product_images', fd,
+                axios.post('/admin/store_product_images', fd,
                     {
                         headers: {
                             'Content-Type': 'multipart/form-data'

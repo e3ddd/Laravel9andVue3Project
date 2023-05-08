@@ -60,11 +60,10 @@ export default {
 
     methods: {
         async login() {
-            const response = await axios.post('/login/log', {
-
-                    email: this.email,
-                    password: this.password,
-                    remember: this.remember
+            axios.post('/login/log', {
+                email: this.email,
+                password: this.password,
+                remember: this.remember
             })
                 .then((response) => {
                     if(response.data  !== ''){

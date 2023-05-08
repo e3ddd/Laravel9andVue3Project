@@ -87,8 +87,7 @@ export default {
         },
 
         async deleteFromFavorite(favorite_id) {
-
-            const response = await axios.post('/delete_from_favorite', {
+            axios.post('/delete_from_favorite', {
                 favoriteId: favorite_id
             })
                 .catch(err => console.log(err))

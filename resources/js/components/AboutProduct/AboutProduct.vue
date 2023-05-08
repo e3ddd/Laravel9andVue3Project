@@ -83,7 +83,7 @@ export default {
         },
 
         async getSubcategoryName() {
-            const response = await axios.get('/get_category_name_by_id', {
+            axios.get('/get_category_name_by_id', {
                 params: {
                     category_id: this.subcategoryId
                 }
@@ -99,7 +99,7 @@ export default {
 
         async getCategoryName()
         {
-            const response = await axios.get('/get_category_name_by_id', {
+            axios.get('/get_category_name_by_id', {
                 params: {
                     category_id: this.categoryId
                 }
@@ -109,7 +109,7 @@ export default {
         },
 
         async getProduct() {
-            const response = await axios.get('/get_product_by_name', {
+            axios.get('/get_product_by_name', {
                 params: {
                     productName: this.productName
                 }
@@ -124,7 +124,7 @@ export default {
         },
 
         async getProductAttributes() {
-            const response = await axios.get('/admin/get_converted_attributes', {
+            axios.get('/admin/get_converted_attributes', {
                 params: {
                     subcategoryId: this.product.subcategory_id,
                     productId: this.productId

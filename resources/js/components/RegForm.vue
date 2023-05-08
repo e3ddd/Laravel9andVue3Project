@@ -112,7 +112,7 @@ export default {
 
     methods: {
        async registration() {
-                const response = await axios.post(this.regUrl, {
+              axios.post(this.regUrl, {
                     email: this.email,
                     password: this.password,
                     name: this.name,
